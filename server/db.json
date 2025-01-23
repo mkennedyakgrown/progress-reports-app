@@ -1,0 +1,212 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "department": "Ballet",
+      "level": "3",
+      "students": [
+        { "id": 1, "name": "Antonio Sosa", "email": "kristen26@example.net" },
+        { "id": 3, "name": "Sandra Grant", "email": "lawsonrandy@example.net" },
+        {
+          "id": 4,
+          "name": "Amy Hunter",
+          "email": "jeanettemoreno@example.net"
+        },
+        { "id": 6, "name": "Elaine Weaver", "email": "nlowe@example.com" },
+        {
+          "id": 9,
+          "name": "Alexandra Ramirez",
+          "email": "nathanfitzgerald@example.com"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "department": "Jazz",
+      "level": "4",
+      "students": [
+        { "id": 1, "name": "Antonio Sosa", "email": "kristen26@example.net" },
+        {
+          "id": 2,
+          "name": "Brendan Brady",
+          "email": "juliejohnson@example.net"
+        },
+        { "id": 3, "name": "Sandra Grant", "email": "lawsonrandy@example.net" },
+        {
+          "id": 5,
+          "name": "Phillip Young",
+          "email": "richcolleen@example.net"
+        },
+        {
+          "id": 9,
+          "name": "Alexandra Ramirez",
+          "email": "nathanfitzgerald@example.com"
+        },
+        {
+          "id": 10,
+          "name": "Darlene Rodriguez",
+          "email": "buchananstacey@example.com"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "department": "Tap",
+      "level": "2",
+      "students": [
+        {
+          "id": 4,
+          "name": "Amy Hunter",
+          "email": "jeanettemoreno@example.net"
+        },
+        { "id": 6, "name": "Elaine Weaver", "email": "nlowe@example.com" },
+        {
+          "id": 9,
+          "name": "Alexandra Ramirez",
+          "email": "nathanfitzgerald@example.com"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "department": "Hip Hop",
+      "level": "8",
+      "students": [
+        {
+          "id": 4,
+          "name": "Amy Hunter",
+          "email": "jeanettemoreno@example.net"
+        },
+        {
+          "id": 5,
+          "name": "Phillip Young",
+          "email": "richcolleen@example.net"
+        },
+        { "id": 6, "name": "Elaine Weaver", "email": "nlowe@example.com" },
+        { "id": 8, "name": "Andrew Johnson", "email": "amy31@example.com" },
+        {
+          "id": 9,
+          "name": "Alexandra Ramirez",
+          "email": "nathanfitzgerald@example.com"
+        }
+      ]
+    }
+  ],
+  "students": [
+    { "id": 1, "name": "Antonio Sosa", "email": "kristen26@example.net" },
+    { "id": 2, "name": "Brendan Brady", "email": "juliejohnson@example.net" },
+    { "id": 3, "name": "Sandra Grant", "email": "lawsonrandy@example.net" },
+    { "id": 4, "name": "Amy Hunter", "email": "jeanettemoreno@example.net" },
+    { "id": 5, "name": "Phillip Young", "email": "richcolleen@example.net" },
+    { "id": 6, "name": "Elaine Weaver", "email": "nlowe@example.com" },
+    { "id": 7, "name": "Jennifer Brown", "email": "tschmidt@example.net" },
+    { "id": 8, "name": "Andrew Johnson", "email": "amy31@example.com" },
+    {
+      "id": 9,
+      "name": "Alexandra Ramirez",
+      "email": "nathanfitzgerald@example.com"
+    },
+    {
+      "id": 10,
+      "name": "Darlene Rodriguez",
+      "email": "buchananstacey@example.com"
+    }
+  ],
+  "reports": [
+    {
+      "course_id": 1,
+      "student_id": 1,
+      "report": "Set smile friend approach performance notice cause. Not have station production various analysis statement. Happy chance follow only."
+    },
+    {
+      "course_id": 1,
+      "student_id": 3,
+      "report": "Line water respond certainly sense option. Exactly itself it sound her. Response guess candidate pay decision poor room lawyer."
+    },
+    {
+      "course_id": 1,
+      "student_id": 4,
+      "report": "Event rule notice audience. Member third leave effort occur."
+    },
+    {
+      "course_id": 1,
+      "student_id": 6,
+      "report": "Eye newspaper character president he of. Sit own themselves design yeah against plan. Also answer south by collection."
+    },
+    {
+      "course_id": 1,
+      "student_id": 9,
+      "report": "Discuss attack none reality. Center although rest. Compare writer poor behind."
+    },
+    {
+      "course_id": 2,
+      "student_id": 1,
+      "report": "Seven chair result final memory. Thought standard outside learn within discuss born."
+    },
+    {
+      "course_id": 2,
+      "student_id": 2,
+      "report": "Television each it stand. Minute Congress ok old son language bag."
+    },
+    {
+      "course_id": 2,
+      "student_id": 3,
+      "report": "Future side race old decide coach case. Suffer certainly law help sea. Body international character buy near speak."
+    },
+    {
+      "course_id": 2,
+      "student_id": 5,
+      "report": "Actually take day practice look. Which form difference."
+    },
+    {
+      "course_id": 2,
+      "student_id": 9,
+      "report": "Natural leave often. Star purpose include bank check. Through while into. It learn dog alone which film drive."
+    },
+    {
+      "course_id": 2,
+      "student_id": 10,
+      "report": "Clearly common prove hair give feeling. Exist prove design ago option population realize later."
+    },
+    {
+      "course_id": 3,
+      "student_id": 4,
+      "report": "Heart peace many would. Of list shoulder small mission rule more possible. Item rest six really no drive."
+    },
+    {
+      "course_id": 3,
+      "student_id": 6,
+      "report": "Available serve involve hand threat degree water. Room money system foreign research force decision."
+    },
+    {
+      "course_id": 3,
+      "student_id": 9,
+      "report": "Way fine skill international help watch skin. Green follow loss instead."
+    },
+    {
+      "course_id": 4,
+      "student_id": 4,
+      "report": "Figure idea through any step on employee. Mother throw check message task others agency. Ago ground huge language. Explain only wide quality discover."
+    },
+    {
+      "course_id": 4,
+      "student_id": 5,
+      "report": "Read central respond voice either. Occur draw write movie social condition ok."
+    },
+    {
+      "course_id": 4,
+      "student_id": 6,
+      "report": "Black stuff food now break grow section. Ok look beyond and issue teacher. Black if agency would nature."
+    },
+    {
+      "course_id": 4,
+      "student_id": 8,
+      "report": "Impact argue less understand with thus material. Executive second seat along society. Certainly stay example service."
+    },
+    {
+      "course_id": 4,
+      "student_id": 9,
+      "report": "Later black beat Democrat yet red. Message talk have team whether parent. Message size real customer century also. Box lawyer left tell what."
+    }
+  ]
+}
