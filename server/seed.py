@@ -52,7 +52,7 @@ for course in courses:
         reports.append({
             "course_id": course["id"],
             "student_id": student["id"],
-            "report": fake.paragraph()
+            "report_text": fake.paragraph()
             })
         
 # Collect all data into a single JSON object

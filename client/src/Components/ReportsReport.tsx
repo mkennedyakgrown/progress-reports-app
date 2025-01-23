@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import { useRef, useState } from "react";
 
-function ReportsReport() {
+function ReportsReport({ report }) {
   const [reportText, setReportText] = useState("");
   const { current } = useRef({ reportText, timer: 0 });
 
