@@ -1,8 +1,8 @@
-import { TextField } from "@mui/material";
+import { ListItem, TextField, Box } from "@mui/material";
 import { useRef, useState } from "react";
 
 function ReportsReport({ report }) {
-  const [reportText, setReportText] = useState("");
+  const [reportText, setReportText] = useState(report.report_text);
   const { current } = useRef({ reportText, timer: 0 });
 
   function handleUpdateRequest() {
@@ -26,8 +26,8 @@ function ReportsReport({ report }) {
   }
 
   return (
-    <>
-      <form>
+    <ListItem>
+      <Box component="form" sx={{ width: "100%" }} autoComplete="off">
         <TextField
           label="Report"
           placeholder="Write about student's progress"
@@ -37,8 +37,8 @@ function ReportsReport({ report }) {
           value={reportText}
           onChange={handleTextChange}
         />
-      </form>
-    </>
+      </Box>
+    </ListItem>
   );
 }
 

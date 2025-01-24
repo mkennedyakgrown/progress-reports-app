@@ -4,10 +4,14 @@ import ReportsReport from "./ReportsReport";
 function ReportsClass({ courses, students, reports }) {
   return (
     <>
-      <ReportsReport />
       <List>
         {reports.map((report) => {
-          return <ListItem key={report.id}>{report.report_text}</ListItem>;
+          return (
+            <ReportsReport
+              key={`course${report.course_id}student${report.student_id}`}
+              {...{ report }}
+            />
+          );
         })}
       </List>
     </>
