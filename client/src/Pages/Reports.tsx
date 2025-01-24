@@ -38,15 +38,21 @@ function Reports() {
       .then((studentsData) => setStudents(studentsData));
   }, []);
 
-  function handleReportPatch(data) {
-    console.log("Report updated:", data);
+  function handleUpdateReport({ report_id, report_text }) {
+    const updatedReports = reports.map((report) => {
+      if (report.id === report_id) {
+        report.report_text = report_text;
+      }
+      return report;
+    });
+    setReports(updatedReports);
   }
 
   return (
     <>
       <h1>Reports</h1>
       {/* Add a button to confirm "I have completed all of my reports!" */}
-      <ReportsClass {...{ courses, students, reports, handleReportPatch }} />
+      <ReportsClass {...{ courses, students, reports, handleUpdateReport }} />
     </>
   );
 }

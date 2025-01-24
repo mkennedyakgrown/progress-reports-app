@@ -1,24 +1,24 @@
-import { ListItem, Box, ListItemText } from "@mui/material";
+import { ListItem, Box, ListItemText, CircularProgress } from "@mui/material";
 import { useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
-function ReportsReport({ report, handleReportPatch }) {
+function ReportsReport({ report, handleUpdateReport }) {
   const [reportText, setReportText] = useState(report.report_text);
   const { current } = useRef({ reportText, timer: 0 });
 
-  function handleUpdateRequest() {
+  function handleUpdateRequest(currentReportText) {
     fetch(`http://localhost:3000/reports/${report.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        report_text: reportText,
+        report_text: currentReportText,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        handleReportPatch(data);
+        handleUpdateReport(data.report_text);
       })
       .catch((error) => console.error("Error patching report:", error));
   }
@@ -34,7 +34,7 @@ function ReportsReport({ report, handleReportPatch }) {
 
     current.timer = setTimeout(() => {
       current.timer = 0;
-      handleUpdateRequest();
+      handleUpdateRequest(event.target.value);
     }, 1000);
   }
 

@@ -1,7 +1,7 @@
 import { List } from "@mui/material";
 import ReportsReport from "./ReportsReport";
 
-function ReportsClass({ courses, students, reports, handleReportPatch }) {
+function ReportsClass({ courses, students, reports, handleUpdateReport }) {
   return (
     <>
       <List>
@@ -9,7 +9,7 @@ function ReportsClass({ courses, students, reports, handleReportPatch }) {
           return (
             <ReportsReport
               key={`course${report.course_id}student${report.student_id}`}
-              {...{ report, handleReportPatch }}
+              {...{ report, handleUpdateReport }}
             />
           );
         })}
