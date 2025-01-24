@@ -50,8 +50,11 @@ for course in courses:
 for course in courses:
     for student in course["students"]:
         reports.append({
+            "id": len(reports) + 1,
             "course_id": course["id"],
             "student_id": student["id"],
+            "course_name": f'{course["department"]} {course["level"]}',
+            "student_name": student["name"],
             "report_text": fake.paragraph()
             })
         
