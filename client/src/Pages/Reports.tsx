@@ -48,11 +48,37 @@ function Reports() {
     setReports(updatedReports);
   }
 
+  function handleUpdateCourseReport({ course_id, report_text }) {
+    const updatedCourses = courses.map((course) => {
+      if (course.id === course_id) {
+        course.report_text = report_text;
+      }
+      return course;
+    });
+    setCourses(updatedCourses);
+  }
+
   return (
     <>
       <h1>Reports</h1>
       {/* Add a button to confirm "I have completed all of my reports!" */}
-      <ReportsClass {...{ courses, students, reports, handleUpdateReport }} />
+      {courses.map((course) => {
+        const courseReports = reports.filter(
+          (report) => report.course_id == course.id
+        );
+
+        return (
+          <ReportsClass
+            key={`course${course.id}`}
+            {...{
+              course,
+              courseReports,
+              handleUpdateReport,
+              handleUpdateCourseReport,
+            }}
+          />
+        );
+      }) || <p>Loading Classes</p>}
     </>
   );
 }

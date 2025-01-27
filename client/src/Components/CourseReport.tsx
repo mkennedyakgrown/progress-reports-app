@@ -1,14 +1,14 @@
-import { ListItem, Box, ListItemText, CircularProgress } from "@mui/material";
+import { ListItem, Box, ListItemText } from "@mui/material";
 import { useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
-function ReportsReport({ report, handleUpdateReport }) {
-  const [reportText, setReportText] = useState(report.report_text);
+function CourseReport({ course, handleUpdateCourseReport }) {
+  const [reportText, setReportText] = useState(course.report_text);
   const { current } = useRef({ reportText, timer: 0 });
 
   function handleUpdateRequest(currentReportText) {
-    console.log("Updating report...", report.id);
-    fetch(`http://localhost:3000/reports/${report.id}`, {
+    console.log("Updating course report...", course.id);
+    fetch(`http://localhost:3000/courses/${course.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -19,9 +19,9 @@ function ReportsReport({ report, handleUpdateReport }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        handleUpdateReport(data.report_text);
+        handleUpdateCourseReport(data.report_text);
       })
-      .catch((error) => console.error("Error patching report:", error));
+      .catch((error) => console.error("Error patching course report:", error));
   }
 
   function handleTextChange(
@@ -42,15 +42,15 @@ function ReportsReport({ report, handleUpdateReport }) {
   return (
     <ListItem alignItems="flex-start">
       <ListItemText
-        primary={`${report.course_name}`}
-        secondary={`${report.student_name}`}
+        primary={`${course.department} ${course.level}`}
+        secondary={`Class Summary`}
       />
       <Box component="form" sx={{ width: "100%" }} autoComplete="off">
         <ReportTextField
           {...{
             reportText: reportText,
             handleTextChange,
-            reportType: "Student",
+            reportType: "Course",
           }}
         />
       </Box>
@@ -58,4 +58,4 @@ function ReportsReport({ report, handleUpdateReport }) {
   );
 }
 
-export default ReportsReport;
+export default CourseReport;

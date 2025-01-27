@@ -7,26 +7,30 @@ courses = [
     {
         "id": 1,
         "department": "Ballet",
-        "level": "3",
-        "students": []
+        "level": 3,
+        "students": [],
+        "report_text": "",
     },
     {
         "id": 2,
         "department": "Jazz",
-        "level": "4",
-        "students": []
+        "level": 4,
+        "students": [],
+        "report_text": "",
     },
     {
         "id": 3,
         "department": "Tap",
-        "level": "2",
-        "students": []
+        "level": 2,
+        "students": [],
+        "report_text": "",
     },
     {
         "id": 4,
         "department": "Hip Hop",
-        "level": "8",
-        "students": []
+        "level": 8,
+        "students": [],
+        "report_text": "",
     }
 ]
 students = []
