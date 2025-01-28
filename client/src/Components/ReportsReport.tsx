@@ -36,14 +36,14 @@ function ReportsReport({ report, handleUpdateReport }) {
     current.timer = setTimeout(() => {
       current.timer = 0;
       handleUpdateRequest(event.target.value);
-    }, 1000);
+    }, 5000);
   }
 
   return (
     <ListItem alignItems="flex-start">
       <ListItemText
-        primary={`${report.course_name}`}
-        secondary={`${report.student_name}`}
+        primary={`${report.student_name}`}
+        secondary={`${report.course_name}`}
       />
       <Box component="form" sx={{ width: "100%" }} autoComplete="off">
         <ReportTextField
