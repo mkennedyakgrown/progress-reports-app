@@ -36,21 +36,21 @@ function ReportsReport({ report, handleUpdateReport }) {
     current.timer = setTimeout(() => {
       current.timer = 0;
 
+      // Check if undoTextStackPointer is pointing to earlier version of text
       if (undoStackPointer.current < undoStack.length - 1) {
+        // If so, check if the text is different from the current text
         if (undoStack[undoStackPointer.current] != currentReportText) {
+          // If text is different, slice the stack to current version and then add the new text, then increment the pointer
           setUndoStack([
-            ...undoStack.slice(0, undoStackPointer.current + 2),
+            ...undoStack.slice(0, undoStackPointer.current + 1),
             currentReportText,
           ]);
           undoStackPointer.current = undoStackPointer.current + 1;
-          console.log("Add text after undos");
-        } else {
-          console.log("Undo alone");
         }
       } else {
+        // If pointer is at the end of the stack, add the new text and increment the pointer
         setUndoStack([...undoStack, currentReportText]);
         undoStackPointer.current = undoStackPointer.current + 1;
-        console.log("Add text with no undos");
       }
 
       handleUpdateRequest(currentReportText);

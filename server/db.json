@@ -204,7 +204,7 @@
       "student_id": 1,
       "course_name": "Ballet 3",
       "student_name": "Angel Trevino",
-      "report_text": "Now a very short message. Entry 1. 2. 3. 4. 5."
+      "report_text": "Now a very short message. Entry 1. 2. And now this should be entry 3."
     },
     {
       "id": "2",
