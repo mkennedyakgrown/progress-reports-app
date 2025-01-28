@@ -64,6 +64,13 @@ function ReportsReport({ report, handleUpdateReport }) {
     }
   }
 
+  function handleRedo() {
+    if (undoStackPointer.current < undoStack.length - 1) {
+      undoStackPointer.current += 1;
+      handleTextChange(undoStack[undoStackPointer.current]);
+    }
+  }
+
   return (
     <ListItem alignItems="flex-start">
       <ListItemText
@@ -80,6 +87,9 @@ function ReportsReport({ report, handleUpdateReport }) {
         />
         <Button type="button" onClick={handleUndo}>
           Undo
+        </Button>
+        <Button type="button" onClick={handleRedo}>
+          Redo
         </Button>
       </Box>
     </ListItem>
