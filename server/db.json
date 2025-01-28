@@ -204,7 +204,7 @@
       "student_id": 1,
       "course_name": "Ballet 3",
       "student_name": "Angel Trevino",
-      "report_text": ""
+      "report_text": "This is a message to test the system. And this is testing whether the stack works! Now let's see if it persists when it's not supposed to... Why did it only show one entry?.."
     },
     {
       "id": "2",

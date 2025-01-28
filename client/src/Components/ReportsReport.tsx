@@ -1,10 +1,12 @@
-import { ListItem, Box, ListItemText, CircularProgress } from "@mui/material";
+import { ListItem, Box, ListItemText } from "@mui/material";
 import { useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
 function ReportsReport({ report, handleUpdateReport }) {
   const [reportText, setReportText] = useState(report.report_text);
+  const [undoStack, setUndoStack] = useState([report.report_text]);
   const { current } = useRef({ reportText, timer: 0 });
+  const undoStackPointer = useRef(0);
 
   function handleUpdateRequest(currentReportText) {
     console.log("Updating report...", report.id);
@@ -35,6 +37,18 @@ function ReportsReport({ report, handleUpdateReport }) {
 
     current.timer = setTimeout(() => {
       current.timer = 0;
+
+      if (undoStackPointer.current < undoStack.length - 1) {
+        setUndoStack([
+          ...undoStack.slice(0, undoStackPointer.current + 1),
+          event.target.value,
+        ]);
+      } else {
+        setUndoStack([...undoStack, event.target.value]);
+      }
+
+      undoStackPointer.current = undoStack.length - 1;
+
       handleUpdateRequest(event.target.value);
     }, 5000);
   }
