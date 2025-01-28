@@ -1,4 +1,4 @@
-import { ListItem, Box, ListItemText } from "@mui/material";
+import { ListItem, Box, ListItemText, Button } from "@mui/material";
 import { useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
@@ -26,10 +26,8 @@ function ReportsReport({ report, handleUpdateReport }) {
       .catch((error) => console.error("Error patching report:", error));
   }
 
-  function handleTextChange(
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) {
-    setReportText(event.target.value);
+  function handleTextChange(currentReportText: string) {
+    setReportText(currentReportText);
 
     if (current.timer) {
       clearTimeout(current.timer);
@@ -39,18 +37,31 @@ function ReportsReport({ report, handleUpdateReport }) {
       current.timer = 0;
 
       if (undoStackPointer.current < undoStack.length - 1) {
-        setUndoStack([
-          ...undoStack.slice(0, undoStackPointer.current + 1),
-          event.target.value,
-        ]);
+        if (undoStack[undoStackPointer.current] != currentReportText) {
+          setUndoStack([
+            ...undoStack.slice(0, undoStackPointer.current + 2),
+            currentReportText,
+          ]);
+          undoStackPointer.current = undoStackPointer.current + 1;
+          console.log("Add text after undos");
+        } else {
+          console.log("Undo alone");
+        }
       } else {
-        setUndoStack([...undoStack, event.target.value]);
+        setUndoStack([...undoStack, currentReportText]);
+        undoStackPointer.current = undoStackPointer.current + 1;
+        console.log("Add text with no undos");
       }
 
-      undoStackPointer.current = undoStack.length - 1;
-
-      handleUpdateRequest(event.target.value);
+      handleUpdateRequest(currentReportText);
     }, 5000);
+  }
+
+  function handleUndo() {
+    if (undoStackPointer.current > 0) {
+      undoStackPointer.current -= 1;
+      handleTextChange(undoStack[undoStackPointer.current]);
+    }
   }
 
   return (
@@ -67,6 +78,9 @@ function ReportsReport({ report, handleUpdateReport }) {
             reportType: "Student",
           }}
         />
+        <Button type="button" onClick={handleUndo}>
+          Undo
+        </Button>
       </Box>
     </ListItem>
   );

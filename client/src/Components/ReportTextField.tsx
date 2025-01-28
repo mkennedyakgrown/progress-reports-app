@@ -16,7 +16,7 @@ function ReportTextField({ reportText, handleTextChange, reportType }) {
       minRows={4}
       fullWidth
       value={reportText}
-      onChange={handleTextChange}
+      onChange={(event) => handleTextChange(event.target.value)}
     />
   );
 }
