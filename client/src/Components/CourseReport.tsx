@@ -1,4 +1,6 @@
 import { ListItem, Box, ListItemText, Button } from "@mui/material";
+import UndoIcon from "@mui/icons-material/Undo";
+import RedoIcon from "@mui/icons-material/Redo";
 import { useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
@@ -73,7 +75,17 @@ function CourseReport({ course, handleUpdateCourseReport }) {
 
   return (
     <ListItem alignItems="flex-start">
-      <ListItemText primary={`Class Summary`} />
+      <Box display="flex" justifyContent="space-between">
+        <ListItemText primary={"Class Summary"} />
+        <Box display="block">
+          <Button type="button" onClick={handleUndo}>
+            <UndoIcon />
+          </Button>
+          <Button type="button" onClick={handleRedo}>
+            <RedoIcon />
+          </Button>
+        </Box>
+      </Box>
       <Box component="form" sx={{ width: "100%" }} autoComplete="off">
         <ReportTextField
           {...{
@@ -82,12 +94,6 @@ function CourseReport({ course, handleUpdateCourseReport }) {
             reportType: "Course",
           }}
         />
-        <Button type="button" onClick={handleUndo}>
-          Undo
-        </Button>
-        <Button type="button" onClick={handleRedo}>
-          Redo
-        </Button>
       </Box>
     </ListItem>
   );
