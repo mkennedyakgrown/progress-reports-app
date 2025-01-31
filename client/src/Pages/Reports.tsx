@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ReportsClass from "../Components/ReportsClass";
+import SelectInstructor from "../Components/SelectInstructor";
 
 function Reports() {
   const [courses, setCourses] = useState([
@@ -7,7 +8,16 @@ function Reports() {
       id: 0,
       department: "",
       level: "",
+      instructors: [],
       students: [],
+    },
+  ]);
+  const [instructors, setInstructors] = useState([
+    {
+      id: 0,
+      name: "",
+      email: "",
+      courses: [],
     },
   ]);
   const [students, setStudents] = useState([
@@ -17,19 +27,23 @@ function Reports() {
       email: "",
     },
   ]);
-  const [reports, setReports] = useState([
-    {
-      id: 0,
-      course_id: 0,
-      student_id: 0,
-      report: "",
-    },
-  ]);
+  //   const [reports, setReports] = useState([
+  //     {
+  //       id: 0,
+  //       course_id: 0,
+  //       student_id: 0,
+  //       report: "",
+  //     },
+  //   ]);
+  const [selectedInstructor, setSelectedInstructor] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3000/reports")
+    // fetch("http://localhost:3000/reports")
+    //   .then((response) => response.json())
+    //   .then((reportsData) => setReports(reportsData));
+    fetch("http://localhost:3000/instructors")
       .then((response) => response.json())
-      .then((reportsData) => setReports(reportsData));
+      .then((instructorsData) => setInstructors(instructorsData));
     fetch("http://localhost:3000/courses")
       .then((response) => response.json())
       .then((coursesData) => setCourses(coursesData));
@@ -58,15 +72,27 @@ function Reports() {
     setCourses(updatedCourses);
   }
 
+  function handleSelectInstructor(event) {
+    setSelectedInstructor(event.target.value);
+  }
+
+  const displayCourses = courses.filter((course) => {
+    return course.instructors.includes(parseInt(selectedInstructor));
+  });
+
   return (
     <>
       <h1>Reports</h1>
       {/* Add a button to confirm "I have completed all of my reports!" */}
-      {courses.map((course) => {
+      <SelectInstructor
+        instructors={instructors}
+        handleSelectInstructor={handleSelectInstructor}
+        selectedInstructor={selectedInstructor}
+      />
+      {displayCourses.map((course) => {
         const courseReports = reports.filter(
           (report) => report.course_id == course.id
         );
-
         return (
           <ReportsClass
             key={`course${course.id}`}
@@ -78,7 +104,7 @@ function Reports() {
             }}
           />
         );
-      }) || <p>Loading Classes</p>}
+      })}
     </>
   );
 }

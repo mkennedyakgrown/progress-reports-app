@@ -1,13 +1,22 @@
-import { Box, Divider, List } from "@mui/material";
+import { Box, List } from "@mui/material";
 import ReportsReport from "./ReportsReport";
 import CourseReport from "./CourseReport";
+import { useEffect, useState } from "react";
 
 function ReportsClass({
   course,
-  courseReports,
   handleUpdateReport,
   handleUpdateCourseReport,
 }) {
+  const [courseReports, setCourseReports] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/reportsByCourse/${course.id}`)
+      .then((response) => response.json())
+      .then((reportsData) => setCourseReports(reportsData))
+      .catch((error) => console.error("Error fetching course reports:", error));
+  }, []);
+
   return (
     <Box sx={{ width: "100%", borderRadius: 5, border: "1px solid #ccc" }}>
       <h2>
