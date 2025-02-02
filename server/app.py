@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from datetime import datetime
 
 from config import app, db, api
+from models import User, Course, User, Student, CourseReport, StudentReport, Department, Level
 
 class Login(Resource):
 
