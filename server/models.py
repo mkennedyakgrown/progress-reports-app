@@ -99,7 +99,7 @@ class CourseReport(db.Model, SerializerMixin):
     date = db.Column(db.DateTime, nullable=False)
 
     course = db.relationship('Course', back_populates='course_reports')
-    student = db.relationship('Student', back_populates='student_reports')
+    instructor = db.relationship('User', back_populates='course_reports')
 
 
 class StudentReport(db.Model, SerializerMixin):
@@ -114,6 +114,7 @@ class StudentReport(db.Model, SerializerMixin):
 
     course = db.relationship('Course', back_populates='student_reports')
     student = db.relationship('Student', back_populates='student_reports')
+    instructor = db.relationship('User', back_populates='student_reports')
 
 class Users_Courses(db.Model, SerializerMixin):
     __tablename__ = 'users_courses'
