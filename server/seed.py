@@ -18,14 +18,6 @@ if __name__ == "__main__":
             course = Course(name=name, department=department, level=level)
             return course
         
-        def create_department(name):
-            department = Department(name=name)
-            return department
-        
-        def create_level(name):
-            level = Level(name=name)
-            return level
-        
         def create_student(first_name, last_name, email, birth_date):
             student = Student(first_name=first_name, last_name=last_name, email=email, birth_date=birth_date)
             return student
@@ -131,9 +123,74 @@ if __name__ == "__main__":
         )
         db.session.add(test_admin)
         counter += 1
-        print("Committing Session")
         db.session.commit()
         print(f"Successfully created {counter} new users")
 
-        # print("Creating Departments...")
-        # new_departments = []
+        print("Creating Departments...")
+        counter = 0
+        departments = [
+            "Ballet",
+            "Tap",
+            "Jazz",
+            "Hip Hop",
+            "Lyrical",
+            "Clogging",
+            "Ballroom",
+            "Aerial Hammock",
+            "Aerial Silks",
+            "Lyra",
+            "AcroJazz"
+        ]
+
+        for department in departments:
+            db.session.add(Department(name=department))
+            counter += 1
+        db.session.commit()
+        print(f"Successfully created {counter} departments")
+
+        print("Creating Levels...")
+        counter = 0
+        levels = [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "Elementary",
+            "Middle/High School",
+            "Intermediate Middle/High School"
+        ]
+
+        for level in levels:
+            db.session.add(Level(name=level))
+            counter += 1
+        db.session.commit()
+        print(f"Successfully created {counter} levels")
+
+        print("Creating Courses...")
+        counter = 0
+        departments = Department.query.all()
+        levels = Level.query.all()
+
+        for department in departments:
+            for level in levels:
+                name = ""
+                if len(level.name) == 1:
+                    name = f'{department.name} {level.name}'
+                else:
+                    name = f'{level.name} {department.name}'
+
+                new_course = Course(
+                    name=name,
+                    department_id=department.id,
+                    level_id=level.id
+                )
+                db.session.add(new_course)
+                counter += 1
+
+        db.session.commit()
+        print(f"Successfully created {counter} courses")
