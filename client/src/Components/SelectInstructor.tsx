@@ -8,7 +8,7 @@ function SelectInstructor({
   const instructorsList = instructors.map((instructor) => {
     return (
       <MenuItem id={`instructor-select-${instructor.id}`} value={instructor.id}>
-        {instructor.name}
+        {`${instructor.first_name} ${instructor.last_name}`}
       </MenuItem>
     );
   });

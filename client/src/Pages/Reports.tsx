@@ -41,15 +41,18 @@ function Reports() {
     // fetch("http://localhost:3000/reports")
     //   .then((response) => response.json())
     //   .then((reportsData) => setReports(reportsData));
-    fetch("http://localhost:3000/instructors")
+    fetch("http://localhost:5555/users")
       .then((response) => response.json())
-      .then((instructorsData) => setInstructors(instructorsData));
-    fetch("http://localhost:3000/courses")
-      .then((response) => response.json())
-      .then((coursesData) => setCourses(coursesData));
-    fetch("http://localhost:3000/students")
-      .then((response) => response.json())
-      .then((studentsData) => setStudents(studentsData));
+      .then((instructorsData) => {
+        console.log(instructorsData);
+        setInstructors(instructorsData);
+      });
+    // fetch("http://localhost:3000/courses")
+    //   .then((response) => response.json())
+    //   .then((coursesData) => setCourses(coursesData));
+    // fetch("http://localhost:3000/students")
+    //   .then((response) => response.json())
+    //   .then((studentsData) => setStudents(studentsData));
   }, []);
 
   function handleUpdateReport({ report_id, report_text }) {
@@ -75,6 +78,12 @@ function Reports() {
   function handleSelectInstructor(event) {
     setSelectedInstructor(event.target.value);
   }
+
+  useEffect(() => {
+    fetch(`http://localhost:5555/users/${selectedInstructor}`)
+      .then((response) => response.json())
+      .then((instructorCourses) => console.log(instructorCourses));
+  }, [selectedInstructor]);
 
   const displayCourses = courses.filter((course) => {
     return course.instructors.includes(parseInt(selectedInstructor));
