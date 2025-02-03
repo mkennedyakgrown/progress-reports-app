@@ -19,7 +19,7 @@ if __name__ == "__main__":
             courses = Course.query.all()
 
             for course in courses:
-                if fake.boolean == True:
+                if fake.boolean() == True:
                     instructor_1 = choice(users)
                     instructor_2 = choice(users)
                     while instructor_1 == instructor_2:
@@ -27,8 +27,9 @@ if __name__ == "__main__":
                     course.instructors.extend([instructor_1, instructor_2])
                 else:
                     course.instructors.append(choice(users))
+                db.session.add(course)
 
-            return courses
+            db.session.commit()
         
         def assign_student_courses():
             students = Student.query.all()
@@ -37,18 +38,18 @@ if __name__ == "__main__":
             for student in students:
                 courses_range = choice(range(5, 9))
                 enrolled_courses = []
-                for i in courses_range:
+                for i in range(courses_range):
                     course = choice(courses)
                     while course in enrolled_courses:
                         course = choice(courses)
                     enrolled_courses.append(course)
                 student.courses.extend(enrolled_courses)
+                db.session.add(student)
 
-            return students
+            db.session.commit()
         
         def create_course_reports():
             courses = Course.query.all()
-            course_reports = []
 
             for course in courses:
                 for instructor in course.instructors:
@@ -58,13 +59,12 @@ if __name__ == "__main__":
                         report_text=fake.paragraph(),
                         date=datetime.now()
                     )
-                    course_reports.append(report)
+                    db.session.add(report)
 
-            return course_reports
+            db.session.commit()
         
         def create_student_reports():
             courses = Course.query.all()
-            student_reports = []
 
             for course in courses:
                 for instructor in course.instructors:
@@ -76,9 +76,9 @@ if __name__ == "__main__":
                             report_text=fake.paragraph(),
                             date=datetime.now()
                         )
-                        student_reports.append(report)
-
-            return student_reports
+                        db.session.add(report)
+                        
+            db.session.commit()
         
         print("Clearing database...")
         db.session.query(User).delete()
@@ -194,7 +194,7 @@ if __name__ == "__main__":
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
                 email=fake.email(),
-                birth_date=fake.birth(
+                birth_date=fake.date_of_birth(
                     minimum_age=5,
                     maximum_age=18
                 )
@@ -204,4 +204,14 @@ if __name__ == "__main__":
         db.session.commit()
         print(f'Successfully created {counter} students')
 
-        
+        print("Assigning Instructors...")
+        assign_user_courses()
+
+        print("Enrolling Students...")
+        assign_student_courses()
+
+        print("Creating Course Reports...")
+        create_course_reports()
+
+        print("Creating Student Reports...")
+        create_student_reports()
