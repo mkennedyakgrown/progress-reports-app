@@ -11,8 +11,8 @@ class User(db.Model, SerializerMixin):
     __tablename__ =  'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.Column(db.String(30), nullable=False))
-    last_name = db.Column(db.String(20), nullable=False)
+    first_name = db.Column(db.String(30), nullable=False)
+    last_name = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(40), unique=True, nullable=False)
     _password_hash = db.Column(db.String(60), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
@@ -81,7 +81,7 @@ class Student(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(30), nullable=False)
-    last_name = db.Column(db.String(20), nullable=False)
+    last_name = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(40), unique=True, nullable=False)
     birth_date = db.Column(db.Date, nullable=False)
     
