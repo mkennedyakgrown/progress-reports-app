@@ -13,14 +13,6 @@ if __name__ == "__main__":
             user = User(first_name=first_name, last_name=last_name, email=email, is_admin=is_admin)
             user.password_hash = password
             return user
-
-        def create_course(name, department, level):
-            course = Course(name=name, department=department, level=level)
-            return course
-        
-        def create_student(first_name, last_name, email, birth_date):
-            student = Student(first_name=first_name, last_name=last_name, email=email, birth_date=birth_date)
-            return student
         
         def assign_user_courses():
             users = User.query.all()
@@ -194,3 +186,22 @@ if __name__ == "__main__":
 
         db.session.commit()
         print(f"Successfully created {counter} courses")
+
+        print("Creating Students...")
+        counter = 0
+        for i in range(300):
+            new_student = Student(
+                first_name=fake.first_name(),
+                last_name=fake.last_name(),
+                email=fake.email(),
+                birth_date=fake.birth(
+                    minimum_age=5,
+                    maximum_age=18
+                )
+            )
+            db.session.add(new_student)
+            counter += 1
+        db.session.commit()
+        print(f'Successfully created {counter} students')
+
+        
