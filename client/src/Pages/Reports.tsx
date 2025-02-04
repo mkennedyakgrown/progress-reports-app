@@ -1,17 +1,8 @@
 import { useEffect, useState } from "react";
-import ReportsClass from "../Components/ReportsClass";
+import ReportsInstructor from "../Components/ReportsInstructor";
 import SelectInstructor from "../Components/SelectInstructor";
 
 function Reports() {
-  const [courses, setCourses] = useState([
-    {
-      id: 0,
-      department: "",
-      level: "",
-      instructors: [],
-      students: [],
-    },
-  ]);
   const [instructors, setInstructors] = useState([
     {
       id: 0,
@@ -20,74 +11,37 @@ function Reports() {
       courses: [],
     },
   ]);
-  const [students, setStudents] = useState([
-    {
-      id: 0,
-      name: "",
-      email: "",
-    },
-  ]);
-  //   const [reports, setReports] = useState([
-  //     {
-  //       id: 0,
-  //       course_id: 0,
-  //       student_id: 0,
-  //       report: "",
-  //     },
-  //   ]);
-  const [selectedInstructor, setSelectedInstructor] = useState("");
+  const [selectedInstructorId, setSelectedInstructorId] = useState("");
+  const [instructorCourses, setInstructorCourses] = useState([]);
 
   useEffect(() => {
-    // fetch("http://localhost:3000/reports")
-    //   .then((response) => response.json())
-    //   .then((reportsData) => setReports(reportsData));
     fetch("http://localhost:5555/users")
       .then((response) => response.json())
       .then((instructorsData) => {
         console.log(instructorsData);
         setInstructors(instructorsData);
       });
-    // fetch("http://localhost:3000/courses")
-    //   .then((response) => response.json())
-    //   .then((coursesData) => setCourses(coursesData));
-    // fetch("http://localhost:3000/students")
-    //   .then((response) => response.json())
-    //   .then((studentsData) => setStudents(studentsData));
   }, []);
 
-  function handleUpdateReport({ report_id, report_text }) {
-    const updatedReports = reports.map((report) => {
-      if (report.id === report_id) {
-        report.report_text = report_text;
-      }
-      return report;
-    });
-    setReports(updatedReports);
-  }
-
-  function handleUpdateCourseReport({ course_id, report_text }) {
-    const updatedCourses = courses.map((course) => {
-      if (course.id === course_id) {
-        course.report_text = report_text;
-      }
-      return course;
-    });
-    setCourses(updatedCourses);
-  }
+  useEffect(() => {
+    fetch(`http://localhost:5555/users/${selectedInstructorId}`)
+      .then((response) => response.json())
+      .then((coursesData) => setInstructorCourses(coursesData))
+      .catch((error) =>
+        console.error(
+          `Error fetching instructor id ${selectedInstructorId}:`,
+          error
+        )
+      );
+  }, [selectedInstructorId]);
 
   function handleSelectInstructor(event) {
-    setSelectedInstructor(event.target.value);
+    setSelectedInstructorId(event.target.value);
   }
 
-  useEffect(() => {
-    fetch(`http://localhost:5555/users/${selectedInstructor}`)
-      .then((response) => response.json())
-      .then((instructorCourses) => console.log(instructorCourses));
-  }, [selectedInstructor]);
-
-  const displayCourses = courses.filter((course) => {
-    return course.instructors.includes(parseInt(selectedInstructor));
-  });
+  const currentInstructor = instructors.find(
+    (instructor) => instructor.id == parseInt(selectedInstructorId)
+  );
 
   return (
     <>
@@ -96,24 +50,9 @@ function Reports() {
       <SelectInstructor
         instructors={instructors}
         handleSelectInstructor={handleSelectInstructor}
-        selectedInstructor={selectedInstructor}
+        selectedInstructor={selectedInstructorId}
       />
-      {displayCourses.map((course) => {
-        const courseReports = reports.filter(
-          (report) => report.course_id == course.id
-        );
-        return (
-          <ReportsClass
-            key={`course${course.id}`}
-            {...{
-              course,
-              courseReports,
-              handleUpdateReport,
-              handleUpdateCourseReport,
-            }}
-          />
-        );
-      })}
+      <ReportsInstructor {...{ currentInstructor, instructorCourses }} />
     </>
   );
 }
