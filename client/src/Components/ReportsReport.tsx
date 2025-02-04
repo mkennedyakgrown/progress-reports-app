@@ -4,7 +4,7 @@ import RedoIcon from "@mui/icons-material/Redo";
 import { useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
-function ReportsReport({ report, handleUpdateReport }) {
+function ReportsReport({ currentInstructor, report, handleUpdateReport }) {
   const [reportText, setReportText] = useState(report.report_text);
   const [undoStack, setUndoStack] = useState([report.report_text]);
   const { current } = useRef({ reportText, timer: 0 });
@@ -77,8 +77,8 @@ function ReportsReport({ report, handleUpdateReport }) {
     <ListItem alignItems="flex-start">
       <Box display="flex" justifyContent="space-between">
         <ListItemText
-          primary={`${report.student_name}`}
-          secondary={`${report.course_name}`}
+          primary={`${report.student.first_name} ${report.student.last_name}`}
+          secondary={`${report.course.name}`}
         />
         <Box display="block">
           <Button type="button" onClick={handleUndo}>

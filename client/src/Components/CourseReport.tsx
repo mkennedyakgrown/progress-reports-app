@@ -1,14 +1,25 @@
 import { ListItem, Box, ListItemText, Button } from "@mui/material";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
-function CourseReport({ course, handleUpdateCourseReport }) {
-  const [reportText, setReportText] = useState(course.report_text);
-  const [undoStack, setUndoStack] = useState([course.report_text]);
+function CourseReport({ currentInstructor, course, handleUpdateCourseReport }) {
+  const [reportText, setReportText] = useState("");
+  const [undoStack, setUndoStack] = useState([]);
   const { current } = useRef({ reportText, timer: 0 });
   const undoStackPointer = useRef(0);
+
+  useEffect(() => {
+    const initialText = course.course_reports.find((report) => {
+      return report.instructor_id == currentInstructor.id;
+    }).report_text;
+    console.log(
+      `CourseReport setting ReportText and UndoStack with initial values: ${initialText}`
+    );
+    setReportText(initialText);
+    setUndoStack([initialText]);
+  }, [currentInstructor]);
 
   function handleUpdateRequest(currentReportText) {
     console.log("Updating course report...", course.id);

@@ -13,6 +13,7 @@ function ReportsInstructor({ currentInstructor, instructorCourses = [] }) {
               <ReportsClass
                 key={`course${course.id}`}
                 {...{
+                  currentInstructor,
                   course,
                   handleUpdateReport,
                   handleUpdateCourseReport,

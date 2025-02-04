@@ -73,6 +73,31 @@ class CourseSchema(ma.SQLAlchemySchema):
 course_schema = CourseSchema()
 courses_schema = CourseSchema(many=True)
 
+class StudentSchema(ma.SQLAlchemySchema):
+
+    class Meta:
+        model = Student
+        load_instance = True
+
+    id = ma.auto_field()
+    first_name = ma.auto_field()
+    last_name = ma.auto_field()
+    email = ma.auto_field()
+    birth_date = ma.auto_field()
+
+    courses = fields.Nested('CourseSchema', only=['name', 'id'], many=True)
+    student_reports = fields.Nested('StudentReportSchema', only=[
+        'id',
+        'student_id',
+        'course_id',
+        'instructor_id',
+        'report_text',
+        'date'
+        ], many=True)
+    
+student_schema = StudentSchema()
+students_schema = StudentSchema(many=True)
+
 class CourseReportSchema(ma.SQLAlchemySchema):
 
     class Meta:
@@ -84,6 +109,9 @@ class CourseReportSchema(ma.SQLAlchemySchema):
     instructor_id = ma.auto_field()
     report_text = ma.auto_field()
     date = ma.auto_field()
+
+    course = fields.Nested('CourseSchema', only=['name'])
+    instructor = fields.Nested('UserSchema', only=['first_name', 'last_name'])
 
 course_report_schema = CourseReportSchema()
 course_reports_schema = CourseReportSchema(many=True)
@@ -100,6 +128,10 @@ class StudentReportSchema(ma.SQLAlchemySchema):
     instructor_id = ma.auto_field()
     report_text = ma.auto_field()
     date = ma.auto_field()
+
+    course = fields.Nested('CourseSchema', only=['name'], many=False)
+    student = fields.Nested('StudentSchema', only=['first_name', 'last_name'], many=False)
+    instructor = fields.Nested('UserSchema', only=['first_name', 'last_name'], many=False)
 
 student_report_schema = StudentReportSchema()
 student_reports_schema = StudentReportSchema(many=True)
