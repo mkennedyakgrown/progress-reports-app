@@ -24,15 +24,17 @@ function Reports() {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:5555/users/${selectedInstructorId}`)
-      .then((response) => response.json())
-      .then((coursesData) => setInstructorCourses(coursesData))
-      .catch((error) =>
-        console.error(
-          `Error fetching instructor id ${selectedInstructorId}:`,
-          error
-        )
-      );
+    if (selectedInstructorId != "") {
+      fetch(`http://localhost:5555/users/${selectedInstructorId}/courses`)
+        .then((response) => response.json())
+        .then((coursesData) => setInstructorCourses(coursesData))
+        .catch((error) =>
+          console.error(
+            `Error fetching instructor id ${selectedInstructorId}:`,
+            error
+          )
+        );
+    }
   }, [selectedInstructorId]);
 
   function handleSelectInstructor(event) {

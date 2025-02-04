@@ -17,7 +17,7 @@ function SelectInstructor({
     );
   });
   return (
-    <FormControl sx={{ m: 1, minWidth: 200 }} fullWidth>
+    <FormControl sx={{ m: 1, minWidth: 200 }}>
       <InputLabel id="select-instructor-label">Select Instructor</InputLabel>
       <Select
         labelId="select-instructor-label"

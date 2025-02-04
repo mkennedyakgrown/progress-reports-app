@@ -16,7 +16,7 @@ class Login(Resource):
         password = json.get('password')
         if user and user.authenticate(password) == True:
             session['user_id'] = user.id
-            return user.to_json(), 200
+            return user_schema.dump(user), 200
         else:
             return {'message': 'Username and password do not match'}, 401
         
@@ -31,10 +31,15 @@ class CoursesByInstructor(Resource):
 
     def get(self, user_id):
         user = User.query.filter(User.id == user_id).first()
-        return courses_schema.dump(user.courses), 200
+        courses = []
+
+        for course in user.courses:
+            courses.append(Course.query.filter(Course.id == course.id).first())
+
+        return courses_schema.dump(courses), 200
         
 api.add_resource(Users, '/users')
-api.add_resource(CoursesByInstructor, '/users/<int:user_id>')
+api.add_resource(CoursesByInstructor, '/users/<int:user_id>/courses')
 api.add_resource(Login, '/login')
 
 class UserSchema(ma.SQLAlchemySchema):
@@ -62,8 +67,42 @@ class CourseSchema(ma.SQLAlchemySchema):
     id = ma.auto_field()
     name = ma.auto_field()
 
+    course_reports = fields.Nested('CourseReportSchema', many=True)
+    student_reports = fields.Nested('StudentReportSchema', many=True)
+
 course_schema = CourseSchema()
 courses_schema = CourseSchema(many=True)
+
+class CourseReportSchema(ma.SQLAlchemySchema):
+
+    class Meta:
+        model = CourseReport
+        load_instance = True
+    
+    id = ma.auto_field()
+    course_id = ma.auto_field()
+    instructor_id = ma.auto_field()
+    report_text = ma.auto_field()
+    date = ma.auto_field()
+
+course_report_schema = CourseReportSchema()
+course_reports_schema = CourseReportSchema(many=True)
+
+class StudentReportSchema(ma.SQLAlchemySchema):
+
+    class Meta:
+        model = StudentReport
+        load_instance = True
+    
+    id = ma.auto_field()
+    student_id = ma.auto_field()
+    course_id = ma.auto_field()
+    instructor_id = ma.auto_field()
+    report_text = ma.auto_field()
+    date = ma.auto_field()
+
+student_report_schema = StudentReportSchema()
+student_reports_schema = StudentReportSchema(many=True)
 
 
 if __name__ == "__main__":
