@@ -37,9 +37,31 @@ class CoursesByInstructor(Resource):
             courses.append(Course.query.filter(Course.id == course.id).first())
 
         return courses_schema.dump(courses), 200
+    
+class CourseReports(Resource):
+
+    def get(self):
+        reports = CourseReport.query.all()
+        return course_reports_schema.dump(reports), 200
+    
+class CourseReportById(Resource):
+    
+    def patch(self, report_id):
+        report = CourseReport.query.filter(CourseReport.id == report_id).first()
+        json = request.get_json()
+        if json.get('report_text'):
+            report.report_text = json.get('report_text')
+            report.date = datetime.now()
+            db.session.commit()
+            return course_report_schema.dump(report), 200
+        else:
+            return {'message': 'CourseReport not saved'}, 401
+        
+        
         
 api.add_resource(Users, '/users')
 api.add_resource(CoursesByInstructor, '/users/<int:user_id>/courses')
+api.add_resource(CourseReportById, '/course-reports/<int:report_id>')
 api.add_resource(Login, '/login')
 
 class UserSchema(ma.SQLAlchemySchema):

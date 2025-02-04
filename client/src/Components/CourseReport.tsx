@@ -5,31 +5,38 @@ import { useEffect, useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
 function CourseReport({ currentInstructor, course, handleUpdateCourseReport }) {
-  const [reportText, setReportText] = useState("");
+  const [report, setReport] = useState({
+    id: 0,
+    course_id: 0,
+    instructor_id: 0,
+    report_text: "",
+    date: "",
+  });
   const [undoStack, setUndoStack] = useState([]);
-  const { current } = useRef({ reportText, timer: 0 });
+  const { current } = useRef({ report, timer: 0 });
   const undoStackPointer = useRef(0);
 
   useEffect(() => {
-    const initialText = course.course_reports.find((report) => {
+    const currReport = course.course_reports.find((report) => {
       return report.instructor_id == currentInstructor.id;
-    }).report_text;
+    });
+    const initialText = currReport.report_text;
     console.log(
       `CourseReport setting ReportText and UndoStack with initial values: ${initialText}`
     );
-    setReportText(initialText);
-    setUndoStack([initialText]);
+    setReport(currReport);
+    setUndoStack([currReport.report_text]);
   }, [currentInstructor]);
 
-  function handleUpdateRequest(currentReportText) {
-    console.log("Updating course report...", course.id);
-    fetch(`http://localhost:3000/courses/${course.id}`, {
+  function handleUpdateRequest(report) {
+    console.log("Updating course report...", report.id);
+    fetch(`http://localhost:5555/course-reports/${report.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        report_text: currentReportText,
+        report_text: report.report_text,
       }),
     })
       .then((response) => response.json())
@@ -40,7 +47,7 @@ function CourseReport({ currentInstructor, course, handleUpdateCourseReport }) {
   }
 
   function handleTextChange(currentReportText: string) {
-    setReportText(currentReportText);
+    setReport({ ...report, report_text: currentReportText });
 
     if (current.timer) {
       clearTimeout(current.timer);
@@ -52,21 +59,21 @@ function CourseReport({ currentInstructor, course, handleUpdateCourseReport }) {
       // Check if undoTextStackPointer is pointing to earlier version of text
       if (undoStackPointer.current < undoStack.length - 1) {
         // If so, check if the text is different from the current text
-        if (undoStack[undoStackPointer.current] != currentReportText) {
+        if (undoStack[undoStackPointer.current] != report.report_text) {
           // If text is different, slice the stack to current version and then add the new text, then increment the pointer
           setUndoStack([
             ...undoStack.slice(0, undoStackPointer.current + 1),
-            currentReportText,
+            report.report_text,
           ]);
           undoStackPointer.current = undoStackPointer.current + 1;
         }
       } else {
         // If pointer is at the end of the stack, add the new text and increment the pointer
-        setUndoStack([...undoStack, currentReportText]);
+        setUndoStack([...undoStack, report.report_text]);
         undoStackPointer.current = undoStackPointer.current + 1;
       }
 
-      handleUpdateRequest(currentReportText);
+      handleUpdateRequest(report);
     }, 5000);
   }
 
@@ -100,7 +107,7 @@ function CourseReport({ currentInstructor, course, handleUpdateCourseReport }) {
       <Box component="form" sx={{ width: "100%" }} autoComplete="off">
         <ReportTextField
           {...{
-            reportText: reportText,
+            reportText: report.report_text,
             handleTextChange,
             reportType: "Course",
           }}
