@@ -7,7 +7,11 @@ function SelectInstructor({
 }) {
   const instructorsList = instructors.map((instructor) => {
     return (
-      <MenuItem id={`instructor-select-${instructor.id}`} value={instructor.id}>
+      <MenuItem
+        key={`instructor-select-${instructor.id}`}
+        id={`instructor-select-${instructor.id}`}
+        value={instructor.id}
+      >
         {`${instructor.first_name} ${instructor.last_name}`}
       </MenuItem>
     );
