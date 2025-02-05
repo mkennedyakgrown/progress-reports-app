@@ -13,22 +13,17 @@ function ReportsClass({
   const StudentReport = React.lazy(() => import("./StudentReport"));
 
   const displayReports = course
-    ? course.student_reports
-        .filter((report) => {
-          console.log(`Filtering student report ${report.course.name}`);
-          return report.instructor_id == currentInstructor.id;
-        })
-        .map((report) => {
-          console.log(`Loading Student Report ${report.student.name}`);
-          return (
-            <React.Suspense fallback={<>...</>}>
-              <StudentReport
-                key={`course${report.course_id}student${report.student_id}`}
-                {...{ currentInstructor, report, handleUpdateReport }}
-              />
-            </React.Suspense>
-          );
-        })
+    ? course.student_reports.map((report) => {
+        console.log(`Loading Student Report ${report.student.name}`);
+        return (
+          <React.Suspense fallback={<>...</>}>
+            <StudentReport
+              key={`course${report.course_id}student${report.student_id}`}
+              {...{ currentInstructor, report, handleUpdateReport }}
+            />
+          </React.Suspense>
+        );
+      })
     : null;
 
   return (

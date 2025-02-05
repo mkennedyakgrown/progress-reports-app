@@ -31,14 +31,16 @@ class CoursesByInstructor(Resource):
 
     def get(self, user_id):
         user = User.query.filter(User.id == user_id).first()
-        courses = []
+        courses = [Course.query.filter(Course.id == course.id).first() for course in user.courses]
+        courses = courses_schema.dump(courses)
 
-        for course in user.courses:
-            curr_instructor_report = [report for report in course.course_reports if report.instructor_id == user_id]
-            course.course_reports = curr_instructor_report
-            courses.append(Course.query.filter(Course.id == course.id).first())
+        for course in courses:
+            curr_instructor_report = [report for report in course['course_reports'] if report['instructor_id'] == user_id]
+            course['course_reports'] = curr_instructor_report
+            curr_instructor_student_reports = [report for report in course['student_reports'] if report['instructor_id'] == user_id]
+            course['student_reports'] = curr_instructor_student_reports
 
-        return courses_schema.dump(courses), 200
+        return courses, 200
     
 class CourseReports(Resource):
 
