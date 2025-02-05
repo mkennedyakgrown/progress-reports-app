@@ -37,7 +37,11 @@ function ReportsClass({
       <List>
         <React.Suspense fallback={<>Loading...</>}>
           <CourseReport
-            {...{ currentInstructor, course, handleUpdateCourseReport }}
+            {...{
+              currentInstructor,
+              currReport: course.course_reports[0],
+              handleUpdateCourseReport,
+            }}
           />
         </React.Suspense>
         {displayReports}

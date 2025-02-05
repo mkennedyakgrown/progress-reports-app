@@ -34,6 +34,8 @@ class CoursesByInstructor(Resource):
         courses = []
 
         for course in user.courses:
+            curr_instructor_report = [report for report in course.course_reports if report.instructor_id == user_id]
+            course.course_reports = curr_instructor_report
             courses.append(Course.query.filter(Course.id == course.id).first())
 
         return courses_schema.dump(courses), 200

@@ -27,7 +27,10 @@ function Reports() {
     if (selectedInstructorId != "") {
       fetch(`http://localhost:5555/users/${selectedInstructorId}/courses`)
         .then((response) => response.json())
-        .then((coursesData) => setInstructorCourses(coursesData))
+        .then((coursesData) => {
+          console.log(coursesData);
+          setInstructorCourses(coursesData);
+        })
         .catch((error) =>
           console.error(
             `Error fetching instructor id ${selectedInstructorId}:`,

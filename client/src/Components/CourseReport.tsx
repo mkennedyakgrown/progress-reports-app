@@ -5,26 +5,23 @@ import RedoIcon from "@mui/icons-material/Redo";
 import { useEffect, useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
-function CourseReport({ currentInstructor, course, handleUpdateCourseReport }) {
-  const [report, setReport] = useState({
+function CourseReport({
+  currentInstructor,
+  currReport = {
     id: 0,
     course_id: 0,
     instructor_id: 0,
     report_text: "",
     date: "",
-  });
-  const [undoStack, setUndoStack] = useState([]);
+  },
+  handleUpdateCourseReport,
+}) {
+  const [report, setReport] = useState(currReport);
+  const [undoStack, setUndoStack] = useState([currReport.report_text]);
   const { current } = useRef({ report, timer: 0 });
   const undoStackPointer = useRef(0);
 
   useEffect(() => {
-    const currReport = course.course_reports.find((report) => {
-      return report.instructor_id == currentInstructor.id;
-    });
-    const initialText = currReport.report_text;
-    console.log(
-      `CourseReport setting ReportText and UndoStack with initial values: ${initialText}`
-    );
     setReport(currReport);
     setUndoStack([currReport.report_text]);
   }, [currentInstructor]);
