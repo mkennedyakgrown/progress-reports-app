@@ -12,7 +12,7 @@ function ReportsReport({ currentInstructor, report, handleUpdateReport }) {
 
   function handleUpdateRequest(currentReportText) {
     console.log("Updating report...", report.id);
-    fetch(`http://localhost:3000/reports/${report.id}`, {
+    fetch(`http://localhost:5555/student-reports/${report.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
