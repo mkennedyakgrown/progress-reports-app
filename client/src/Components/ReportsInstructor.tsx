@@ -1,29 +1,42 @@
-import React from "react";
+import ReportsClass from "./ReportsClass";
 
 function ReportsInstructor({ currentInstructor, instructorCourses = [] }) {
-  function handleUpdateReport() {}
+  function handleUpdateRequest(
+    currentReportText: String,
+    report,
+    reportType: { String: "student" | "course" }
+  ) {
+    console.log(`Updating ${reportType} report...`, report.id);
 
-  function handleUpdateCourseReport() {}
-
-  const ReportsClass = React.lazy(() => import("./ReportsClass"));
+    fetch(`http://localhost:5555/${reportType}-reports/${report.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        report_text: currentReportText,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(`Report ${report.id} successfully saved`);
+      })
+      .catch((error) => console.error("Error patching report:", error));
+  }
 
   return (
     <>
       {instructorCourses.length > 0
         ? instructorCourses.map((course) => {
-            console.log(`Loading Course ${course.name}`);
             return (
-              <React.Suspense fallback={<>Loading Class...</>}>
-                <ReportsClass
-                  key={`course${course.id}`}
-                  {...{
-                    currentInstructor,
-                    course,
-                    handleUpdateReport,
-                    handleUpdateCourseReport,
-                  }}
-                />
-              </React.Suspense>
+              <ReportsClass
+                key={`course${course.id}`}
+                {...{
+                  currentInstructor,
+                  course,
+                  handleUpdateRequest,
+                }}
+              />
             );
           })
         : null}

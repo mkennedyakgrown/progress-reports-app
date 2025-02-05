@@ -1,33 +1,17 @@
-import React from "react";
 import { ListItem, Box, ListItemText, Button } from "@mui/material";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import { useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
-function StudentReport({ currentInstructor, report, handleUpdateReport }) {
+function StudentReport({ currentInstructor, report, handleUpdateRequest }) {
   const [reportText, setReportText] = useState(report.report_text);
   const [undoStack, setUndoStack] = useState([report.report_text]);
   const { current } = useRef({ reportText, timer: 0 });
   const undoStackPointer = useRef(0);
-
-  function handleUpdateRequest(currentReportText) {
-    console.log("Updating report...", report.id);
-    fetch(`http://localhost:5555/student-reports/${report.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        report_text: currentReportText,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        handleUpdateReport(data.report_text);
-      })
-      .catch((error) => console.error("Error patching report:", error));
-  }
+  console.log(
+    `Loading Student Report ${report.student.first_name} ${report.student.last_name}`
+  );
 
   function handleTextChange(currentReportText: string) {
     setReportText(currentReportText);
@@ -56,7 +40,7 @@ function StudentReport({ currentInstructor, report, handleUpdateReport }) {
         undoStackPointer.current = undoStackPointer.current + 1;
       }
 
-      handleUpdateRequest(currentReportText);
+      handleUpdateRequest(currentReportText, report, "student");
     }, 5000);
   }
 
@@ -75,33 +59,31 @@ function StudentReport({ currentInstructor, report, handleUpdateReport }) {
   }
 
   return (
-    <React.Suspense fallback={<>...</>}>
-      <ListItem alignItems="flex-start">
-        <Box display="flex" justifyContent="space-between">
-          <ListItemText
-            primary={`${report.student.first_name} ${report.student.last_name}`}
-            secondary={`${report.course.name}`}
-          />
-          <Box display="block">
-            <Button type="button" onClick={handleUndo}>
-              <UndoIcon />
-            </Button>
-            <Button type="button" onClick={handleRedo}>
-              <RedoIcon />
-            </Button>
-          </Box>
+    <ListItem alignItems="flex-start">
+      <Box display="flex" justifyContent="space-between">
+        <ListItemText
+          primary={`${report.student.first_name} ${report.student.last_name}`}
+          secondary={`${report.course.name}`}
+        />
+        <Box display="block">
+          <Button type="button" onClick={handleUndo}>
+            <UndoIcon />
+          </Button>
+          <Button type="button" onClick={handleRedo}>
+            <RedoIcon />
+          </Button>
         </Box>
-        <Box component="form" sx={{ width: "100%" }} autoComplete="off">
-          <ReportTextField
-            {...{
-              reportText: reportText,
-              handleTextChange,
-              reportType: "Student",
-            }}
-          />
-        </Box>
-      </ListItem>
-    </React.Suspense>
+      </Box>
+      <Box component="form" sx={{ width: "100%" }} autoComplete="off">
+        <ReportTextField
+          {...{
+            reportText: reportText,
+            handleTextChange,
+            reportType: "Student",
+          }}
+        />
+      </Box>
+    </ListItem>
   );
 }
 

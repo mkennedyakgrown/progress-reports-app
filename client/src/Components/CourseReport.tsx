@@ -1,4 +1,3 @@
-import React from "react";
 import { ListItem, Box, ListItemText, Button } from "@mui/material";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
@@ -14,7 +13,7 @@ function CourseReport({
     report_text: "",
     date: "",
   },
-  handleUpdateCourseReport,
+  handleUpdateRequest,
 }) {
   const [report, setReport] = useState(currReport);
   const [undoStack, setUndoStack] = useState([currReport.report_text]);
@@ -25,24 +24,6 @@ function CourseReport({
     setReport(currReport);
     setUndoStack([currReport.report_text]);
   }, [currentInstructor]);
-
-  function handleUpdateRequest(report) {
-    console.log("Updating course report...", report.id);
-    fetch(`http://localhost:5555/course-reports/${report.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        report_text: report.report_text,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        handleUpdateCourseReport(data.report_text);
-      })
-      .catch((error) => console.error("Error patching course report:", error));
-  }
 
   function handleTextChange(currentReportText: string) {
     setReport({ ...report, report_text: currentReportText });
@@ -71,7 +52,7 @@ function CourseReport({
         undoStackPointer.current = undoStackPointer.current + 1;
       }
 
-      handleUpdateRequest(report);
+      handleUpdateRequest(currentReportText, report, "course");
     }, 5000);
   }
 
