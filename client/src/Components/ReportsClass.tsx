@@ -1,6 +1,7 @@
+import React from "react";
 import { Box, List } from "@mui/material";
-import ReportsReport from "./ReportsReport";
-import CourseReport from "./CourseReport";
+// import StudentReport from "./StudentReport";
+// import CourseReport from "./CourseReport";
 
 function ReportsClass({
   currentInstructor,
@@ -8,17 +9,24 @@ function ReportsClass({
   handleUpdateReport,
   handleUpdateCourseReport,
 }) {
+  const CourseReport = React.lazy(() => import("./CourseReport"));
+  const StudentReport = React.lazy(() => import("./StudentReport"));
+
   const displayReports = course
     ? course.student_reports
         .filter((report) => {
+          console.log(`Filtering student report ${report.course.name}`);
           return report.instructor_id == currentInstructor.id;
         })
         .map((report) => {
+          console.log(`Loading Student Report ${report.student.name}`);
           return (
-            <ReportsReport
-              key={`course${report.course_id}student${report.student_id}`}
-              {...{ currentInstructor, report, handleUpdateReport }}
-            />
+            <React.Suspense fallback={<>...</>}>
+              <StudentReport
+                key={`course${report.course_id}student${report.student_id}`}
+                {...{ currentInstructor, report, handleUpdateReport }}
+              />
+            </React.Suspense>
           );
         })
     : null;
@@ -27,9 +35,11 @@ function ReportsClass({
     <Box sx={{ width: "100%", borderRadius: 5, border: "1px solid #ccc" }}>
       <h2>{course.name}</h2>
       <List>
-        <CourseReport
-          {...{ currentInstructor, course, handleUpdateCourseReport }}
-        />
+        <React.Suspense fallback={<>Loading...</>}>
+          <CourseReport
+            {...{ currentInstructor, course, handleUpdateCourseReport }}
+          />
+        </React.Suspense>
         {displayReports}
       </List>
     </Box>

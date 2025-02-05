@@ -1,10 +1,11 @@
+import React from "react";
 import { ListItem, Box, ListItemText, Button } from "@mui/material";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import { useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
-function ReportsReport({ currentInstructor, report, handleUpdateReport }) {
+function StudentReport({ currentInstructor, report, handleUpdateReport }) {
   const [reportText, setReportText] = useState(report.report_text);
   const [undoStack, setUndoStack] = useState([report.report_text]);
   const { current } = useRef({ reportText, timer: 0 });
@@ -74,32 +75,34 @@ function ReportsReport({ currentInstructor, report, handleUpdateReport }) {
   }
 
   return (
-    <ListItem alignItems="flex-start">
-      <Box display="flex" justifyContent="space-between">
-        <ListItemText
-          primary={`${report.student.first_name} ${report.student.last_name}`}
-          secondary={`${report.course.name}`}
-        />
-        <Box display="block">
-          <Button type="button" onClick={handleUndo}>
-            <UndoIcon />
-          </Button>
-          <Button type="button" onClick={handleRedo}>
-            <RedoIcon />
-          </Button>
+    <React.Suspense fallback={<>...</>}>
+      <ListItem alignItems="flex-start">
+        <Box display="flex" justifyContent="space-between">
+          <ListItemText
+            primary={`${report.student.first_name} ${report.student.last_name}`}
+            secondary={`${report.course.name}`}
+          />
+          <Box display="block">
+            <Button type="button" onClick={handleUndo}>
+              <UndoIcon />
+            </Button>
+            <Button type="button" onClick={handleRedo}>
+              <RedoIcon />
+            </Button>
+          </Box>
         </Box>
-      </Box>
-      <Box component="form" sx={{ width: "100%" }} autoComplete="off">
-        <ReportTextField
-          {...{
-            reportText: reportText,
-            handleTextChange,
-            reportType: "Student",
-          }}
-        />
-      </Box>
-    </ListItem>
+        <Box component="form" sx={{ width: "100%" }} autoComplete="off">
+          <ReportTextField
+            {...{
+              reportText: reportText,
+              handleTextChange,
+              reportType: "Student",
+            }}
+          />
+        </Box>
+      </ListItem>
+    </React.Suspense>
   );
 }
 
-export default ReportsReport;
+export default StudentReport;
