@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 
-function ReportTextField({ reportText, handleTextChange, reportType }) {
+function ReportTextField({ reportText, onTextChange, reportType }) {
   let placeholderText = "";
   if (reportType === "Student") {
     placeholderText = "Write about student's progress";
@@ -16,7 +16,7 @@ function ReportTextField({ reportText, handleTextChange, reportType }) {
       minRows={4}
       fullWidth
       value={reportText}
-      onChange={(event) => handleTextChange(event.target.value)}
+      onChange={(event) => onTextChange(event.target.value)}
     />
   );
 }

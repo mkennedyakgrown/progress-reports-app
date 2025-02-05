@@ -6,67 +6,68 @@ import ReportTextField from "./ReportTextField";
 
 function CourseReport({
   currentInstructor,
-  currReport = {
+  report = {
     id: 0,
     course_id: 0,
     instructor_id: 0,
     report_text: "",
     date: "",
   },
-  handleUpdateRequest,
+  handleTextChange,
 }) {
-  const [report, setReport] = useState(currReport);
-  const [undoStack, setUndoStack] = useState([currReport.report_text]);
+  const [reportText, setReportText] = useState(report.report_text);
+  const [undoStack, setUndoStack] = useState([report.report_text]);
   const { current } = useRef({ report, timer: 0 });
   const undoStackPointer = useRef(0);
 
   useEffect(() => {
-    setReport(currReport);
-    setUndoStack([currReport.report_text]);
+    setReportText(report.report_text);
+    setUndoStack([report.report_text]);
   }, [currentInstructor]);
 
-  function handleTextChange(currentReportText: string) {
-    setReport({ ...report, report_text: currentReportText });
+  function onTextChange(currentReportText: string) {
+    handleTextChange(
+      currentReportText,
+      report,
+      reportText,
+      setReportText,
+      current,
+      handleUndoRedo
+    );
+  }
 
-    if (current.timer) {
-      clearTimeout(current.timer);
-    }
-
-    current.timer = setTimeout(() => {
-      current.timer = 0;
-
-      // Check if undoTextStackPointer is pointing to earlier version of text
-      if (undoStackPointer.current < undoStack.length - 1) {
-        // If so, check if the text is different from the current text
-        if (undoStack[undoStackPointer.current] != report.report_text) {
-          // If text is different, slice the stack to current version and then add the new text, then increment the pointer
-          setUndoStack([
-            ...undoStack.slice(0, undoStackPointer.current + 1),
-            report.report_text,
-          ]);
-          undoStackPointer.current = undoStackPointer.current + 1;
-        }
-      } else {
-        // If pointer is at the end of the stack, add the new text and increment the pointer
-        setUndoStack([...undoStack, report.report_text]);
+  function handleUndoRedo(currentReportText: string) {
+    console.log("Checking undo/redo");
+    console.log(currentReportText);
+    // Check if undoTextStackPointer is pointing to earlier version of text
+    if (undoStackPointer.current < undoStack.length - 1) {
+      // If so, check if the text is different from the current text
+      if (undoStack[undoStackPointer.current] != currentReportText) {
+        // If text is different, slice the stack to current version and then add the new text, then increment the pointer
+        setUndoStack([
+          ...undoStack.slice(0, undoStackPointer.current + 1),
+          currentReportText,
+        ]);
         undoStackPointer.current = undoStackPointer.current + 1;
       }
-
-      handleUpdateRequest(currentReportText, report, "course");
-    }, 5000);
-  }
-
-  function handleUndo() {
-    if (undoStackPointer.current > 0) {
-      undoStackPointer.current -= 1;
-      handleTextChange(undoStack[undoStackPointer.current]);
+    } else {
+      // If pointer is at the end of the stack, add the new text and increment the pointer
+      setUndoStack([...undoStack, currentReportText]);
+      undoStackPointer.current = undoStackPointer.current + 1;
     }
   }
 
-  function handleRedo() {
+  function onUndo() {
+    if (undoStackPointer.current > 0) {
+      undoStackPointer.current -= 1;
+      onTextChange(undoStack[undoStackPointer.current]);
+    }
+  }
+
+  function onRedo() {
     if (undoStackPointer.current < undoStack.length - 1) {
       undoStackPointer.current += 1;
-      handleTextChange(undoStack[undoStackPointer.current]);
+      onTextChange(undoStack[undoStackPointer.current]);
     }
   }
 
@@ -75,10 +76,10 @@ function CourseReport({
       <Box display="flex" justifyContent="space-between">
         <ListItemText primary={"Class Summary"} />
         <Box display="block">
-          <Button type="button" onClick={handleUndo}>
+          <Button type="button" onClick={onUndo}>
             <UndoIcon />
           </Button>
-          <Button type="button" onClick={handleRedo}>
+          <Button type="button" onClick={onRedo}>
             <RedoIcon />
           </Button>
         </Box>
@@ -86,8 +87,8 @@ function CourseReport({
       <Box component="form" sx={{ width: "100%" }} autoComplete="off">
         <ReportTextField
           {...{
-            reportText: report.report_text,
-            handleTextChange,
+            reportText,
+            onTextChange,
             reportType: "Course",
           }}
         />
