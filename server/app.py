@@ -55,13 +55,27 @@ class CourseReportById(Resource):
             db.session.commit()
             return course_report_schema.dump(report), 200
         else:
-            return {'message': 'CourseReport not saved'}, 401
+            return {'message': 'Course Report did not save'}, 401
+        
+class StudentReportById(Resource):
+
+    def patch(self, report_id):
+        report = StudentReport.query.filter(StudentReport.id == report_id).first()
+        json = request.get_json()
+        if json.get('report_text'):
+            report.report_text = json.get('report_text')
+            report.date = datetime.now()
+            db.session.commit()
+            return student_report_schema.dump(report), 200
+        else:
+            return {'message': 'Student Report did not save'}, 401
         
         
         
 api.add_resource(Users, '/users')
 api.add_resource(CoursesByInstructor, '/users/<int:user_id>/courses')
 api.add_resource(CourseReportById, '/course-reports/<int:report_id>')
+api.add_resource(StudentReportById, '/student-reports/<int:report_id>')
 api.add_resource(Login, '/login')
 
 class UserSchema(ma.SQLAlchemySchema):
