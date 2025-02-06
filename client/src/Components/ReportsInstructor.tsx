@@ -49,24 +49,17 @@ function ReportsInstructor({ courses = [] }) {
 
   return (
     <>
-      {courses.length > 0 ? (
-        courses.map((course) => {
-          return (
-            <ReportsClass
-              key={`course${course.id}`}
-              {...{
-                course,
-                handleTextChange,
-              }}
-            />
-          );
-        })
-      ) : (
-        <>
-          <h2>Retrieving Classes and Preparing Reports...</h2>
-          <CircularProgress />
-        </>
-      )}
+      {courses.map((course) => {
+        return (
+          <ReportsClass
+            key={`course${course.id}`}
+            {...{
+              course,
+              handleTextChange,
+            }}
+          />
+        );
+      })}
     </>
   );
 }

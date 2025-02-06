@@ -1,18 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReportsInstructor from "../Components/ReportsInstructor";
 import SelectInstructor from "../Components/SelectInstructor";
 import { useNavigate, useParams } from "react-router-dom";
+import { Button, CircularProgress } from "@mui/material";
 
 function Reports() {
   const [instructors, setInstructors] = useState([
     {
       id: 0,
-      name: "",
+      first_name: "",
+      last_name: "",
       email: "",
       courses: [],
     },
   ]);
-  const [currentInstructor, setCurrentInstructor] = useState({});
+  const [currentInstructor, setCurrentInstructor] = useState({
+    id: 0,
+    first_name: "",
+    last_name: "",
+    email: "",
+    courses: [],
+  });
   const [selectedInstructor, setSelectedInstructor] = useState("");
   const [courses, setCourses] = useState([]);
   const params = useParams();
@@ -29,6 +37,7 @@ function Reports() {
 
   useEffect(() => {
     if (params.userId) {
+      console.log(`Fetching User ${params.userId}`);
       setSelectedInstructor(params.userId.toString());
       fetch(`http://localhost:5555/users/${params.userId}/courses`)
         .then((response) => response.json())
@@ -48,22 +57,37 @@ function Reports() {
         instructors.find((user) => user.id == params.userId)
       );
     }
-  }, [instructors]);
+  }, []);
 
   function handleSelectInstructor(event) {
-    navigate(`/reports/users/${event.target.value}`);
+    console.log(event.target.value);
+    setSelectedInstructor(event.target.value);
+  }
+
+  function handleNavigateClick() {
+    console.log(`Navigating to /reports/users/${selectedInstructor}`);
+    navigate(`/reports/users/${selectedInstructor}`);
   }
 
   return (
     <>
       <h1>Reports</h1>
-      {/* Add a button to confirm "I have completed all of my reports!" */}
       <SelectInstructor
         instructors={instructors}
         handleSelectInstructor={handleSelectInstructor}
         selectedInstructor={selectedInstructor}
       />
-      {courses.length > 0 ? <ReportsInstructor {...{ courses }} /> : null}
+      <Button variant="contained" onClick={handleNavigateClick}>
+        Go to Instructor
+      </Button>
+      {courses.length > 0 ? (
+        <ReportsInstructor {...{ courses }} />
+      ) : params.userId ? (
+        <>
+          <h2>Retrieving Classes and Preparing Reports...</h2>
+          <CircularProgress />
+        </>
+      ) : null}
     </>
   );
 }
