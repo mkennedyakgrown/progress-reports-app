@@ -14,15 +14,8 @@ function Reports() {
       courses: [],
     },
   ]);
-  const [currentInstructor, setCurrentInstructor] = useState({
-    id: 0,
-    first_name: "",
-    last_name: "",
-    email: "",
-    courses: [],
-  });
+  const [currentInstructorId, setCurrentInstructorId] = useState("");
   const [selectedInstructor, setSelectedInstructor] = useState("");
-  const [courses, setCourses] = useState([]);
   const params = useParams();
   const navigate = useNavigate();
 
@@ -33,40 +26,18 @@ function Reports() {
         console.log(instructorsData);
         setInstructors(instructorsData);
       });
-  }, []);
 
-  useEffect(() => {
     if (params.userId) {
-      console.log(`Fetching User ${params.userId}`);
+      setCurrentInstructorId(params.userId);
       setSelectedInstructor(params.userId.toString());
-      fetch(`http://localhost:5555/users/${params.userId}/courses`)
-        .then((response) => response.json())
-        .then((coursesData) => {
-          console.log(coursesData);
-          setCourses(coursesData);
-        })
-        .catch((error) =>
-          console.error(`Error fetching instructor id ${params.userId}:`, error)
-        );
-    }
-  }, []);
-
-  useEffect(() => {
-    if (params.userId) {
-      setCurrentInstructor(
-        instructors.find((user) => user.id == params.userId)
-      );
     }
   }, []);
 
   function handleSelectInstructor(event) {
     console.log(event.target.value);
     setSelectedInstructor(event.target.value);
-  }
-
-  function handleNavigateClick() {
-    console.log(`Navigating to /reports/users/${selectedInstructor}`);
-    navigate(`/reports/users/${selectedInstructor}`);
+    console.log(`Navigating to /reports/users/${event.target.value}`);
+    navigate(`/reports/users/${event.target.value}`);
   }
 
   return (
@@ -77,17 +48,7 @@ function Reports() {
         handleSelectInstructor={handleSelectInstructor}
         selectedInstructor={selectedInstructor}
       />
-      <Button variant="contained" onClick={handleNavigateClick}>
-        Go to Instructor
-      </Button>
-      {courses.length > 0 ? (
-        <ReportsInstructor {...{ courses }} />
-      ) : params.userId ? (
-        <>
-          <h2>Retrieving Classes and Preparing Reports...</h2>
-          <CircularProgress />
-        </>
-      ) : null}
+      <ReportsInstructor {...{ currentInstructorId: params.userId }} />
     </>
   );
 }

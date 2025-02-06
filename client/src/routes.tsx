@@ -12,7 +12,7 @@ const routes = [
     children: [
       { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
-      { path: "/reports", element: <Reports /> },
+      // { path: "/reports", element: <Reports /> },
       { path: "/reports/users/:userId", element: <Reports /> },
       { path: "*", element: <ErrorPage /> },
     ],

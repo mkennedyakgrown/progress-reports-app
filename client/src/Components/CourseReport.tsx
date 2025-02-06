@@ -16,6 +16,7 @@ function CourseReport({
 }) {
   const [reportText, setReportText] = useState(report.report_text);
   const [undoStack, setUndoStack] = useState([report.report_text]);
+  const [isSaving, setIsSaving] = useState(false);
   const { current } = useRef({ report, timer: 0 });
   const undoStackPointer = useRef(0);
 
@@ -30,7 +31,8 @@ function CourseReport({
       report,
       setReportText,
       current,
-      handleUndoRedo
+      handleUndoRedo,
+      setIsSaving
     );
   }
 
