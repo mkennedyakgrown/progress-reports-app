@@ -4,20 +4,16 @@ import RedoIcon from "@mui/icons-material/Redo";
 import { useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
-function StudentReport({ currentInstructor, report, handleTextChange }) {
+function StudentReport({ report, handleTextChange }) {
   const [reportText, setReportText] = useState(report.report_text);
   const [undoStack, setUndoStack] = useState([report.report_text]);
   const { current } = useRef({ reportText, timer: 0 });
   const undoStackPointer = useRef(0);
-  console.log(
-    `Loading Student Report ${report.student.first_name} ${report.student.last_name}`
-  );
 
   function onTextChange(currentReportText: string) {
     handleTextChange(
       currentReportText,
       report,
-      reportText,
       setReportText,
       current,
       handleUndoRedo
@@ -25,8 +21,6 @@ function StudentReport({ currentInstructor, report, handleTextChange }) {
   }
 
   function handleUndoRedo(currentReportText: string) {
-    console.log("Checking undo/redo");
-    console.log(currentReportText);
     // Check if undoTextStackPointer is pointing to earlier version of text
     if (undoStackPointer.current < undoStack.length - 1) {
       // If so, check if the text is different from the current text
@@ -69,9 +63,11 @@ function StudentReport({ currentInstructor, report, handleTextChange }) {
         <Box display="block">
           <Button type="button" onClick={onUndo}>
             <UndoIcon />
+            <h4>undo</h4>
           </Button>
           <Button type="button" onClick={onRedo}>
             <RedoIcon />
+            <h4>redo</h4>
           </Button>
         </Box>
       </Box>

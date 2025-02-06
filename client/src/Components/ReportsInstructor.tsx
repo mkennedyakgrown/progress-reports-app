@@ -1,6 +1,7 @@
+import { CircularProgress } from "@mui/material";
 import ReportsClass from "./ReportsClass";
 
-function ReportsInstructor({ currentInstructor, instructorCourses = [] }) {
+function ReportsInstructor({ courses = [] }) {
   function handleUpdateRequest(
     currentReportText: String,
     report,
@@ -27,12 +28,10 @@ function ReportsInstructor({ currentInstructor, instructorCourses = [] }) {
   function handleTextChange(
     currentReportText: string,
     report,
-    reportText,
     setReportText,
     current,
     handleUndoRedo
   ) {
-    console.log(`Updating ${report} with text ${currentReportText}`);
     setReportText(currentReportText);
 
     if (current.timer) {
@@ -44,43 +43,30 @@ function ReportsInstructor({ currentInstructor, instructorCourses = [] }) {
 
       handleUndoRedo(currentReportText);
 
-      //   // Check if undoTextStackPointer is pointing to earlier version of text
-      //   if (undoStackPointer.current < undoStack.length - 1) {
-      //     // If so, check if the text is different from the current text
-      //     if (undoStack[undoStackPointer.current] != report.report_text) {
-      //       // If text is different, slice the stack to current version and then add the new text, then increment the pointer
-      //       setUndoStack([
-      //         ...undoStack.slice(0, undoStackPointer.current + 1),
-      //         report.report_text,
-      //       ]);
-      //       undoStackPointer.current = undoStackPointer.current + 1;
-      //     }
-      //   } else {
-      //     // If pointer is at the end of the stack, add the new text and increment the pointer
-      //     setUndoStack([...undoStack, report.report_text]);
-      //     undoStackPointer.current = undoStackPointer.current + 1;
-      //   }
-
       handleUpdateRequest(currentReportText, report, "course");
     }, 5000);
   }
 
   return (
     <>
-      {instructorCourses.length > 0
-        ? instructorCourses.map((course) => {
-            return (
-              <ReportsClass
-                key={`course${course.id}`}
-                {...{
-                  currentInstructor,
-                  course,
-                  handleTextChange,
-                }}
-              />
-            );
-          })
-        : null}
+      {courses.length > 0 ? (
+        courses.map((course) => {
+          return (
+            <ReportsClass
+              key={`course${course.id}`}
+              {...{
+                course,
+                handleTextChange,
+              }}
+            />
+          );
+        })
+      ) : (
+        <>
+          <h2>Retrieving Classes and Preparing Reports...</h2>
+          <CircularProgress />
+        </>
+      )}
     </>
   );
 }

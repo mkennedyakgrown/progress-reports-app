@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ReportsInstructor from "../Components/ReportsInstructor";
 import SelectInstructor from "../Components/SelectInstructor";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Reports() {
   const [instructors, setInstructors] = useState([
@@ -11,8 +12,11 @@ function Reports() {
       courses: [],
     },
   ]);
-  const [selectedInstructorId, setSelectedInstructorId] = useState("");
-  const [instructorCourses, setInstructorCourses] = useState([]);
+  const [currentInstructor, setCurrentInstructor] = useState({});
+  const [selectedInstructor, setSelectedInstructor] = useState("");
+  const [courses, setCourses] = useState([]);
+  const params = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:5555/users")
@@ -24,29 +28,31 @@ function Reports() {
   }, []);
 
   useEffect(() => {
-    if (selectedInstructorId != "") {
-      fetch(`http://localhost:5555/users/${selectedInstructorId}/courses`)
+    if (params.userId) {
+      setSelectedInstructor(params.userId.toString());
+      fetch(`http://localhost:5555/users/${params.userId}/courses`)
         .then((response) => response.json())
         .then((coursesData) => {
           console.log(coursesData);
-          setInstructorCourses(coursesData);
+          setCourses(coursesData);
         })
         .catch((error) =>
-          console.error(
-            `Error fetching instructor id ${selectedInstructorId}:`,
-            error
-          )
+          console.error(`Error fetching instructor id ${params.userId}:`, error)
         );
     }
-  }, [selectedInstructorId]);
+  }, []);
+
+  useEffect(() => {
+    if (params.userId) {
+      setCurrentInstructor(
+        instructors.find((user) => user.id == params.userId)
+      );
+    }
+  }, [instructors]);
 
   function handleSelectInstructor(event) {
-    setSelectedInstructorId(event.target.value);
+    navigate(`/reports/users/${event.target.value}`);
   }
-
-  const currentInstructor = instructors.find(
-    (instructor) => instructor.id == parseInt(selectedInstructorId)
-  );
 
   return (
     <>
@@ -55,9 +61,9 @@ function Reports() {
       <SelectInstructor
         instructors={instructors}
         handleSelectInstructor={handleSelectInstructor}
-        selectedInstructor={selectedInstructorId}
+        selectedInstructor={selectedInstructor}
       />
-      <ReportsInstructor {...{ currentInstructor, instructorCourses }} />
+      {courses.length > 0 ? <ReportsInstructor {...{ courses }} /> : null}
     </>
   );
 }

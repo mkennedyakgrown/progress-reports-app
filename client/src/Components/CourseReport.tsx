@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
 function CourseReport({
-  currentInstructor,
   report = {
     id: 0,
     course_id: 0,
@@ -23,13 +22,12 @@ function CourseReport({
   useEffect(() => {
     setReportText(report.report_text);
     setUndoStack([report.report_text]);
-  }, [currentInstructor]);
+  }, [report]);
 
   function onTextChange(currentReportText: string) {
     handleTextChange(
       currentReportText,
       report,
-      reportText,
       setReportText,
       current,
       handleUndoRedo
@@ -37,8 +35,6 @@ function CourseReport({
   }
 
   function handleUndoRedo(currentReportText: string) {
-    console.log("Checking undo/redo");
-    console.log(currentReportText);
     // Check if undoTextStackPointer is pointing to earlier version of text
     if (undoStackPointer.current < undoStack.length - 1) {
       // If so, check if the text is different from the current text
@@ -78,9 +74,11 @@ function CourseReport({
         <Box display="block">
           <Button type="button" onClick={onUndo}>
             <UndoIcon />
+            <h4>undo</h4>
           </Button>
           <Button type="button" onClick={onRedo}>
             <RedoIcon />
+            <h4>redo</h4>
           </Button>
         </Box>
       </Box>
