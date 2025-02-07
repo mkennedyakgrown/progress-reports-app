@@ -88,7 +88,12 @@ function CourseReport({
           </Button>
         </Box>
       </Box>
-      <Box component="form" sx={{ width: "100%" }} autoComplete="off">
+      <Box
+        id="report-box"
+        component="form"
+        sx={{ width: "100%" }}
+        autoComplete="off"
+      >
         <ReportTextField
           {...{
             reportText,

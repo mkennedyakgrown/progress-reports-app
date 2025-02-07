@@ -20,7 +20,12 @@ function NavBar({ sessionUser, setSessionUser }) {
   }
 
   return (
-    <Stack justifyContent={"space-between"} direction="row" useFlexGap>
+    <Stack
+      justifyContent={"space-between"}
+      direction="row"
+      useFlexGap
+      sx={{ maxHeight: 40 }}
+    >
       <h3>Reports App</h3>
       {sessionUser.id == 0 ? null : (
         <Button type="button" variant="contained" onClick={handleLogout}>

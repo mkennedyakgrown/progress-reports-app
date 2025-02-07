@@ -15,7 +15,10 @@ function ReportsClass({ course, handleTextChange }) {
     : null;
 
   return (
-    <Box sx={{ width: "100%", borderRadius: 5, border: "1px solid #ccc" }}>
+    <Box
+      id="course-box"
+      sx={{ width: "100%", borderRadius: 5, border: "1px solid #ccc" }}
+    >
       <h2>{course.name}</h2>
       <List>
         <CourseReport

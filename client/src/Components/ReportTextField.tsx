@@ -10,6 +10,7 @@ function ReportTextField({ reportText, onTextChange, reportType }) {
 
   return (
     <TextField
+      id="report-text"
       label={`${reportType} Report`}
       placeholder={placeholderText}
       multiline
