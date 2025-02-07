@@ -1,5 +1,6 @@
 import { Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import logoSvg from "../assets/CS Logo Horizontal.svg";
 
 function NavBar({ sessionUser, setSessionUser }) {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function NavBar({ sessionUser, setSessionUser }) {
       useFlexGap
       sx={{ maxHeight: 40 }}
     >
-      <h3>Reports App</h3>
+      <img src={logoSvg} alt="logo" sizes="auto" />
       {sessionUser.id == 0 ? null : (
         <Button type="button" variant="contained" onClick={handleLogout}>
           Logout

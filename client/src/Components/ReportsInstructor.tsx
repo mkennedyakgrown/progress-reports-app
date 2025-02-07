@@ -2,9 +2,11 @@ import { CircularProgress } from "@mui/material";
 import ReportsClass from "./ReportsClass";
 import { useEffect, useRef, useState } from "react";
 import { useBeforeUnload } from "react-router-dom";
+import FilterCourses from "./FilterCourses";
 
 function ReportsInstructor({ currentInstructorId }) {
   const [courses, setCourses] = useState([]);
+  const [courseFilter, setCourseFilter] = useState("");
   const isSaving = useRef(false);
 
   useEffect(() => {
@@ -79,10 +81,17 @@ function ReportsInstructor({ currentInstructorId }) {
     }, 5000);
   }
 
+  const displayCourses = courses.filter((course) =>
+    course.name.toLowerCase().includes(courseFilter.toLowerCase())
+  );
+
+  console.log("displayCourses: ", displayCourses);
+
   return (
     <>
+      <FilterCourses {...{ setCourseFilter }} />
       {courses.length > 0 ? (
-        courses.map((course) => {
+        displayCourses.map((course) => {
           return (
             <ReportsClass
               key={`course${course.id}`}
