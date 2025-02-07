@@ -4,6 +4,7 @@ import {
   ListItemText,
   Button,
   CircularProgress,
+  Stack,
 } from "@mui/material";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
@@ -75,9 +76,9 @@ function CourseReport({
 
   return (
     <ListItem alignItems="flex-start">
-      <Box display="flex" justifyContent="space-between">
+      <Box id="report-name" display="flex" justifyContent="space-between">
         <ListItemText primary={"Class Summary"} />
-        <Box display="block">
+        <Stack direction="column">
           <Button type="button" onClick={onUndo}>
             <UndoIcon />
             <h4>undo</h4>
@@ -86,7 +87,7 @@ function CourseReport({
             <RedoIcon />
             <h4>redo</h4>
           </Button>
-        </Box>
+        </Stack>
       </Box>
       <Box
         id="report-box"
