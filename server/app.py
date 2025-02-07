@@ -112,6 +112,7 @@ class UserSchema(ma.SQLAlchemySchema):
     first_name = ma.auto_field()
     last_name = ma.auto_field()
     email = ma.auto_field()
+    is_admin = ma.auto_field()
     courses = fields.Nested('CourseSchema', only=['id', 'name'], many=True)
     # student_reports = fields.Nested('StudentReportSchema', only=['id', 'student', 'course', 'report_text', 'date'], many=True)
 

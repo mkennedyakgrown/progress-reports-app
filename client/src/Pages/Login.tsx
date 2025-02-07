@@ -11,7 +11,7 @@ function Login() {
 
   useEffect(() => {
     if (sessionUser.id) {
-      if (sessionUser.isAdmin) {
+      if (sessionUser.is_admin) {
         navigate("/reports", { replace: true });
       } else {
         navigate(`/reports/users/${sessionUser.id}`, { replace: true });

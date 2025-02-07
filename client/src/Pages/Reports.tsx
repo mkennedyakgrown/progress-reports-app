@@ -22,7 +22,7 @@ function Reports() {
   useEffect(() => {
     console.log(sessionUser);
     if (sessionUser.id == 0) {
-      // navigate("/login", { replace: true });
+      navigate("/login", { replace: true });
     }
   }, []);
 
@@ -51,12 +51,14 @@ function Reports() {
 
   return (
     <>
-      <h1>Reports</h1>
-      <SelectInstructor
-        instructors={instructors}
-        handleSelectInstructor={handleSelectInstructor}
-        selectedInstructor={selectedInstructor}
-      />
+      <h1>{`${sessionUser.first_name} ${sessionUser.last_name}'s Progress Reports`}</h1>
+      {sessionUser.is_admin ? (
+        <SelectInstructor
+          instructors={instructors}
+          handleSelectInstructor={handleSelectInstructor}
+          selectedInstructor={selectedInstructor}
+        />
+      ) : null}
       <ReportsInstructor {...{ currentInstructorId }} />
     </>
   );
