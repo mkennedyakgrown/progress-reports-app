@@ -20,6 +20,24 @@ class Login(Resource):
         else:
             return {'message': 'Username and password do not match'}, 401
         
+class Logout(Resource):
+
+    def delete(self):
+        if session.get('user_id'):
+            session['user_id'] = None
+            return {'message': 'Successfully Logged Out'}, 200
+        else:
+            return {'message': 'You are not logged in'}, 401
+        
+class CheckSession(Resource):
+
+    def get(self):
+        user_id = session.get('user_id')
+        if user_id:
+            user = User.query.filter(User.id == user_id).first()
+            return user_schema.dump(user), 200
+        else:
+            return {'message': 'You are not logged in'}, 401
 
 class Users(Resource):
 
@@ -81,6 +99,8 @@ api.add_resource(CoursesByInstructor, '/users/<int:user_id>/courses')
 api.add_resource(CourseReportById, '/course-reports/<int:report_id>')
 api.add_resource(StudentReportById, '/student-reports/<int:report_id>')
 api.add_resource(Login, '/login')
+api.add_resource(Logout, '/logout')
+api.add_resource(CheckSession, '/check-session')
 
 class UserSchema(ma.SQLAlchemySchema):
 

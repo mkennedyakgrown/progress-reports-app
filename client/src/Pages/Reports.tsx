@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ReportsInstructor from "../Components/ReportsInstructor";
 import SelectInstructor from "../Components/SelectInstructor";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button, CircularProgress } from "@mui/material";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 
 function Reports() {
   const [instructors, setInstructors] = useState([
@@ -18,6 +17,14 @@ function Reports() {
   const [selectedInstructor, setSelectedInstructor] = useState("");
   const params = useParams();
   const navigate = useNavigate();
+  const { sessionUser } = useOutletContext();
+
+  useEffect(() => {
+    console.log(sessionUser);
+    if (sessionUser.id == 0) {
+      // navigate("/login", { replace: true });
+    }
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost:5555/users")
@@ -26,12 +33,14 @@ function Reports() {
         console.log(instructorsData);
         setInstructors(instructorsData);
       });
+  }, []);
 
+  useEffect(() => {
     if (params.userId) {
       setCurrentInstructorId(params.userId);
       setSelectedInstructor(params.userId.toString());
     }
-  }, []);
+  }, [params]);
 
   function handleSelectInstructor(event) {
     console.log(event.target.value);
@@ -48,7 +57,7 @@ function Reports() {
         handleSelectInstructor={handleSelectInstructor}
         selectedInstructor={selectedInstructor}
       />
-      <ReportsInstructor {...{ currentInstructorId: params.userId }} />
+      <ReportsInstructor {...{ currentInstructorId }} />
     </>
   );
 }

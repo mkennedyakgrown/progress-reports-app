@@ -1,4 +1,10 @@
-import { ListItem, Box, ListItemText, Button } from "@mui/material";
+import {
+  ListItem,
+  Box,
+  ListItemText,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import { useEffect, useRef, useState } from "react";
@@ -16,7 +22,6 @@ function CourseReport({
 }) {
   const [reportText, setReportText] = useState(report.report_text);
   const [undoStack, setUndoStack] = useState([report.report_text]);
-  const [isSaving, setIsSaving] = useState(false);
   const { current } = useRef({ report, timer: 0 });
   const undoStackPointer = useRef(0);
 
@@ -31,8 +36,7 @@ function CourseReport({
       report,
       setReportText,
       current,
-      handleUndoRedo,
-      setIsSaving
+      handleUndoRedo
     );
   }
 

@@ -7,6 +7,13 @@ export default defineConfig({
     cors: {
       origin: "localhost:3000",
     },
+    proxy: {
+      "/api": {
+        target: "http://localhost:5555",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
   plugins: [react()],
 });
