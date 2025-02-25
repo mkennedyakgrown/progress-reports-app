@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 
-function ReportTextField({ reportText, onTextChange, reportType }) {
+function ReportTextField({ reportText, onTextChange, reportType }: any) {
   let placeholderText = "";
   if (reportType === "Student") {
     placeholderText = "Write about student's progress";

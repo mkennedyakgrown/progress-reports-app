@@ -1,4 +1,4 @@
-from flask import request, session
+from flask import request, session, send_from_directory
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime
@@ -6,6 +6,15 @@ from marshmallow import fields
 
 from config import app, db, api, ma
 from models import User, Course, User, Student, CourseReport, StudentReport, Department, Level
+
+@app.route("/", defaults={'path': 'index.html'})
+@app.route("/<path:path>")
+def index(path):
+    return send_from_directory(app.static_folder, path)
+
+@app.errorhandler(404)
+def not_found(e):
+    return send_from_directory(app.static_folder, 'index.html')
 
 class Login(Resource):
 
@@ -94,13 +103,13 @@ class StudentReportById(Resource):
         
         
         
-api.add_resource(Users, '/users')
-api.add_resource(CoursesByInstructor, '/users/<int:user_id>/courses')
-api.add_resource(CourseReportById, '/course-reports/<int:report_id>')
-api.add_resource(StudentReportById, '/student-reports/<int:report_id>')
-api.add_resource(Login, '/login')
-api.add_resource(Logout, '/logout')
-api.add_resource(CheckSession, '/check-session')
+api.add_resource(Users, '/api/users')
+api.add_resource(CoursesByInstructor, '/api/users/<int:user_id>/courses')
+api.add_resource(CourseReportById, '/api/course-reports/<int:report_id>')
+api.add_resource(StudentReportById, '/api/student-reports/<int:report_id>')
+api.add_resource(Login, '/api/login')
+api.add_resource(Logout, '/api/logout')
+api.add_resource(CheckSession, '/api/check-session')
 
 class UserSchema(ma.SQLAlchemySchema):
 

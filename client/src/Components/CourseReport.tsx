@@ -1,11 +1,4 @@
-import {
-  ListItem,
-  Box,
-  ListItemText,
-  Button,
-  CircularProgress,
-  Stack,
-} from "@mui/material";
+import { ListItem, Box, ListItemText, Button, Stack } from "@mui/material";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import { useEffect, useRef, useState } from "react";
@@ -20,7 +13,7 @@ function CourseReport({
     date: "",
   },
   handleTextChange,
-}) {
+}: any) {
   const [reportText, setReportText] = useState(report.report_text);
   const [undoStack, setUndoStack] = useState([report.report_text]);
   const { current } = useRef({ report, timer: 0 });

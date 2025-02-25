@@ -4,8 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { useBeforeUnload } from "react-router-dom";
 import FilterCourses from "./FilterCourses";
 
-function ReportsInstructor({ currentInstructorId }) {
-  const [courses, setCourses] = useState([]);
+function ReportsInstructor({ currentInstructorId }: any) {
+  const [courses, setCourses] = useState([
+    {
+      id: 0,
+      name: "",
+      course_reports: [],
+      student_reports: [],
+    },
+  ]);
   const [courseFilter, setCourseFilter] = useState("");
   const isSaving = useRef(false);
 
@@ -13,7 +20,7 @@ function ReportsInstructor({ currentInstructorId }) {
     setCourses([]);
     if (currentInstructorId != "") {
       console.log(`Fetching User ${currentInstructorId}`);
-      fetch(`http://localhost:5555/users/${currentInstructorId}/courses`)
+      fetch(`/api/users/${currentInstructorId}/courses`)
         .then((response) => response.json())
         .then((coursesData) => {
           console.log(coursesData);
@@ -36,12 +43,12 @@ function ReportsInstructor({ currentInstructorId }) {
 
   function handleUpdateRequest(
     currentReportText: String,
-    report,
+    report: any,
     reportType: "course" | "student"
   ) {
     console.log(`Updating ${reportType} report...`, report.id);
 
-    fetch(`http://localhost:5555/${reportType}-reports/${report.id}`, {
+    fetch(`/api/${reportType}-reports/${report.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -52,17 +59,17 @@ function ReportsInstructor({ currentInstructorId }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(`Report ${report.id} successfully saved`);
+        console.log(`Report ${data.id} successfully saved`);
       })
       .catch((error) => console.error("Error patching report:", error));
   }
 
   function handleTextChange(
     currentReportText: string,
-    report,
-    setReportText,
-    current,
-    handleUndoRedo
+    report: any,
+    setReportText: any,
+    current: any,
+    handleUndoRedo: any
   ) {
     setReportText(currentReportText);
 
@@ -90,7 +97,7 @@ function ReportsInstructor({ currentInstructorId }) {
   return (
     <>
       <FilterCourses {...{ setCourseFilter }} />
-      {courses.length > 0 ? (
+      {courses.length > 0 && displayCourses[0].id != 0 ? (
         displayCourses.map((course) => {
           return (
             <ReportsClass

@@ -4,7 +4,7 @@ import RedoIcon from "@mui/icons-material/Redo";
 import { useRef, useState } from "react";
 import ReportTextField from "./ReportTextField";
 
-function StudentReport({ report, handleTextChange }) {
+function StudentReport({ report, handleTextChange }: any) {
   const [reportText, setReportText] = useState(report.report_text);
   const [undoStack, setUndoStack] = useState([report.report_text]);
   const { current } = useRef({ reportText, timer: 0 });

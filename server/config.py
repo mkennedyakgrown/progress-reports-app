@@ -21,7 +21,7 @@ naming_convention = {
 
 metadata = MetaData(naming_convention=naming_convention)
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../client/dist", static_url_path="/")
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 # app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///app.db'

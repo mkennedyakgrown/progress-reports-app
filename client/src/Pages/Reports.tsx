@@ -17,7 +17,7 @@ function Reports() {
   const [selectedInstructor, setSelectedInstructor] = useState("");
   const params = useParams();
   const navigate = useNavigate();
-  const { sessionUser } = useOutletContext();
+  const { sessionUser } = useOutletContext<any>();
 
   useEffect(() => {
     console.log(sessionUser);
@@ -27,7 +27,7 @@ function Reports() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5555/users")
+    fetch("/api/users")
       .then((response) => response.json())
       .then((instructorsData) => {
         console.log(instructorsData);
@@ -42,7 +42,7 @@ function Reports() {
     }
   }, [params]);
 
-  function handleSelectInstructor(event) {
+  function handleSelectInstructor(event: any) {
     console.log(event.target.value);
     setSelectedInstructor(event.target.value);
     console.log(`Navigating to /reports/users/${event.target.value}`);
@@ -51,7 +51,7 @@ function Reports() {
 
   return (
     <>
-      <h1>{`${sessionUser.first_name} ${sessionUser.last_name}'s Progress Reports`}</h1>
+      <h2>{`Welcome, ${sessionUser.first_name} ${sessionUser.last_name}!`}</h2>
       {sessionUser.is_admin ? (
         <SelectInstructor
           instructors={instructors}

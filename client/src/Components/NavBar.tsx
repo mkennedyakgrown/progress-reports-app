@@ -2,7 +2,7 @@ import { Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import logoSvg from "../assets/CS Logo Horizontal.svg";
 
-function NavBar({ sessionUser, setSessionUser }) {
+function NavBar({ sessionUser, setSessionUser }: any) {
   const navigate = useNavigate();
 
   function handleLogout() {

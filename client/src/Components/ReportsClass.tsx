@@ -2,9 +2,9 @@ import { Box, List } from "@mui/material";
 import StudentReport from "./StudentReport";
 import CourseReport from "./CourseReport";
 
-function ReportsClass({ course, handleTextChange }) {
+function ReportsClass({ course, handleTextChange }: any) {
   const displayReports = course
-    ? course.student_reports.map((report) => {
+    ? course.student_reports.map((report: any) => {
         return (
           <StudentReport
             key={`course${report.course_id}student${report.student_id}`}

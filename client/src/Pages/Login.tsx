@@ -6,7 +6,7 @@ import * as yup from "yup";
 
 function Login() {
   const [errors, setErrors] = useState([]);
-  const { sessionUser, setSessionUser } = useOutletContext();
+  const { sessionUser, setSessionUser } = useOutletContext<any>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,7 +41,6 @@ function Login() {
         .then((response) => response.json())
         .then((data) => {
           if (data.errors) {
-            console.log(data);
             setErrors(data.errors);
           } else {
             setSessionUser(data);
@@ -94,6 +93,7 @@ function Login() {
         <Button type="submit" variant="outlined">
           Login
         </Button>
+        {errors ? <p>errors</p> : null}
       </Stack>
     </>
   );

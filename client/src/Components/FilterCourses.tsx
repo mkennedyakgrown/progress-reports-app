@@ -1,11 +1,11 @@
 import { FormControl, TextField } from "@mui/material";
 import { useRef, useState } from "react";
 
-function FilterCourses({ setCourseFilter }) {
+function FilterCourses({ setCourseFilter }: any) {
   const [filterText, setFilterText] = useState("");
   const { current } = useRef({ filterText, timer: 0 });
 
-  function handleChange(event) {
+  function handleChange(event: any) {
     setFilterText(event.target.value);
 
     if (current.timer) {

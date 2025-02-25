@@ -4,8 +4,8 @@ function SelectInstructor({
   instructors,
   handleSelectInstructor,
   selectedInstructor,
-}) {
-  const instructorsList = instructors.map((instructor) => {
+}: any) {
+  const instructorsList = instructors.map((instructor: any) => {
     return (
       <MenuItem
         key={`instructor-select-${instructor.id}`}
