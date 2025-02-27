@@ -16,6 +16,10 @@ def index(path):
 def not_found(e):
     return send_from_directory(app.static_folder, 'index.html')
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(app.static_folder, 'CS.svg', mimetype='image/svg+xml')
+
 class Login(Resource):
 
     def post(self):
