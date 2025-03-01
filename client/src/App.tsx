@@ -15,12 +15,7 @@ function App() {
 
   useEffect(() => {
     console.log("Loading User");
-    fetch("/api/check-session", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch("/api/check-session")
       .then((response) => response.json())
       .then((data) => {
         if (data.email) {
@@ -28,6 +23,15 @@ function App() {
         }
       });
   }, []);
+
+  useEffect(() => {
+    console.log("Testing Fetch");
+    fetch("https://cat-fact.herokuapp.com/facts")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+  });
 
   return (
     <>
