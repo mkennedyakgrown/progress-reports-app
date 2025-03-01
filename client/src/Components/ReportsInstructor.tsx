@@ -20,7 +20,9 @@ function ReportsInstructor({ currentInstructorId }: any) {
     setCourses([]);
     if (currentInstructorId != "") {
       console.log(`Fetching User ${currentInstructorId}`);
-      fetch(`/api/users/${currentInstructorId}/courses`)
+      fetch(
+        `https://progress-reports-app.onrender.com/api/users/${currentInstructorId}/courses`
+      )
         .then((response) => response.json())
         .then((coursesData) => {
           console.log(coursesData);
@@ -48,15 +50,18 @@ function ReportsInstructor({ currentInstructorId }: any) {
   ) {
     console.log(`Updating ${reportType} report...`, report.id);
 
-    fetch(`/api/${reportType}-reports/${report.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        report_text: currentReportText,
-      }),
-    })
+    fetch(
+      `https://progress-reports-app.onrender.com/api/${reportType}-reports/${report.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          report_text: currentReportText,
+        }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(`Report ${data.id} successfully saved`);

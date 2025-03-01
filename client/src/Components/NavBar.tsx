@@ -6,7 +6,7 @@ function NavBar({ sessionUser, setSessionUser }: any) {
   const navigate = useNavigate();
 
   function handleLogout() {
-    fetch("/api/logout", {
+    fetch("https://progress-reports-app.onrender.com/api/logout", {
       method: "DELETE",
     }).then(() => {
       setSessionUser({

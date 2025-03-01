@@ -27,7 +27,7 @@ function Reports() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/users")
+    fetch("https://progress-reports-app.onrender.com/api/users")
       .then((response) => response.json())
       .then((instructorsData) => {
         console.log(instructorsData);

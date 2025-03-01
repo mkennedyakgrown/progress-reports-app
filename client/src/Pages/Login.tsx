@@ -31,7 +31,7 @@ function Login() {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-      fetch("/api/login", {
+      fetch("https://progress-reports-app.onrender.com/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
