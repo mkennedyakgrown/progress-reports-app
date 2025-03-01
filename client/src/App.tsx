@@ -15,7 +15,7 @@ function App() {
 
   useEffect(() => {
     console.log("Loading User");
-    fetch("/api/check-session")
+    fetch("https://progress-reports-app.onrender.com/api/check-session")
       .then((response) => response.json())
       .then((data) => {
         if (data.email) {
