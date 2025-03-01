@@ -1,10 +1,4 @@
 {
-  "routes": [
-    { "src": "/", "dest": "/" },
-    { "src": "/login", "dest": "/" },
-    { "src": "/reports", "dest": "/" },
-    { "src": "/reports/users/(.*)", "dest": "/" }
-  ],
   "rewrites": [
     {
       "source": "(.*)/api",
