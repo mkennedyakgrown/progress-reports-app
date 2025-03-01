@@ -4,5 +4,11 @@
     { "src": "/login", "dest": "/" },
     { "src": "/reports", "dest": "/" },
     { "src": "/reports/users/(.*)", "dest": "/" }
+  ],
+  "rewrites": [
+    {
+      "source": "(.*)/api",
+      "dest": "https://progress-reports-app.onrender.com/api"
+    }
   ]
 }
