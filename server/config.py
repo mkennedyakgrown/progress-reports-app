@@ -20,12 +20,21 @@ naming_convention = {
 }
 
 metadata = MetaData(naming_convention=naming_convention)
-
-app = Flask(__name__, static_folder="../client/dist", static_url_path="/")
+# app = Flask(__name__, static_folder=os.path.dirname("../client/dist"), static_url_path="/")
+app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 # app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///app.db'
+# app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///app.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+
+# Get environment variables
+TURSO_DATABASE_URL = os.environ.get("TURSO_DATABASE_URL")
+TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
+
+# construct special SQLAlchemy URL
+dbUrl = f"sqlite+{TURSO_DATABASE_URL}/?authToken={TURSO_AUTH_TOKEN}&secure=true"
+app.config["SQLALCHEMY_DATABASE_URI"] = dbUrl
 
 db = SQLAlchemy(app=app, metadata=metadata)
 

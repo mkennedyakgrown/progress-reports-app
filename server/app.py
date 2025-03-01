@@ -7,18 +7,18 @@ from marshmallow import fields
 from config import app, db, api, ma
 from models import User, Course, User, Student, CourseReport, StudentReport, Department, Level
 
-@app.route("/", defaults={'path': 'index.html'})
-@app.route("/<path:path>")
-def index(path):
-    return send_from_directory(app.static_folder, path)
+# @app.route("/", defaults={'path': 'index.html'})
+# @app.route("/<path:path>")
+# def index(path):
+#     return send_from_directory(app.static_folder, path)
 
-@app.errorhandler(404)
-def not_found(e):
-    return send_from_directory(app.static_folder, 'index.html')
+# @app.errorhandler(404)
+# def not_found(e):
+#     return send_from_directory(app.static_folder, 'index.html')
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(app.static_folder, 'CS.svg', mimetype='image/svg+xml')
+# @app.route('/favicon.ico')
+# def favicon():
+#     return send_from_directory(app.static_folder, 'CS.svg', mimetype='image/svg+xml')
 
 class Login(Resource):
 
@@ -212,5 +212,5 @@ student_reports_schema = StudentReportSchema(many=True)
 
 
 if __name__ == "__main__":
-    # app.run(port=5555, debug=True)
-    app.run()
+    app.run(port=5555, debug=True)
+    # app.run()
