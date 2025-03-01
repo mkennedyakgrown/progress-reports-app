@@ -9,7 +9,8 @@ export default defineConfig({
     },
     proxy: {
       "/api": {
-        target: "http://localhost:5555/api",
+        // target: "http://localhost:5555/api",
+        target: "https://progress-reports-app.onrender.com/api",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
