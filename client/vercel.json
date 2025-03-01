@@ -1,9 +1,6 @@
 {
   "routes": [
-    {
-      "src": "(.*)/api",
-      "dest": "https://progress-reports-app.onrender.com/api"
-    },
+    { "src": "/api", "dest": "https://progress-reports-app.onrender.com/api" },
     { "src": "/", "dest": "/" },
     { "src": "/login", "dest": "/" },
     { "src": "/reports", "dest": "/" },
