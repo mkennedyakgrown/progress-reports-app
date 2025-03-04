@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from datetime import datetime
 from marshmallow import fields
 
-from config import app, db, api, ma
+from config import app, api, ma, get_db
 from models import User, Course, User, Student, CourseReport, StudentReport, Department, Level
 
 # @app.route("/", defaults={'path': 'index.html'})
@@ -23,12 +23,13 @@ from models import User, Course, User, Student, CourseReport, StudentReport, Dep
 class Login(Resource):
 
     def post(self):
+        db = get_db()
         json = request.get_json()
         email = json.get('email')
         user = User.query.filter(User.email == email).first()
         password = json.get('password')
         if user and user.authenticate(password) == True:
-            session['user_id'] = user.id
+            # session['user_id'] = user.id
             return user_schema.dump(user), 200
         else:
             return {'message': 'Username and password do not match'}, 401
@@ -82,6 +83,7 @@ class CourseReports(Resource):
 class CourseReportById(Resource):
     
     def patch(self, report_id):
+        db = get_db()
         report = CourseReport.query.filter(CourseReport.id == report_id).first()
         json = request.get_json()
         if json.get('report_text'):
@@ -95,6 +97,7 @@ class CourseReportById(Resource):
 class StudentReportById(Resource):
 
     def patch(self, report_id):
+        db = get_db()
         report = StudentReport.query.filter(StudentReport.id == report_id).first()
         json = request.get_json()
         if json.get('report_text'):

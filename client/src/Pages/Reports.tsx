@@ -53,7 +53,7 @@ function Reports() {
     <>
       {/* <h2>{`Welcome, ${sessionUser.first_name} ${sessionUser.last_name}!`}</h2> */}
       <h2>
-        Welcome, CS Instructors! Select your name from the dropdown menu below.
+        Welcome, CS Instructor! Select your name from the dropdown menu below.
       </h2>
       <SelectInstructor
         instructors={instructors}

@@ -1,7 +1,6 @@
 // import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import "./App.css";
-import { useEffect } from "react";
 import NavBar from "./Components/NavBar";
 
 function App() {
@@ -23,15 +22,6 @@ function App() {
   //       }
   //     });
   // }, []);
-
-  useEffect(() => {
-    console.log("Testing Fetch");
-    fetch("https://cat-fact.herokuapp.com/facts")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
-  });
 
   return (
     <>

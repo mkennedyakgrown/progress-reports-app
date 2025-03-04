@@ -5,17 +5,20 @@ function SelectInstructor({
   handleSelectInstructor,
   selectedInstructor,
 }: any) {
-  const instructorsList = instructors.map((instructor: any) => {
-    return (
-      <MenuItem
-        key={`instructor-select-${instructor.id}`}
-        id={`instructor-select-${instructor.id}`}
-        value={instructor.id}
-      >
-        {`${instructor.first_name} ${instructor.last_name}`}
-      </MenuItem>
-    );
-  });
+  const instructorsList =
+    instructors.length > 0
+      ? instructors.map((instructor: any) => {
+          return (
+            <MenuItem
+              key={`instructor-select-${instructor.id}`}
+              id={`instructor-select-${instructor.id}`}
+              value={instructor.id}
+            >
+              {`${instructor.first_name} ${instructor.last_name}`}
+            </MenuItem>
+          );
+        })
+      : [];
   return (
     <FormControl sx={{ m: 1, minWidth: 200 }}>
       <InputLabel id="select-instructor-label">Select Instructor</InputLabel>

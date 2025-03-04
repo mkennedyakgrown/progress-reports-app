@@ -1,6 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import QueuePool
+from sqlalchemy.ext.declarative import declarative_base
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_restful import Api
@@ -34,6 +37,27 @@ TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
 # construct special SQLAlchemy URL
 dbUrl = f"sqlite+{TURSO_DATABASE_URL}/?authToken={TURSO_AUTH_TOKEN}&secure=true"
 app.config["SQLALCHEMY_DATABASE_URI"] = dbUrl
+SQLALCHEMY_DATABASE_URL = dbUrl
+
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL,
+    poolclass = QueuePool,
+    pool_size=5,
+    max_overflow=10,
+    pool_timeout=30,
+    pool_recycle=1800,
+    connect_args={"check_same_thread": False},
+    echo=True
+)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 db = SQLAlchemy(app=app, metadata=metadata)
 
