@@ -1,4 +1,4 @@
-from flask import request, session, send_from_directory
+from flask import request, session
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime

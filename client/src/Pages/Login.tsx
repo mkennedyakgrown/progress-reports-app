@@ -1,23 +1,24 @@
 import { Button, Stack, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 function Login() {
   const [errors, setErrors] = useState([]);
-  const { sessionUser, setSessionUser } = useOutletContext<any>();
+  // const { sessionUser, setSessionUser } = useOutletContext<any>();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (sessionUser.id) {
-      if (sessionUser.is_admin) {
-        navigate("/reports", { replace: true });
-      } else {
-        navigate(`/reports/users/${sessionUser.id}`, { replace: true });
-      }
-    }
-  }, [sessionUser]);
+  // useEffect(() => {
+  //   console.log(sessionUser);
+  //   if (sessionUser.id) {
+  //     if (sessionUser.is_admin) {
+  //       navigate("/reports", { replace: true });
+  //     } else {
+  //       navigate(`/reports/users/${sessionUser.id}`, { replace: true });
+  //     }
+  //   }
+  // }, [sessionUser]);
 
   const formSchema = yup.object().shape({
     email: yup.string().email().required(),
@@ -43,13 +44,13 @@ function Login() {
           if (data.errors) {
             setErrors(data.errors);
           } else {
-            setSessionUser(data);
+            // setSessionUser(data);
           }
         })
         .catch((error) => console.log(error))
         .finally(() => {
           formik.resetForm();
-          // navigate("/reports", { replace: true });
+          navigate("/reports", { replace: true });
         });
     },
   });

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ReportsInstructor from "../Components/ReportsInstructor";
 import SelectInstructor from "../Components/SelectInstructor";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Reports() {
   const [instructors, setInstructors] = useState([
@@ -17,14 +17,14 @@ function Reports() {
   const [selectedInstructor, setSelectedInstructor] = useState("");
   const params = useParams();
   const navigate = useNavigate();
-  const { sessionUser } = useOutletContext<any>();
+  // const { sessionUser } = useOutletContext<any>();
 
-  useEffect(() => {
-    console.log(sessionUser);
-    if (sessionUser.id == 0) {
-      navigate("/login", { replace: true });
-    }
-  }, []);
+  // useEffect(() => {
+  //   console.log(sessionUser);
+  //   if (sessionUser.id == 0) {
+  //     navigate("/login", { replace: true });
+  //   }
+  // }, []);
 
   useEffect(() => {
     fetch("https://progress-reports-app.onrender.com/api/users")
@@ -51,14 +51,15 @@ function Reports() {
 
   return (
     <>
-      <h2>{`Welcome, ${sessionUser.first_name} ${sessionUser.last_name}!`}</h2>
-      {sessionUser.is_admin ? (
-        <SelectInstructor
-          instructors={instructors}
-          handleSelectInstructor={handleSelectInstructor}
-          selectedInstructor={selectedInstructor}
-        />
-      ) : null}
+      {/* <h2>{`Welcome, ${sessionUser.first_name} ${sessionUser.last_name}!`}</h2> */}
+      <h2>
+        Welcome, CS Instructors! Select your name from the dropdown menu below.
+      </h2>
+      <SelectInstructor
+        instructors={instructors}
+        handleSelectInstructor={handleSelectInstructor}
+        selectedInstructor={selectedInstructor}
+      />
       <ReportsInstructor {...{ currentInstructorId }} />
     </>
   );
