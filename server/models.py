@@ -5,9 +5,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy import ForeignKey
 from re import search
 
-from config import bcrypt, get_db
-
-db = get_db()
+from config import bcrypt, db
 
 class User(db.Model, SerializerMixin):
     __tablename__ =  'users'

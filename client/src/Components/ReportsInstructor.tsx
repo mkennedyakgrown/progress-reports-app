@@ -20,9 +20,10 @@ function ReportsInstructor({ currentInstructorId }: any) {
     setCourses([]);
     if (currentInstructorId != "") {
       console.log(`Fetching User ${currentInstructorId}`);
-      fetch(
-        `https://progress-reports-app.onrender.com/api/users/${currentInstructorId}/courses`
-      )
+      // fetch(
+      //   `https://progress-reports-app.onrender.com/api/users/${currentInstructorId}/courses`
+      // )
+      fetch(`http://localhost/5555/api/users/${currentInstructorId}/courses`)
         .then((response) => response.json())
         .then((coursesData) => {
           console.log(coursesData);
