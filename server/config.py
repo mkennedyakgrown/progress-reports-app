@@ -41,7 +41,7 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     'max_overflow':10,
     'pool_timeout':30,
     'pool_recycle':1800,
-    'pool_preping':True,
+    'pool_pre_ping':True,
     'connect_args':{"check_same_thread": False},
     'echo':True
 }
