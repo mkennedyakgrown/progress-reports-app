@@ -1,9 +1,18 @@
-// import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import "./App.css";
 import NavBar from "./Components/NavBar";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const storedInfo = sessionStorage.getItem("isLoggedIn");
+    if (storedInfo == "true") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   // const [sessionUser, setSessionUser] = useState({
   //   id: 0,
   //   first_name: "",
@@ -30,7 +39,7 @@ function App() {
         <NavBar />
       </header>
       {/* <Outlet context={{ sessionUser, setSessionUser }} /> */}
-      <Outlet />
+      <Outlet context={{ isLoggedIn, setIsLoggedIn }} />
     </>
   );
 }

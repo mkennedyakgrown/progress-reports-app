@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ReportsInstructor from "../Components/ReportsInstructor";
 import SelectInstructor from "../Components/SelectInstructor";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 
 function Reports() {
   const [instructors, setInstructors] = useState([
@@ -17,6 +17,7 @@ function Reports() {
   const [selectedInstructor, setSelectedInstructor] = useState("");
   const params = useParams();
   const navigate = useNavigate();
+  const { isLoggedIn } = useOutletContext<any>();
   // const { sessionUser } = useOutletContext<any>();
 
   // useEffect(() => {
@@ -25,6 +26,12 @@ function Reports() {
   //     navigate("/login", { replace: true });
   //   }
   // }, []);
+
+  useEffect(() => {
+    if (isLoggedIn != true) {
+      navigate("/login", { replace: true });
+    }
+  });
 
   useEffect(() => {
     fetch("https://progress-reports-app.onrender.com/api/users")
