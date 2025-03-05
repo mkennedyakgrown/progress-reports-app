@@ -36,14 +36,14 @@ TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
 dbUrl = f"sqlite+{TURSO_DATABASE_URL}/?authToken={TURSO_AUTH_TOKEN}&secure=true"
 app.config["SQLALCHEMY_DATABASE_URI"] = dbUrl
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-    'poolclass'=QueuePool,
-    'pool_size'=5,
-    'max_overflow'=10,
-    'pool_timeout'=30,
-    'pool_recycle'=1800,
-    'pool_preping'=True,
-    'connect_args'={"check_same_thread": False},
-    'echo'=True
+    'poolclass':QueuePool,
+    'pool_size':5,
+    'max_overflow':10,
+    'pool_timeout':30,
+    'pool_recycle':1800,
+    'pool_preping':True,
+    'connect_args':{"check_same_thread": False},
+    'echo':True
 }
 
 db = SQLAlchemy(app=app, metadata=metadata)
