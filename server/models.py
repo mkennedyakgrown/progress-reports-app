@@ -95,7 +95,7 @@ class CourseReport(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'), nullable=False)
     instructor_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    report_text = db.Column(db.Text, nullable=False)
+    report_text = db.Column(db.Text, nullable=True)
     date = db.Column(db.DateTime, nullable=False)
 
     course = db.relationship('Course', back_populates='course_reports')
@@ -109,7 +109,7 @@ class StudentReport(db.Model, SerializerMixin):
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'), nullable=False)
     instructor_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    report_text = db.Column(db.Text, nullable=False)
+    report_text = db.Column(db.Text, nullable=True)
     date = db.Column(db.DateTime, nullable=False)
 
     course = db.relationship('Course', back_populates='student_reports')
