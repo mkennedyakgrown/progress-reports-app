@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
+from sqlalchemy.pool import QueuePool
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_restful import Api
@@ -34,8 +35,16 @@ TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
 # construct special SQLAlchemy URL
 dbUrl = f"sqlite+{TURSO_DATABASE_URL}/?authToken={TURSO_AUTH_TOKEN}&secure=true"
 app.config["SQLALCHEMY_DATABASE_URI"] = dbUrl
-app.config["SQLALCHEMY_ENABLE_POOL_PRE_PING"] = True
-# app.config["SQLALCHEMY_AUTOFLUSH"] = True
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    'poolclass':QueuePool,
+    'pool_size':5,
+    'max_overflow':10,
+    'pool_timeout':30,
+    'pool_recycle':1800,
+    'pool_pre_ping':True,
+    'connect_args':{"check_same_thread": False},
+    'echo':True
+}
 
 db = SQLAlchemy(app=app, metadata=metadata)
 
