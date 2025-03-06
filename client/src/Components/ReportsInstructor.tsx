@@ -132,9 +132,7 @@ function ReportsInstructor({ currentInstructorId }: any) {
           <h2>Retrieving Classes and Preparing Reports</h2>
           <CircularProgress />
         </>
-      ) : (
-        <h2>Welcome, Admin! Select an instructor to view their reports.</h2>
-      )}
+      ) : null}
     </>
   );
 }
