@@ -86,6 +86,8 @@ class CourseReportById(Resource):
         json = request.get_json()
         if json.get('report_text'):
             report.report_text = json.get('report_text')
+            if report.report_text == "":
+                report.report_text == " "
             report.date = datetime.now()
             db.session.commit()
             return course_report_schema.dump(report), 200
@@ -99,6 +101,8 @@ class StudentReportById(Resource):
         json = request.get_json()
         if json.get('report_text'):
             report.report_text = json.get('report_text')
+            if report.report_text == "":
+                report.report_text == " "
             report.date = datetime.now()
             db.session.commit()
             return student_report_schema.dump(report), 200
