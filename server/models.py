@@ -82,7 +82,7 @@ class Student(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
-    email = db.Column(db.String(40), unique=True, nullable=False)
+    email = db.Column(db.String(40), nullable=False)
     gender = db.Column(db.String(20), nullable=False)
     birth_date = db.Column(db.Date, nullable=False)
     

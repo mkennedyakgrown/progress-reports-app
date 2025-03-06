@@ -25,7 +25,6 @@ function ReportsInstructor({ currentInstructorId }: any) {
       )
         .then((response) => response.json())
         .then((coursesData) => {
-          console.log(coursesData);
           setCourses(coursesData);
         })
         .catch((error) =>
@@ -111,8 +110,6 @@ function ReportsInstructor({ currentInstructorId }: any) {
           course.name.toLowerCase().includes(courseFilter.toLowerCase())
         )
       : [];
-
-  console.log("displayCourses: ", displayCourses);
 
   return (
     <>

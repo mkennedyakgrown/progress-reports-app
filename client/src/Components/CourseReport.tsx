@@ -20,7 +20,6 @@ function CourseReport({
   const undoStackPointer = useRef(0);
 
   useEffect(() => {
-    console.log("CourseReport useEffect");
     setReportText(report.report_text);
     setUndoStack([report.report_text]);
   }, [report]);

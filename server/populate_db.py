@@ -139,52 +139,99 @@ if __name__ == "__main__":
 
 
         # # Create and Enroll Students
-        print("Creating and Enrolling Students...")
+        # print("Creating Students...")
 
-        enrollment_df = pd.read_excel('enrollment_sources/EnrollmentDetailRpt.xlsx')
-        [rows, columns] = enrollment_df.shape
+        # enrollment_df = pd.read_excel('enrollment_sources/EnrollmentDetailRpt.xlsx')
+        # [rows, columns] = enrollment_df.shape
 
-        students = {}
+        # students = {}
 
-        for row in range(rows):
-            row_list = enrollment_df.loc[row]
-            first_name = row_list["Student First Name"]
-            last_name = row_list["Student\nLast Name"]
-            name = f'{first_name} {last_name}'
-            gender = row_list["Gender"]
-            birthdate = row_list["Birthdate"]
+        # for row in range(rows):
+        #     row_list = enrollment_df.loc[row]
+        #     first_name = row_list["Student First Name"]
+        #     last_name = row_list["Student\nLast Name"]
+        #     name = f'{first_name} {last_name}'
+        #     gender = row_list["Gender"]
+        #     birthdate = row_list["Birthdate"]
 
-            course_name = row_list["Class Name"]
+        #     course_name = row_list["Class Name"]
 
-            if name not in students:
+        #     if name not in students:
 
-                student = Student(
-                    first_name=first_name,
-                    last_name=last_name,
-                    email="placeholder@email.com",
-                    gender=gender,
-                    birth_date=datetime.strptime(birthdate, "%m/%d/%Y")
-                )
+        #         student = Student(
+        #             first_name=first_name,
+        #             last_name=last_name,
+        #             email=f'{first_name}{last_name}placeholder@email.com',
+        #             gender=gender,
+        #             birth_date=datetime.strptime(birthdate, "%m/%d/%Y")
+        #         )
 
-                db.session.add(student)
+        #         db.session.add(student)
 
-                students[name] = student
+        #         students[name] = student
 
-                print(student.birth_date)
+        #         print(student.birth_date)
 
-        db.session.commit()
+        # db.session.commit()
         
-        print("Completed Creating Students")
+        # print("Completed Creating Students")
         
+        # Enroll Students
+        # print("Enrolling Students")
+
+        # enrollment_df = pd.read_excel('enrollment_sources/EnrollmentDetailRpt.xlsx')
+        # [rows, columns] = enrollment_df.shape
+
+        # courses = Course.query.all()
+        # students = Student.query.all()
+
+        # for row in range(rows):
+        #     row_list = enrollment_df.loc[row]
+        #     curr_course = [course for course in courses if course.name == row_list["Class Name"]][0]
+        #     student = [student for student in students if student.first_name == row_list["Student First Name"] and student.last_name == row_list["Student\nLast Name"]][0]
+
+        #     student.courses.append(curr_course)
+
+        # db.session.commit()
+
 
         
-        # # Create Course Reports
+        # Create Course Reports
         # print("Creating Course Reports...")
 
+        # courses = Course.query.all()
 
-        # # Create Student Reports
-        # print("Creating Student Reports...")
+        # for course in courses:
+        #     for instructor in course.instructors:
+        #         report = CourseReport(
+        #             course_id=course.id,
+        #             instructor_id=instructor.id,
+        #             report_text=" ",
+        #             date=datetime.now()
+        #         )
+        #         db.session.add(report)
 
+        # db.session.commit()
+
+
+        # Create Student Reports
+        print("Creating Student Reports...")
+
+        courses = Course.query.all()
+
+        for course in courses:
+            for instructor in course.instructors:
+                for student in course.students:
+                    report = StudentReport(
+                        student_id=student.id,
+                        course_id=course.id,
+                        instructor_id=instructor.id,
+                        report_text=" ",
+                        date=datetime.now()
+                    )
+                    db.session.add(report)
+
+        db.session.commit()
 
 
         # print("Database Successfully Populated")

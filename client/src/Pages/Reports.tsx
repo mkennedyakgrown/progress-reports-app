@@ -40,7 +40,6 @@ function Reports() {
     fetch("https://progress-reports-app.onrender.com/api/users")
       .then((response) => response.json())
       .then((instructorsData) => {
-        console.log(instructorsData);
         setInstructors(instructorsData);
       });
   }, []);
@@ -53,7 +52,6 @@ function Reports() {
   }, [params]);
 
   function handleSelectInstructor(event: any) {
-    console.log(event.target.value);
     setSelectedInstructor(event.target.value);
     console.log(`Navigating to /reports/users/${event.target.value}`);
     navigate(`/reports/users/${event.target.value}`);
