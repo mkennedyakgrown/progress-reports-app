@@ -83,6 +83,7 @@ class Student(db.Model, SerializerMixin):
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(40), unique=True, nullable=False)
+    gender = db.Column(db.String(20), nullable=False)
     birth_date = db.Column(db.Date, nullable=False)
     
     courses = db.relationship('Course', secondary='students_courses', back_populates='students')
