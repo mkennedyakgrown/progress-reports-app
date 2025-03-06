@@ -53,6 +53,10 @@ function ReportsInstructor({ currentInstructorId }: any) {
     if (currentReportText.length > 3000) {
       alert("Your report is too long!");
     } else {
+      let reportText = currentReportText;
+      if (reportText.length == 0) {
+        reportText = " ";
+      }
       fetch(
         `https://progress-reports-app.onrender.com/api/${reportType}-reports/${report.id}`,
         {
@@ -61,7 +65,7 @@ function ReportsInstructor({ currentInstructorId }: any) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            report_text: currentReportText,
+            report_text: reportText,
           }),
         }
       )
