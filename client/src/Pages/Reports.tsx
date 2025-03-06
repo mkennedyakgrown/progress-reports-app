@@ -73,7 +73,7 @@ function Reports() {
       <h2>
         Welcome, CS Instructor! Select your name from the dropdown menu below.
       </h2>
-      {instructors.length > 0 ? (
+      {instructors.length > 1 ? (
         <SelectInstructor
           instructors={instructors}
           handleSelectInstructor={handleSelectInstructor}
