@@ -74,26 +74,28 @@ function Reports() {
         Welcome, CS Instructor! Select your name from the dropdown menu below.
       </h2>
       {instructors.length > 1 ? (
-        <SelectInstructor
-          instructors={instructors}
-          handleSelectInstructor={handleSelectInstructor}
-          selectedInstructor={selectedInstructor}
-        />
+        <>
+          <SelectInstructor
+            instructors={instructors}
+            handleSelectInstructor={handleSelectInstructor}
+            selectedInstructor={selectedInstructor}
+          />
+          {saveIsActive ? (
+            <div>
+              <p>Saving...</p>
+              <CircularProgress />
+            </div>
+          ) : (
+            <Button variant="contained" onClick={handleSaveClick}>
+              Save
+            </Button>
+          )}
+        </>
       ) : (
         <div>
           <h3>Retrieving Instructors...</h3>
           <LinearProgress color="success" />
         </div>
-      )}
-      {saveIsActive ? (
-        <div>
-          <p>Saving...</p>
-          <CircularProgress />
-        </div>
-      ) : (
-        <Button variant="contained" onClick={handleSaveClick}>
-          Save
-        </Button>
       )}
       <ReportsInstructor {...{ currentInstructorId }} />
     </>
