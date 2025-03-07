@@ -16,7 +16,8 @@ function StudentReport({ report, handleTextChange }: any) {
       report,
       setReportText,
       current,
-      handleUndoRedo
+      handleUndoRedo,
+      "student"
     );
   }
 
