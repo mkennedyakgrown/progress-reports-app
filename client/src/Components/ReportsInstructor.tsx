@@ -81,7 +81,8 @@ function ReportsInstructor({ currentInstructorId }: any) {
     report: any,
     setReportText: any,
     current: any,
-    handleUndoRedo: any
+    handleUndoRedo: any,
+    reportType : "course" | "student"
   ) {
     if (currentReportText.length > 3000) {
       alert("Your report is too long!");
@@ -99,7 +100,7 @@ function ReportsInstructor({ currentInstructorId }: any) {
 
         handleUndoRedo(currentReportText);
 
-        handleUpdateRequest(currentReportText, report, "course");
+        handleUpdateRequest(currentReportText, report, reportType);
       }, 5000);
     }
   }
