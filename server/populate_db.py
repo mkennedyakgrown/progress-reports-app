@@ -215,23 +215,27 @@ if __name__ == "__main__":
 
 
         # Create Student Reports
-        print("Creating Student Reports...")
+        # print("Creating Student Reports...")
 
-        courses = Course.query.all()
+        # courses = Course.query.all()
 
-        for course in courses:
-            for instructor in course.instructors:
-                for student in course.students:
-                    report = StudentReport(
-                        student_id=student.id,
-                        course_id=course.id,
-                        instructor_id=instructor.id,
-                        report_text=" ",
-                        date=datetime.now()
-                    )
-                    db.session.add(report)
+        # for course in courses:
+        #     for instructor in course.instructors:
+        #         for student in course.students:
+        #             report = StudentReport(
+        #                 student_id=student.id,
+        #                 course_id=course.id,
+        #                 instructor_id=instructor.id,
+        #                 report_text=" ",
+        #                 date=datetime.now()
+        #             )
+        #             db.session.add(report)
 
-        db.session.commit()
+        # db.session.commit()
+
+        # Assign One-offs
+        student = Student.query(id=158).first()
+        print(student.first_name)
 
 
-        # print("Database Successfully Populated")
+        print("Database Successfully Populated")

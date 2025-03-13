@@ -30,7 +30,8 @@ function CourseReport({
       report,
       setReportText,
       current,
-      handleUndoRedo
+      handleUndoRedo,
+      "course"
     );
   }
 
