@@ -22,6 +22,10 @@ from models import User, Course, User, Student, CourseReport, StudentReport, Dep
 
 class Login(Resource):
 
+    def head(self):
+        json = request.get_json()
+        return {'json': json}, 200
+
     def post(self):
         json = request.get_json()
         email = json.get('email')
