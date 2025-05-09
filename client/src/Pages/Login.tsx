@@ -21,7 +21,7 @@ function Login() {
     onSubmit: (values) => {
       if (values.password == "CenterStage001") {
         setIsLoggedIn(true);
-        sessionStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("isLoggedIn", "true");
         navigate("/reports", { replace: true });
       } else {
         setErrors("Password does not match.");
@@ -32,6 +32,13 @@ function Login() {
   useEffect(() => {
     if (isLoggedIn == true) {
       navigate("/reports", { replace: true });
+    } else if (
+      localStorage.getItem("isLoggedIn") == "true" &&
+      isLoggedIn == false
+    ) {
+      setIsLoggedIn(true);
+    } else {
+      navigate("/login", { replace: true });
     }
   }, [isLoggedIn]);
 

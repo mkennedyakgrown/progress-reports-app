@@ -1,6 +1,7 @@
 from config import app, db
-from models import User, Course, Student, CourseReport, StudentReport, Department, Level, Users_Courses, Students_Courses
+from models import User, Course, Student, CourseReport, StudentReport, Department, Level, Users_Courses, Students_Courses, Placement
 from datetime import datetime
+import os
 import pandas as pd
 
 if __name__ == "__main__":
@@ -135,6 +136,39 @@ if __name__ == "__main__":
 
 #         db.session.commit()
 
+
+        # def populate_placements():
+        #     sheet = pd.read_excel('Placements.xlsx')
+        #     columns = list(sheet)
+        #     classes_dict = {}
+        #     students_dict = {}
+
+        #     students = Student.query.all()
+        #     for student in students:
+        #         full_name = f'{student.first_name} {student.last_name}'
+        #         students_dict[full_name] = student.id
+
+        #     for i in columns:
+        #         column = sheet[i]
+        #         class_name = column[0]
+        #         classes_dict[class_name] = []
+        #         for j in range(1, len(sheet[i])):
+        #             if type(sheet[i][j]) is str:
+        #                 if sheet[i][j][0] is "\n":
+        #                     classes_dict[class_name].append(sheet[i][j][1:])
+        #                 else:
+        #                     classes_dict[class_name].append(sheet[i][j])
+
+        #     for class_name in classes_dict:
+        #         for student in classes_dict[class_name]:
+        #             if student not in students_dict:
+        #                 pass
+        #             else:
+        #                 student_id = students_dict[student]
+        #                 new_placement = Placement(student_id=student_id, course_name=class_name)
+        #                 db.session.add(new_placement)
+
+        #     db.session.commit()
             
 
 
@@ -233,9 +267,88 @@ if __name__ == "__main__":
 
         # db.session.commit()
 
-        # Assign One-offs
-        student = Student.query(id=158).first()
-        print(student.first_name)
+        students = Student.query.all()
+        for student in students:
+            courses = [course.name for course in student.courses]
+            course_names = [course.name for course in student.courses]
+            course_levels = [course.level.name for course in student.courses]
+            course_departments = [course.department.name for course in student.courses]
+            student_age = datetime.now().year - student.birth_date.year
+
+            placements = []
+
+            if "1" in course_levels or "2" in course_levels:
+                if "Hip Hop" not in course_departments:
+                    placements.append("Preschool Hip Hop")
+
+            if "3" in course_levels and student_age < 8 or "K-2nd" in course_levels:
+                if "Hip Hop" not in course_departments:
+                    placements.append("Hip Hop K-2nd")
+
+            if "Elementary" in course_levels and student_age < 12:
+                if "Ballet/Tap" not in course_departments:
+                    placements.append("Elementary Ballet/Tap")
+                if "Jazz/Lyrical" not in course_departments:
+                    placements.append("Elementary Jazz/Lyrical")
+                if "Hip Hop" not in course_departments:
+                    placements.append("Elementary Hip Hop")
+                if "Hammock" not in course_departments:
+                    placements.append("Elementary Intro to Hammock")
+                if "Lyra" not in course_departments:
+                    placements.append("Elementary Intro to Lyra")
+                if "Silk" not in course_departments:
+                    placements.append("Elementary Intro to Long Silks")
+                if "Elementary Broadway Dance" not in course_names:
+                    placements.append("Elementary Broadway Dance")
+                if "Clog" not in course_departments:
+                    placements.append("Elementary Clog")
+                if "Elementary Acting and Improvisation" not in course_names:
+                    placements.append("Elementary Acting and Improvisation")
+
+            if "4" in course_levels:
+                if "Ballet" not in course_departments:
+                    placements.append("Ballet 4")
+                if "Tap" not in course_departments:
+                    placements.append("Tap 4")
+                if "Jazz/Lyrical" not in course_departments:
+                    placements.append("Jazz/Lyrical 4")
+                if "Hip Hop" not in course_departments:
+                    placements.append("Hip Hop 4")
+
+            if "Middle/High School" in course_levels or "Middle/High School" in course_levels and student_age >= 12 or student_age >= 12:
+                if "Ballet" not in course_departments:
+                    placements.append("Middle/High School Ballet")
+                if "Tap" not in course_departments:
+                    placements.append("Middle/High School Tap")
+                if "Jazz/Lyrical" not in course_departments:
+                    placements.append("Middle/High School Jazz/Lyrical")
+                if "Hip Hop" not in course_departments:
+                    placements.append("Middle/High School Hip Hop")
+                if "Hammock" not in course_departments:
+                    placements.append("Middle/High School Intro to Hammock")
+                if "Lyra" not in course_departments:
+                    placements.append("Middle/High School Intro to Lyra")
+                if "Silk" not in course_departments:
+                    placements.append("Middle/High School Intro to Long Silks")
+                if "Broadway Dance" not in course_names and "Broadway Dance 1" not in course_names:
+                    placements.append("Middle/High School Broadway Dance")
+                if "Clog" not in course_departments:
+                    placements.append("Beginning Clog")
+                if "Middle/High School Acting and Improvisation Sec. 1" not in course_names and "Middle/High School Acting and Improvisation Sec. 2" not in course_names:
+                    placements.append("Middle/High School Acting and Improvisation")
+                if "Flexibility/Leaps, Turns, & Tricks Sec. 1" not in course_names and "Flexibility/Leaps, Turns, & Tricks Sec. 2" not in course_names:
+                    placements.append("Flexibility/Leaps, Turns, & Tricks")
+                if "Ballet" not in course_departments and student.gender == "Male":
+                    placements.append("Men's Ballet")
+                if "Dancing in Heels"
+                
+
+            if student_age >= 12:
+
+            
+            
+            
 
 
-        print("Database Successfully Populated")
+
+        # print("Database Successfully Populated")

@@ -5,7 +5,7 @@ from datetime import datetime
 from marshmallow import fields
 
 from config import app, db, api, ma
-from models import User, Course, User, Student, CourseReport, StudentReport, Department, Level
+from models import User, Course, User, Student, CourseReport, StudentReport, Department, Level, Placement
 
 # @app.route("/", defaults={'path': 'index.html'})
 # @app.route("/<path:path>")
@@ -62,6 +62,24 @@ class Users(Resource):
         users = User.query.all()
         return users_schema.dump(users), 200
     
+class UsersStatus(Resource):
+
+    def get(self):
+        users = User.query.all()
+        statuses = []
+
+        for user in users:
+            empty_student_reports = StudentReport.query.filter_by(instructor_id=user.id, report_text=" ").all()
+            empty_course_reports = CourseReport.query.filter_by(instructor_id=user.id, report_text=" ").all()
+            
+            statuses.append({
+                "name":f'{user.first_name} {user.last_name}',
+                "remaining-reports":len(empty_course_reports) + len(empty_student_reports),
+                "id": user.id
+            })
+
+        return statuses, 200
+    
 class CoursesByInstructor(Resource):
 
     def get(self, user_id):
@@ -113,15 +131,37 @@ class StudentReportById(Resource):
         else:
             return {'message': 'Student Report did not save'}, 401
         
-        
+class Students(Resource):
+
+    def get(self):
+        students = Student.query.all()
+        return student_names_schema.dump(students), 200
+
+class StudentById(Resource):
+
+    def get(self, student_id):
+        student = Student.query.filter(Student.id == student_id).first()
+        return student_schema.dump(student), 200
+    
+class StudentEmailById(Resource):
+
+    def get(self, student_id):
+        student = Student.query.filter(Student.id == student_id).first()
+        student_object = student_schema.dump(student)
+
+        return student_schema.dump(student), 200
         
 api.add_resource(Users, '/api/users')
+api.add_resource(UsersStatus, '/api/users/status')
 api.add_resource(CoursesByInstructor, '/api/users/<int:user_id>/courses')
 api.add_resource(CourseReportById, '/api/course-reports/<int:report_id>')
 api.add_resource(StudentReportById, '/api/student-reports/<int:report_id>')
 api.add_resource(Login, '/api/login')
 api.add_resource(Logout, '/api/logout')
 api.add_resource(CheckSession, '/api/check-session')
+api.add_resource(Students, '/api/students')
+api.add_resource(StudentById, '/api/students/<int:student_id>')
+api.add_resource(StudentEmailById, '/api/students/email/<int:student_id>')
 
 class UserSchema(ma.SQLAlchemySchema):
 
@@ -134,6 +174,8 @@ class UserSchema(ma.SQLAlchemySchema):
     last_name = ma.auto_field()
     email = ma.auto_field()
     is_admin = ma.auto_field()
+    signature = ma.auto_field()
+
     courses = fields.Nested('CourseSchema', only=['id', 'name'], many=True)
     # student_reports = fields.Nested('StudentReportSchema', only=['id', 'student', 'course', 'report_text', 'date'], many=True)
 
@@ -166,12 +208,16 @@ class StudentSchema(ma.SQLAlchemySchema):
     last_name = ma.auto_field()
     email = ma.auto_field()
     birth_date = ma.auto_field()
+    email_text = ma.auto_field()
+    email_approved = ma.auto_field()
 
+    placements = fields.Nested('PlacementSchema', many=True)
     courses = fields.Nested('CourseSchema', only=['name', 'id'], many=True)
     student_reports = fields.Nested('StudentReportSchema', only=[
         'id',
         'student_id',
         'course_id',
+        'course',
         'instructor_id',
         'report_text',
         'date'
@@ -179,6 +225,20 @@ class StudentSchema(ma.SQLAlchemySchema):
     
 student_schema = StudentSchema()
 students_schema = StudentSchema(many=True)
+
+class StudentNameSchema(ma.SQLAlchemySchema):
+
+    class Meta:
+        model = Student
+        load_instance = True
+
+    id = ma.auto_field()
+    first_name = ma.auto_field()
+    last_name = ma.auto_field()
+    email_approved = ma.auto_field()
+
+student_name_schema = StudentNameSchema()
+student_names_schema = StudentNameSchema(many=True)
 
 class CourseReportSchema(ma.SQLAlchemySchema):
 
@@ -193,7 +253,7 @@ class CourseReportSchema(ma.SQLAlchemySchema):
     date = ma.auto_field()
 
     course = fields.Nested('CourseSchema', only=['name'])
-    instructor = fields.Nested('UserSchema', only=['first_name', 'last_name'])
+    instructor = fields.Nested('UserSchema', only=['first_name', 'last_name', 'signature'])
 
 course_report_schema = CourseReportSchema()
 course_reports_schema = CourseReportSchema(many=True)
@@ -211,12 +271,27 @@ class StudentReportSchema(ma.SQLAlchemySchema):
     report_text = ma.auto_field()
     date = ma.auto_field()
 
-    course = fields.Nested('CourseSchema', only=['name'], many=False)
+    course = fields.Nested('CourseSchema', only=['name', 'course_reports'], many=False)
     student = fields.Nested('StudentSchema', only=['first_name', 'last_name'], many=False)
     instructor = fields.Nested('UserSchema', only=['first_name', 'last_name'], many=False)
 
 student_report_schema = StudentReportSchema()
 student_reports_schema = StudentReportSchema(many=True)
+
+class PlacementSchema(ma.SQLAlchemySchema):
+
+    class Meta:
+        model = Placement
+        load_instance = True
+
+    id = ma.auto_field()
+    student_id = ma.auto_field()
+    course_name = ma.auto_field()
+
+    student = fields.Nested('StudentSchema', only=['first_name', 'last_name'], many=False)
+
+placement_schema = PlacementSchema()
+placements_schema = PlacementSchema(many=True)
 
 
 if __name__ == "__main__":

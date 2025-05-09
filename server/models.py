@@ -16,6 +16,7 @@ class User(db.Model, SerializerMixin):
     email = db.Column(db.String(40), unique=True, nullable=False)
     _password_hash = db.Column(db.String(60), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
+    signature = db.Column(db.String(30), nullable=True)
 
     courses = db.relationship('Course', secondary='users_courses', back_populates='instructors')
     student_reports = db.relationship('StudentReport', back_populates='instructor')
@@ -42,6 +43,7 @@ class User(db.Model, SerializerMixin):
     def __repr__(self):
         return f'<User {self.first_name} {self.last_name}>'
     
+
 class Course(db.Model, SerializerMixin):
     __tablename__ = 'courses'
 
@@ -82,12 +84,25 @@ class Student(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
-    email = db.Column(db.String(40), nullable=False)
+    email = db.Column(db.String(40), nullable=False, unique=True)
     gender = db.Column(db.String(20), nullable=False)
     birth_date = db.Column(db.Date, nullable=False)
+    email_text = db.Column(db.Text, nullable=True)
+    email_approved = db.Column(db.Boolean, default=False)
     
     courses = db.relationship('Course', secondary='students_courses', back_populates='students')
     student_reports = db.relationship('StudentReport', back_populates='student', cascade='all, delete-orphan')
+    placements = db.relationship('Placement', back_populates='student', cascade='all, delete-orphan')
+
+
+class Placement(db.Model, SerializerMixin):
+    __tablename__ = 'placements'
+
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    course_name = db.Column(db.String(50), nullable=False)
+
+    student = db.relationship('Student', back_populates='placements')
 
 
 class CourseReport(db.Model, SerializerMixin):
@@ -117,6 +132,7 @@ class StudentReport(db.Model, SerializerMixin):
     student = db.relationship('Student', back_populates='student_reports')
     instructor = db.relationship('User', back_populates='student_reports')
 
+
 class Users_Courses(db.Model, SerializerMixin):
     __tablename__ = 'users_courses'
 
@@ -124,6 +140,7 @@ class Users_Courses(db.Model, SerializerMixin):
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'), primary_key=True, nullable=False)
 
     __table_args__ = (db.UniqueConstraint('user_id', 'course_id'),)
+
 
 class Students_Courses(db.Model, SerializerMixin):
     __tablename__ = 'students_courses'
