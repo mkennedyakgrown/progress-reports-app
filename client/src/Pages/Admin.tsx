@@ -14,12 +14,12 @@ function Admin() {
   );
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5555/api/users/status`)
+    fetch(`http://progress-reports-app.onrender.com/api/users/status`)
       .then((res) => res.json())
       .then((data) => {
         setInstructorsStatus(data);
       });
-    fetch(`http://127.0.0.1:5555/api/students`)
+    fetch(`http://progress-reports-app.onrender.com/api/students`)
       .then((res) => res.json())
       .then((data) => {
         setStudents(data);

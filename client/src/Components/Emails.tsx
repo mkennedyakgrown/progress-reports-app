@@ -8,7 +8,9 @@ function Emails({ selectedStudent }: any) {
   const [student, setStudent] = useState({});
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5555/api/students/email/${selectedStudent}`)
+    fetch(
+      `http://progress-reports-app.onrender.com/api/students/email/${selectedStudent}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setStudent(data);

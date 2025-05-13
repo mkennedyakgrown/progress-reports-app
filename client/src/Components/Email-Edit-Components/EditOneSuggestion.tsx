@@ -9,15 +9,18 @@ function EditOneSuggestion({ suggestion, student, setStudent }: any) {
   }, [suggestion]);
 
   function handleSave(suggestion: any) {
-    fetch(`http://127.0.0.1:5555/api/suggestions/${suggestion.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        course_name: suggestionText,
-      }),
-    })
+    fetch(
+      `http://progress-reports-app.onrender.com/api/suggestions/${suggestion.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          course_name: suggestionText,
+        }),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         const suggestions = student.suggestions.map((p: any) => {

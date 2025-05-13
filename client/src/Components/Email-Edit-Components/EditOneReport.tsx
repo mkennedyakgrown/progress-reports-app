@@ -9,15 +9,18 @@ function EditOneReport({ report, student, setStudent }: any) {
   }, [report]);
 
   function handleSave(report: any) {
-    fetch(`http://127.0.0.1:5555/api/student-reports/${report.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        report_text: reportText,
-      }),
-    })
+    fetch(
+      `http://progress-reports-app.onrender.com/api/student-reports/${report.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          report_text: reportText,
+        }),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         const reports = student.student_reports.map((p: any) => {

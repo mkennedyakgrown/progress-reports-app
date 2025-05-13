@@ -151,13 +151,16 @@ function RenderEmail({ student, setStudent }: any) {
   `;
 
   function handleApproveEmail() {
-    fetch("http://127.0.0.1:5555/api/students/" + student.id, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email_approved: true }),
-    })
+    fetch(
+      "http://progress-reports-app.onrender.com/api/students/" + student.id,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email_approved: true }),
+      }
+    )
       .then((res) => res.json())
       .then(() => {
         setStudent({ ...student, email_approved: true });
