@@ -87,12 +87,6 @@ function RenderEmail({ student, setStudent }: any) {
     </p>
   `;
 
-  const copyHeaderText = `<p style="font-family: Times; font-size: medium; text-align: center;">
-      <span style="font-family: 'book antiqua', palatino;">
-        <span style="font-size: 16px;">Below is a list of classes for the 2025|2026 season that ${student.first_name} ${student.last_name} is eligible to register for:</span>
-      </span>
-    </p>`;
-
   const suggestionsHeaderText = `
   <br />
     <p style="font-family: Times; font-size: medium;">
