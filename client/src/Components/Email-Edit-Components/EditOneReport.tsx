@@ -30,7 +30,7 @@ function EditOneReport({ report, student, setStudent }: any) {
             return p;
           }
         });
-        setStudent({ ...student, reports: reports });
+        setStudent({ ...student, student_reports: reports });
       });
   }
 
