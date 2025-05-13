@@ -15,10 +15,14 @@ function Emails({ selectedStudent }: any) {
       });
   }, [selectedStudent]);
 
+  const studentName = student.first_name
+    ? student.first_name + " " + student.last_name
+    : "";
+
   console.log(student);
   return (
     <>
-      <h2>Emails</h2>
+      <h2>{studentName}'s Emails</h2>
       <RenderEmail {...{ student, setStudent }} />
       <EditPlacements {...{ student, setStudent }} />
       <EditSuggestions {...{ student, setStudent }} />
