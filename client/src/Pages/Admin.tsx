@@ -4,11 +4,13 @@ import Grid from "@mui/material/Grid2";
 import InstructorsStatus from "../Components/InstructorsStatus";
 import Emails from "../Components/Emails";
 import StudentEmailsList from "../Components/StudentEmailsList";
+import ReportsInstructor from "../Components/ReportsInstructor";
 
 function Admin() {
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(-1);
   const [instructorsStatus, setInstructorsStatus] = useState([]);
+  const [selectedInstructor, setSelectedInstructor] = useState(-1);
   const [leftSelectedOption, setLeftSelectedOption] = useState(
     "Instructor Reports Status"
   );
@@ -50,7 +52,13 @@ function Admin() {
               })}
             </Select>
             {leftSelectedOption === "Instructor Reports Status" ? (
-              <InstructorsStatus {...{ instructorsStatus }} />
+              <InstructorsStatus
+                {...{
+                  instructorsStatus,
+                  selectedInstructor,
+                  setSelectedInstructor,
+                }}
+              />
             ) : (
               <StudentEmailsList
                 {...{ students, selectedStudent, setSelectedStudent }}
@@ -58,7 +66,13 @@ function Admin() {
             )}
           </Grid>
           <Grid size={9}>
-            {leftSelectedOption === "Instructor Reports Status" ? null : (
+            {leftSelectedOption === "Instructor Reports Status" ? (
+              selectedInstructor > -1 && (
+                <ReportsInstructor
+                  {...{ currentInstructorId: selectedInstructor }}
+                />
+              )
+            ) : (
               <Emails {...{ selectedStudent }} />
             )}
           </Grid>
