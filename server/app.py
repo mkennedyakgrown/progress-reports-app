@@ -5,7 +5,7 @@ from datetime import datetime
 from marshmallow import fields
 
 from config import app, db, api, ma
-from models import User, Course, User, Student, CourseReport, StudentReport, Department, Level, Placement
+from models import User, Course, User, Student, CourseReport, StudentReport, Department, Level, Placement, Suggestion
 
 # @app.route("/", defaults={'path': 'index.html'})
 # @app.route("/<path:path>")
@@ -143,6 +143,27 @@ class StudentById(Resource):
         student = Student.query.filter(Student.id == student_id).first()
         return student_schema.dump(student), 200
     
+    def patch(self, student_id):
+        student = Student.query.filter(Student.id == student_id).first()
+        json = request.get_json()
+        if json.get('first_name'):
+            student.first_name = json.get('first_name')
+        if json.get('last_name'):
+            student.last_name = json.get('last_name')
+        if json.get('email'):
+            student.email = json.get('email')
+        if json.get('birth_date'):
+            student.phone = json.get('birth_date')
+        if json.get('gender'):
+            student.gender = json.get('gender')
+        if json.get('email_text'):
+            student.email_text = json.get('email_text')
+        if json.get('email_approved'):
+            student.email_approved = json.get('email_approved')
+
+        db.session.commit()
+        return student_schema.dump(student), 200
+    
 class StudentEmailById(Resource):
 
     def get(self, student_id):
@@ -150,6 +171,34 @@ class StudentEmailById(Resource):
         student_object = student_schema.dump(student)
 
         return student_schema.dump(student), 200
+    
+class PlacementById(Resource):
+
+    def get(self, placement_id):
+        placement = Placement.query.filter(Placement.id == placement_id).first()
+        return placement_schema.dump(placement), 200
+    
+    def patch(self, placement_id):
+        placement = Placement.query.filter(Placement.id == placement_id).first()
+        json = request.get_json()
+        if json.get('course_name'):
+            placement.course_name = json.get('course_name')
+        db.session.commit()
+        return placement_schema.dump(placement), 200
+    
+class SuggestionById(Resource):
+
+    def get(self, suggestion_id):
+        suggestion = Suggestion.query.filter(Suggestion.id == suggestion_id).first()
+        return suggestion_schema.dump(suggestion), 200
+    
+    def patch(self, suggestion_id):
+        suggestion = Suggestion.query.filter(Suggestion.id == suggestion_id).first()
+        json = request.get_json()
+        if json.get('course_name'):
+            suggestion.course_name = json.get('course_name')
+        db.session.commit()
+        return suggestion_schema.dump(suggestion), 200
         
 api.add_resource(Users, '/api/users')
 api.add_resource(UsersStatus, '/api/users/status')
@@ -162,6 +211,8 @@ api.add_resource(CheckSession, '/api/check-session')
 api.add_resource(Students, '/api/students')
 api.add_resource(StudentById, '/api/students/<int:student_id>')
 api.add_resource(StudentEmailById, '/api/students/email/<int:student_id>')
+api.add_resource(PlacementById, '/api/placements/<int:placement_id>')
+api.add_resource(SuggestionById, '/api/suggestions/<int:suggestion_id>')
 
 class UserSchema(ma.SQLAlchemySchema):
 
@@ -212,6 +263,7 @@ class StudentSchema(ma.SQLAlchemySchema):
     email_approved = ma.auto_field()
 
     placements = fields.Nested('PlacementSchema', many=True)
+    suggestions = fields.Nested('SuggestionSchema', many=True)
     courses = fields.Nested('CourseSchema', only=['name', 'id'], many=True)
     student_reports = fields.Nested('StudentReportSchema', only=[
         'id',
@@ -219,6 +271,7 @@ class StudentSchema(ma.SQLAlchemySchema):
         'course_id',
         'course',
         'instructor_id',
+        'instructor',
         'report_text',
         'date'
         ], many=True)
@@ -273,7 +326,7 @@ class StudentReportSchema(ma.SQLAlchemySchema):
 
     course = fields.Nested('CourseSchema', only=['name', 'course_reports'], many=False)
     student = fields.Nested('StudentSchema', only=['first_name', 'last_name'], many=False)
-    instructor = fields.Nested('UserSchema', only=['first_name', 'last_name'], many=False)
+    instructor = fields.Nested('UserSchema', only=['first_name', 'last_name', 'signature'], many=False)
 
 student_report_schema = StudentReportSchema()
 student_reports_schema = StudentReportSchema(many=True)
@@ -292,6 +345,21 @@ class PlacementSchema(ma.SQLAlchemySchema):
 
 placement_schema = PlacementSchema()
 placements_schema = PlacementSchema(many=True)
+
+class SuggestionSchema(ma.SQLAlchemySchema):
+
+    class Meta:
+        model = Suggestion
+        load_instance = True
+
+    id = ma.auto_field()
+    student_id = ma.auto_field()
+    course_name = ma.auto_field()
+
+    student = fields.Nested('StudentSchema', only=['first_name', 'last_name'], many=False)
+
+suggestion_schema = SuggestionSchema()
+suggestions_schema = SuggestionSchema(many=True)
 
 
 if __name__ == "__main__":

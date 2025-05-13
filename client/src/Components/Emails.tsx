@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import RenderEmail from "./RenderEmail";
-import ReportsStudent from "./ReportsStudent";
+import EditPlacements from "./Email-Edit-Components/EditPlacements";
+import EditSuggestions from "./Email-Edit-Components/EditSuggestions";
+import EditReports from "./Email-Edit-Components/EditReports";
 
 function Emails({ selectedStudent }: any) {
   const [student, setStudent] = useState({});
@@ -17,8 +19,10 @@ function Emails({ selectedStudent }: any) {
   return (
     <>
       <h2>Emails</h2>
-      <RenderEmail {...{ student }} />
-      <ReportsStudent {...{ student, setStudent }} />
+      <RenderEmail {...{ student, setStudent }} />
+      <EditPlacements {...{ student, setStudent }} />
+      <EditSuggestions {...{ student, setStudent }} />
+      <EditReports {...{ student, setStudent }} />
     </>
   );
 }

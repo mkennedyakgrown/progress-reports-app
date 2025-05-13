@@ -93,6 +93,7 @@ class Student(db.Model, SerializerMixin):
     courses = db.relationship('Course', secondary='students_courses', back_populates='students')
     student_reports = db.relationship('StudentReport', back_populates='student', cascade='all, delete-orphan')
     placements = db.relationship('Placement', back_populates='student', cascade='all, delete-orphan')
+    suggestions = db.relationship('Suggestion', back_populates='student', cascade='all, delete-orphan')
 
 
 class Placement(db.Model, SerializerMixin):
@@ -103,6 +104,16 @@ class Placement(db.Model, SerializerMixin):
     course_name = db.Column(db.String(50), nullable=False)
 
     student = db.relationship('Student', back_populates='placements')
+
+
+class Suggestion(db.Model, SerializerMixin):
+    __tablename__ = 'suggestions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    course_name = db.Column(db.String(100), nullable=False)
+
+    student = db.relationship('Student', back_populates='suggestions')
 
 
 class CourseReport(db.Model, SerializerMixin):

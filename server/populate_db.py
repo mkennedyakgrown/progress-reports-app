@@ -1,5 +1,5 @@
 from config import app, db
-from models import User, Course, Student, CourseReport, StudentReport, Department, Level, Users_Courses, Students_Courses, Placement
+from models import User, Course, Student, CourseReport, StudentReport, Department, Level, Users_Courses, Students_Courses, Placement, Suggestion
 from datetime import datetime
 import os
 import pandas as pd
@@ -267,85 +267,93 @@ if __name__ == "__main__":
 
         # db.session.commit()
 
-        students = Student.query.all()
-        for student in students:
-            courses = [course.name for course in student.courses]
-            course_names = [course.name for course in student.courses]
-            course_levels = [course.level.name for course in student.courses]
-            course_departments = [course.department.name for course in student.courses]
-            student_age = datetime.now().year - student.birth_date.year
+        # students = Student.query.all()
+        # for student in students:
+        #     courses = [course.name for course in student.courses]
+        #     course_names = [course.name for course in student.courses]
+        #     course_levels = [course.level.name for course in student.courses]
+        #     course_departments = [course.department.name for course in student.courses]
+        #     student_age = datetime.now().year - student.birth_date.year
 
-            placements = []
+        #     suggestions = []
 
-            if "1" in course_levels or "2" in course_levels:
-                if "Hip Hop" not in course_departments:
-                    placements.append("Preschool Hip Hop")
+        #     if "1" in course_levels or "2" in course_levels:
+        #         if "Hip Hop" not in course_departments:
+        #             suggestions.append("Preschool Hip Hop")
 
-            if "3" in course_levels and student_age < 8 or "K-2nd" in course_levels:
-                if "Hip Hop" not in course_departments:
-                    placements.append("Hip Hop K-2nd")
+        #     if "3" in course_levels and student_age < 8 or "K-2nd" in course_levels:
+        #         if "Hip Hop" not in course_departments:
+        #             suggestions.append("Hip Hop K-2nd")
 
-            if "Elementary" in course_levels and student_age < 12:
-                if "Ballet/Tap" not in course_departments:
-                    placements.append("Elementary Ballet/Tap")
-                if "Jazz/Lyrical" not in course_departments:
-                    placements.append("Elementary Jazz/Lyrical")
-                if "Hip Hop" not in course_departments:
-                    placements.append("Elementary Hip Hop")
-                if "Hammock" not in course_departments:
-                    placements.append("Elementary Intro to Hammock")
-                if "Lyra" not in course_departments:
-                    placements.append("Elementary Intro to Lyra")
-                if "Silk" not in course_departments:
-                    placements.append("Elementary Intro to Long Silks")
-                if "Elementary Broadway Dance" not in course_names:
-                    placements.append("Elementary Broadway Dance")
-                if "Clog" not in course_departments:
-                    placements.append("Elementary Clog")
-                if "Elementary Acting and Improvisation" not in course_names:
-                    placements.append("Elementary Acting and Improvisation")
+        #     if "Elementary" in course_levels and student_age < 12:
+        #         if "Ballet/Tap" not in course_departments:
+        #             suggestions.append("Elementary Ballet/Tap")
+        #         if "Jazz/Lyrical" not in course_departments:
+        #             suggestions.append("Elementary Jazz/Lyrical")
+        #         if "Hip Hop" not in course_departments:
+        #             suggestions.append("Elementary Hip Hop")
+        #         if "Hammock" not in course_departments:
+        #             suggestions.append("Elementary Intro to Hammock")
+        #         if "Lyra" not in course_departments:
+        #             suggestions.append("Elementary Intro to Lyra")
+        #         if "Silk" not in course_departments:
+        #             suggestions.append("Elementary Intro to Long Silks")
+        #         if "Elementary Broadway Dance" not in course_names:
+        #             suggestions.append("Elementary Broadway Dance")
+        #         if "Clog" not in course_departments:
+        #             suggestions.append("Elementary Clog")
+        #         if "Elementary Acting and Improvisation" not in course_names:
+        #             suggestions.append("Elementary Acting and Improvisation")
 
-            if "4" in course_levels:
-                if "Ballet" not in course_departments:
-                    placements.append("Ballet 4")
-                if "Tap" not in course_departments:
-                    placements.append("Tap 4")
-                if "Jazz/Lyrical" not in course_departments:
-                    placements.append("Jazz/Lyrical 4")
-                if "Hip Hop" not in course_departments:
-                    placements.append("Hip Hop 4")
+        #     if "4" in course_levels:
+        #         if "Ballet" not in course_departments:
+        #             suggestions.append("Ballet 4")
+        #         if "Tap" not in course_departments:
+        #             suggestions.append("Tap 4")
+        #         if "Jazz/Lyrical" not in course_departments:
+        #             suggestions.append("Jazz/Lyrical 4")
+        #         if "Hip Hop" not in course_departments:
+        #             suggestions.append("Hip Hop 4")
 
-            if "Middle/High School" in course_levels or "Middle/High School" in course_levels and student_age >= 12 or student_age >= 12:
-                if "Ballet" not in course_departments:
-                    placements.append("Middle/High School Ballet")
-                if "Tap" not in course_departments:
-                    placements.append("Middle/High School Tap")
-                if "Jazz/Lyrical" not in course_departments:
-                    placements.append("Middle/High School Jazz/Lyrical")
-                if "Hip Hop" not in course_departments:
-                    placements.append("Middle/High School Hip Hop")
-                if "Hammock" not in course_departments:
-                    placements.append("Middle/High School Intro to Hammock")
-                if "Lyra" not in course_departments:
-                    placements.append("Middle/High School Intro to Lyra")
-                if "Silk" not in course_departments:
-                    placements.append("Middle/High School Intro to Long Silks")
-                if "Broadway Dance" not in course_names and "Broadway Dance 1" not in course_names:
-                    placements.append("Middle/High School Broadway Dance")
-                if "Clog" not in course_departments:
-                    placements.append("Beginning Clog")
-                if "Middle/High School Acting and Improvisation Sec. 1" not in course_names and "Middle/High School Acting and Improvisation Sec. 2" not in course_names:
-                    placements.append("Middle/High School Acting and Improvisation")
-                if "Flexibility/Leaps, Turns, & Tricks Sec. 1" not in course_names and "Flexibility/Leaps, Turns, & Tricks Sec. 2" not in course_names:
-                    placements.append("Flexibility/Leaps, Turns, & Tricks")
-                if "Ballet" not in course_departments and student.gender == "Male":
-                    placements.append("Men's Ballet")
-                if "Dancing in Heels"
+        #     if "Middle/High School" in course_levels or "Middle/High School" in course_levels and student_age >= 12 or student_age >= 12:
+        #         if "Ballet" not in course_departments:
+        #             suggestions.append("Middle/High School Ballet")
+        #         if "Tap" not in course_departments:
+        #             suggestions.append("Middle/High School Tap")
+        #         if "Jazz/Lyrical" not in course_departments:
+        #             suggestions.append("Middle/High School Jazz/Lyrical")
+        #         if "Hip Hop" not in course_departments:
+        #             suggestions.append("Middle/High School Hip Hop")
+        #         if "Hammock" not in course_departments:
+        #             suggestions.append("Middle/High School Intro to Hammock")
+        #         if "Lyra" not in course_departments:
+        #             suggestions.append("Middle/High School Intro to Lyra")
+        #         if "Silk" not in course_departments:
+        #             suggestions.append("Middle/High School Intro to Long Silks")
+        #         if "Broadway Dance" not in course_names and "Broadway Dance 1" not in course_names:
+        #             suggestions.append("Middle/High School Broadway Dance")
+        #         if "Clog" not in course_departments:
+        #             suggestions.append("Beginning Clog")
+        #         if "Middle/High School Acting and Improvisation Sec. 1" not in course_names and "Middle/High School Acting and Improvisation Sec. 2" not in course_names:
+        #             suggestions.append("Middle/High School Acting and Improvisation")
+        #         if "Flexibility/Leaps, Turns, & Tricks Sec. 1" not in course_names and "Flexibility/Leaps, Turns, & Tricks Sec. 2" not in course_names:
+        #             suggestions.append("Flexibility/Leaps, Turns, & Tricks")
+        #         if "Ballet" not in course_departments and student.gender == "Male":
+        #             suggestions.append("Men's Ballet")
+        #         if "Dancing in Heels 1" not in course_names and "Dancing in Heels Sec. 1" not in course_names and "Dancing in Heels Sec. 2" not in course_names:
+        #             suggestions.append("Dancing in Heels")
                 
 
-            if student_age >= 12:
+        #     for suggestion in suggestions:
+        #         new_suggestion = Suggestion(
+        #             student_id=student.id,
+        #             course_name=suggestion
+        #         )
+        #         db.session.add(new_suggestion)
 
-            
+        # db.session.commit()
+
+        
             
             
 
