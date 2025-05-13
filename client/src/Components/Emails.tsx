@@ -5,7 +5,7 @@ import EditSuggestions from "./Email-Edit-Components/EditSuggestions";
 import EditReports from "./Email-Edit-Components/EditReports";
 
 function Emails({ selectedStudent }: any) {
-  const [student, setStudent] = useState({});
+  const [student, setStudent] = useState({ first_name: "", last_name: "" });
 
   useEffect(() => {
     fetch(
