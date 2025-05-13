@@ -75,7 +75,7 @@ function RenderEmail({ student, setStudent }: any) {
 
   const headerText = `
     <div style="color:transparent;visibility:hidden;opacity:0;font-size:0px;border:0;max-height:1px;width:1px;margin:0px;padding:0px;border-width:0px!important;display:none!important;line-height:0px!important;">
-      <img border="0" width="1" height="1" src="http://click.jackrabbittech.com/q/FRGTpfHhs6_mEUWyJsqhSg~~/AAB6yhA~/Yd-qdgHcGXpXRSQH-VajlkOj7rIyctXD0tjDHXICVDpCtkbIVnUwzMU57OpTZ08z0EW4IESyaiQeL-Y5q5tT_w~~" alt="" />
+      <img border="0" width="1" height="1" src="https://click.jackrabbittech.com/q/FRGTpfHhs6_mEUWyJsqhSg~~/AAB6yhA~/Yd-qdgHcGXpXRSQH-VajlkOj7rIyctXD0tjDHXICVDpCtkbIVnUwzMU57OpTZ08z0EW4IESyaiQeL-Y5q5tT_w~~" alt="" />
     </div>
     <p style="font-family: Times; font-size: medium;">
       <img style="display: block; margin-left: auto; margin-right: auto;" title="Broadway Bound 2025 - 2026.jpg" src="https://jackrabbitstorage.blob.core.windows.net/prod/org_515936/orgfile/Broadway%20Bound%202025%20-%202026_20250419160829.jpg" alt="Broadway Bound 2025 - 2026.jpg" width="455" height="256" />
@@ -145,14 +145,14 @@ function RenderEmail({ student, setStudent }: any) {
         </span>
       </span>
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-      <a style="word-break: break-word; color: #3c73aa;" href="http://performcenterstage.com/" target="_blank" rel="noopener">performcenterstage.com</a>
+      <a style="word-break: break-word; color: #3c73aa;" href="https://performcenterstage.com/" target="_blank" rel="noopener">performcenterstage.com</a>
     </p>
-    <img border="0" width="1" height="1" alt="" src="http://click.jackrabbittech.com/q/AinMXnUhckLqvWDttzi7wQ~~/AAB6yhA~/F3U1If4qnh0jNKItZxXqHtbWQ0Xd5Q0j0WvE0sX_GQexo8Ubvdka-eJ1sJ6JLipkhXwAl80ZJepoNhX8deA8CQ~~">
+    <img border="0" width="1" height="1" alt="" src="https://click.jackrabbittech.com/q/AinMXnUhckLqvWDttzi7wQ~~/AAB6yhA~/F3U1If4qnh0jNKItZxXqHtbWQ0Xd5Q0j0WvE0sX_GQexo8Ubvdka-eJ1sJ6JLipkhXwAl80ZJepoNhX8deA8CQ~~">
   `;
 
   function handleApproveEmail() {
     fetch(
-      "http://progress-reports-app.onrender.com/api/students/" + student.id,
+      "https://progress-reports-app.onrender.com/api/students/" + student.id,
       {
         method: "PATCH",
         headers: {

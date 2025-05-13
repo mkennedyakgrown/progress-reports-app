@@ -10,7 +10,7 @@ function EditOneSuggestion({ suggestion, student, setStudent }: any) {
 
   function handleSave(suggestion: any) {
     fetch(
-      `http://progress-reports-app.onrender.com/api/suggestions/${suggestion.id}`,
+      `https://progress-reports-app.onrender.com/api/suggestions/${suggestion.id}`,
       {
         method: "PATCH",
         headers: {

@@ -10,7 +10,7 @@ function EditOnePlacement({ placement, student, setStudent }: any) {
 
   function handleSave(placement: any) {
     fetch(
-      `http://progress-reports-app.onrender.com/api/placements/${placement.id}`,
+      `https://progress-reports-app.onrender.com/api/placements/${placement.id}`,
       {
         method: "PATCH",
         headers: {

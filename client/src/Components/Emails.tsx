@@ -9,7 +9,7 @@ function Emails({ selectedStudent }: any) {
 
   useEffect(() => {
     fetch(
-      `http://progress-reports-app.onrender.com/api/students/email/${selectedStudent}`
+      `https://progress-reports-app.onrender.com/api/students/email/${selectedStudent}`
     )
       .then((res) => res.json())
       .then((data) => {
