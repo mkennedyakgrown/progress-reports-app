@@ -16,6 +16,21 @@ function EditSuggestions({ student, setStudent }: any) {
     <>
       <h2>Edit Suggestions</h2>
       {suggestionTextBoxes}
+      <EditOneSuggestion
+        {...{
+          suggestion: {
+            course_name: "",
+            id: -1,
+            student: {
+              first_name: student.first_name,
+              last_name: student.last_name,
+            },
+            student_id: student.id,
+          },
+          student,
+          setStudent,
+        }}
+      />
     </>
   );
 }

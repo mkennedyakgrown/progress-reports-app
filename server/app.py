@@ -186,6 +186,27 @@ class PlacementById(Resource):
         db.session.commit()
         return placement_schema.dump(placement), 200
     
+    def delete(self, placement_id):
+        placement = Placement.query.filter(Placement.id == placement_id).first()
+        db.session.delete(placement)
+        db.session.commit()
+        return {'message': 'Placement deleted'}, 200
+    
+class Placements(Resource):
+
+    def get(self):
+        placements = Placement.query.all()
+        return placements_schema.dump(placements), 200
+    
+    def post(self):
+        json = request.get_json()
+        course_name = json.get('course_name')
+        student_id = json.get('student_id')
+        new_placement = Placement(course_name=course_name, student_id=student_id)
+        db.session.add(new_placement)
+        db.session.commit()
+        return placement_schema.dump(new_placement), 200
+    
 class SuggestionById(Resource):
 
     def get(self, suggestion_id):
@@ -199,6 +220,23 @@ class SuggestionById(Resource):
             suggestion.course_name = json.get('course_name')
         db.session.commit()
         return suggestion_schema.dump(suggestion), 200
+    
+    def delete(self, suggestion_id):
+        suggestion = Suggestion.query.filter(Suggestion.id == suggestion_id).first()
+        db.session.delete(suggestion)
+        db.session.commit()
+        return {'message': 'Suggestion deleted'}, 200
+    
+class Suggestions(Resource):
+
+    def post(self):
+        json = request.get_json()
+        course_name = json.get('course_name')
+        student_id = json.get('student_id')
+        new_suggestion = Suggestion(course_name=course_name, student_id=student_id)
+        db.session.add(new_suggestion)
+        db.session.commit()
+        return suggestion_schema.dump(new_suggestion), 200
         
 api.add_resource(Users, '/api/users')
 api.add_resource(UsersStatus, '/api/users/status')
@@ -212,7 +250,9 @@ api.add_resource(Students, '/api/students')
 api.add_resource(StudentById, '/api/students/<int:student_id>')
 api.add_resource(StudentEmailById, '/api/students/email/<int:student_id>')
 api.add_resource(PlacementById, '/api/placements/<int:placement_id>')
+api.add_resource(Placements, '/api/placements')
 api.add_resource(SuggestionById, '/api/suggestions/<int:suggestion_id>')
+api.add_resource(Suggestions, '/api/suggestions')
 
 class UserSchema(ma.SQLAlchemySchema):
 
