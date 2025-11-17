@@ -29,28 +29,30 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
 # Get environment variables
-TURSO_DATABASE_URL = os.environ.get("TURSO_DATABASE_URL")
-TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
-TURSO_BACKUP_DATABASE_URL = os.environ.get("TURSO_BACKUP_DATABASE_URL")
-TURSO_BACKUP_AUTH_TOKEN = os.environ.get("TURSO_BACKUP_AUTH_TOKEN")
-TURSO_DEV_DATABASE_URL = os.environ.get("TURSO_DEV_DATABASE_URL")
-TURSO_DEV_AUTH_TOKEN = os.environ.get("TURSO_DEV_AUTH_TOKEN")
+# TURSO_DATABASE_URL = os.environ.get("TURSO_DATABASE_URL")
+# TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
+# TURSO_BACKUP_DATABASE_URL = os.environ.get("TURSO_BACKUP_DATABASE_URL")
+# TURSO_BACKUP_AUTH_TOKEN = os.environ.get("TURSO_BACKUP_AUTH_TOKEN")
+# TURSO_DEV_DATABASE_URL = os.environ.get("TURSO_DEV_DATABASE_URL")
+# TURSO_DEV_AUTH_TOKEN = os.environ.get("TURSO_DEV_AUTH_TOKEN")
+RENDER_DATABASE_URL = os.environ.get("RENDER_DATABASE_URL")
 
 # construct special SQLAlchemy URL
-dbUrl = f"sqlite+{TURSO_DATABASE_URL}/?authToken={TURSO_AUTH_TOKEN}&secure=true"
-backupDbUrl = f"sqlite+{TURSO_BACKUP_DATABASE_URL}/?authToken={TURSO_BACKUP_AUTH_TOKEN}&secure=true"
-devDbUrl = f"sqlite+{TURSO_DEV_DATABASE_URL}/?authToken={TURSO_DEV_AUTH_TOKEN}&secure=true"
+# dbUrl = f"sqlite+{TURSO_DATABASE_URL}/?authToken={TURSO_AUTH_TOKEN}&secure=true"
+dbUrl = RENDER_DATABASE_URL
+# backupDbUrl = f"sqlite+{TURSO_BACKUP_DATABASE_URL}/?authToken={TURSO_BACKUP_AUTH_TOKEN}&secure=true"
+# devDbUrl = f"sqlite+{TURSO_DEV_DATABASE_URL}/?authToken={TURSO_DEV_AUTH_TOKEN}&secure=true"
 app.config["SQLALCHEMY_DATABASE_URI"] = dbUrl
-app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-    'poolclass':QueuePool,
-    'pool_size':5,
-    'max_overflow':10,
-    'pool_timeout':30,
-    'pool_recycle':1800,
-    'pool_pre_ping':True,
-    'connect_args':{"check_same_thread": False},
-    'echo':True
-}
+# app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+#     'poolclass':QueuePool,
+#     'pool_size':5,
+#     'max_overflow':10,
+#     'pool_timeout':30,
+#     'pool_recycle':1800,
+#     'pool_pre_ping':True,
+#     'connect_args':{"check_same_thread": False},
+#     'echo':True
+# }
 
 db = SQLAlchemy(app=app, metadata=metadata)
 
