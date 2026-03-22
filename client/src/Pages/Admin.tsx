@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Box, Select, MenuItem } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import InstructorsStatus from "../Components/InstructorsStatus";
-// import Emails from "../Components/Emails";
-import ReportEmails from "../Components/ReportEmails";
+import Emails from "../Components/Emails";
+// import ReportEmails from "../Components/ReportEmails";
 import StudentEmailsList from "../Components/StudentEmailsList";
 import ReportsInstructor from "../Components/ReportsInstructor";
 
@@ -13,7 +13,7 @@ function Admin() {
   const [instructorsStatus, setInstructorsStatus] = useState([]);
   const [selectedInstructor, setSelectedInstructor] = useState(-1);
   const [leftSelectedOption, setLeftSelectedOption] = useState(
-    "Instructor Reports Status"
+    "Instructor Reports Status",
   );
 
   useEffect(() => {
@@ -74,7 +74,7 @@ function Admin() {
                 />
               )
             ) : (
-              <ReportEmails {...{ selectedStudent }} />
+              <Emails {...{ selectedStudent }} />
             )}
           </Grid>
         </Grid>
