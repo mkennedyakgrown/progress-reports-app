@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import RenderEmail from "./RenderEmail";
-import EditPlacements from "./Email-Edit-Components/EditPlacements";
-import EditSuggestions from "./Email-Edit-Components/EditSuggestions";
+import RenderReportsEmail from "./RenderReportsEmail";
 import EditReports from "./Email-Edit-Components/EditReports";
 
-function Emails({ selectedStudent }: any) {
+function ReportEmails({ selectedStudent }: any) {
   const [student, setStudent] = useState({ first_name: "", last_name: "" });
 
   useEffect(() => {
@@ -25,12 +23,10 @@ function Emails({ selectedStudent }: any) {
   return (
     <>
       <h2>{studentName}'s Emails</h2>
-      <RenderEmail {...{ student, setStudent }} />
-      <EditPlacements {...{ student, setStudent }} />
-      <EditSuggestions {...{ student, setStudent }} />
+      <RenderReportsEmail {...{ student, setStudent }} />
       <EditReports {...{ student, setStudent }} />
     </>
   );
 }
 
-export default Emails;
+export default ReportEmails;

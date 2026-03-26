@@ -1,32 +1,10 @@
 import DOMPurify from "dompurify";
 import { Box, Button } from "@mui/material";
 
-function RenderEmail({ student, setStudent }: any) {
+function RenderReportsEmail({ student, setStudent }: any) {
   function createMarkup(dirty: any) {
     return { __html: DOMPurify.sanitize(dirty) };
   }
-
-  const placementsText = student.placements
-    ? student.placements
-        .map((placement: any) => {
-          return `<p style="font-family: Times; font-size: medium; text-align: center;">
-      <strong>
-        <span style="font-family: 'book antiqua', palatino; font-size: 12pt;">${placement.course_name}</span>
-      </strong>
-    </p>`;
-        })
-        .join("")
-    : "";
-
-  const suggestionsText = student.suggestions
-    ? student.suggestions
-        .map((suggestion: any) => {
-          return `<p style="font-family: Times; font-size: medium; font-style: italic; text-align: center;">
-          <span style="font-family: 'book antiqua', palatino; font-size: 12pt;">${suggestion.course_name}</span>
-      </p>`;
-        })
-        .join("")
-    : "";
 
   const reportsText =
     student.student_reports != undefined && student.student_reports.length > 0
@@ -44,7 +22,20 @@ function RenderEmail({ student, setStudent }: any) {
                 report.instructor_id == student_report.instructor_id
             )[0];
             if (course_report.report_text != " ") {
+              let course_name = course_report.course.name;
+              if (course_name.includes("CAB")) {
+                course_name = course_name.slice(
+                  0,
+                  course_name.indexOf("CAB") - 2
+                );
+              }
               currReportTexts.push(`<p style="font-family: Times; font-size: medium; text-align: center;">
+                    <strong>
+                        <span style="font-family: 'book antiqua', palatino; font-size: 12pt;">${course_name}
+                        </span>
+                    </strong>
+                    </p>
+                    <p style="font-family: Times; font-size: medium; text-align: center;">
                     <strong>
                         <span style="font-family: 'book antiqua', palatino; font-size: 12pt;">${course_report.report_text}
                         <br />
@@ -78,59 +69,27 @@ function RenderEmail({ student, setStudent }: any) {
       <img border="0" width="1" height="1" src="https://click.jackrabbittech.com/q/FRGTpfHhs6_mEUWyJsqhSg~~/AAB6yhA~/Yd-qdgHcGXpXRSQH-VajlkOj7rIyctXD0tjDHXICVDpCtkbIVnUwzMU57OpTZ08z0EW4IESyaiQeL-Y5q5tT_w~~" alt="" />
     </div>
     <p style="font-family: Times; font-size: medium;">
-      <img style="display: block; margin-left: auto; margin-right: auto;" title="Broadway Bound 2025 - 2026.jpg" src="https://jackrabbitstorage.blob.core.windows.net/prod/org_515936/orgfile/Broadway%20Bound%202025%20-%202026_20250419160829.jpg" alt="Broadway Bound 2025 - 2026.jpg" width="455" height="256" />
+      <img style="display: block; margin-left: auto; margin-right: auto;" title="Broadway Bound 2025 - 2026.jpg" src="https://jackrabbitstorage.blob.core.windows.net/prod/org_515936/orgfile/Progress%20Reports%202526_20251229112225.jpg" alt="Broadway Bound 2025 - 2026.jpg" width="455" height="256" />
     </p>
-    <p style="font-family: Times; font-size: medium; text-align: center;">
-      <span style="font-family: 'book antiqua', palatino;">
-        <span style="font-size: 16px;">Below is a list of classes for the 2025|2026 season that ${student.first_name} ${student.last_name} is eligible to register for:</span>
-      </span>
-    </p>
-  `;
-
-  const suggestionsHeaderText = `
-  <br />
-    <p style="font-family: Times; font-size: medium;">
-      <em>
-        <span style="font-family: 'book antiqua', palatino;">
-          <span style="font-size: 16px;">Additional Options &amp; Suggestions:</span>
-        </span>
-      </em>
-    </p>
-  <br />
   `;
 
   const centerText = `
-  <br />
-    <p style="font-family: Times; font-size: medium; text-align: center;">
-      <span style="font-family: 'book antiqua', palatino;">
-        <span style="font-size: 16px;"><strong>Registration will open Sunday June 1st, 2025.</strong></span>
-      </span>
-    </p>
-    <p style="font-family: Times; font-size: medium; text-align: center;">
-      <strong>
-        <span style="font-family: 'book antiqua', palatino; font-size: 12pt;">Open House/Registration Day for the 2025|2026 season will be held on July 24th, 2025.</span>
-      </strong>
-    </p>
-    <hr style="font-family: Times; font-size: medium;" />
-    <p style="font-family: Times; font-size: medium; text-align: center;">
-      &nbsp;
-    </p>
-    <p style="font-family: Times; font-size: medium; text-align: center;">
-      <span style="font-family: 'book antiqua', palatino; font-size: 12pt;">If you have any questions regarding your student's placement and/or class curriculum, please contact&nbsp;
-        <a href="mailto:info@performcenterstage.com">info@performcenterstage.com</a>
-      </span>
-    </p>
-    <hr style="font-family: Times; font-size: medium;" />
-    <p style="font-family: Times; font-size: medium;">
-      &nbsp;&nbsp;
-    </p>
-    <p style="font-family: Times; font-size: medium;">
-      <span style="font-family: 'book antiqua', palatino; font-size: 12pt;">Notes from their 2024 - 2025 instructor(s):</span>
-    </p>
+    <p>&nbsp;</p>
+    <p><span style="font-family: georgia, palatino; font-size: 12pt, text-align: left;">Hello CS Family,</span></p>
+    <p><span style="font-family: georgia, palatino;"><span style="font-size: 16px, text-align: left;">Your student's instructors have provided some information below for each of their classes, student feedback, and absences for this Fall 2025. Our goal is to provide our students with the best dance education and ways to grow and excel this year!</span></span></p>
+    <p><span style="font-family: georgia, palatino;"><span style="font-size: 16px, text-align: left;">Please take a few moments to read and to share this feedback with your student before classes resume next week for the Spring Semester!</span></span></p>
+    <hr />
   `;
 
   const signatureText = `
-    <br />
+    <hr />
+    <p>&nbsp;</p>
+<p><span style="font-family: georgia, palatino; font-size: 12pt; background-color: #ffffff;">Absences this fall:</span></p>
+<p><span style="font-family: georgia, palatino; font-size: 12pt;">0 - 3 Student is doing excellent in attendance</span></p>
+<p><span style="font-family: georgia, palatino; font-size: 12pt;">3 - 6 Student is doing okay but may be missing crucial technique. Please make sure your student plans to regularly attend class this spring as we prepare for recital. Remember, absences of 3 or more in the spring may be subject to private lessons in order for a student to participate in performance.</span></p>
+<p><span style="font-family: georgia, palatino; font-size: 12pt;">6+ We are very concerned and are sure your student is missing key building blocks in their technique. Please be prepared that your student will most definitely need several private lessons to catch up to his/her class as well as regular attendance in the spring in order to participate in recital.</span></p>
+<p>&nbsp;</p>
+<p><em><span style="font-family: georgia, palatino; font-size: 12pt;">Your CS Team<br /></span></em></p>
     <p style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0px 0px 1em; font-size: 13px; color: #3c73aa;">
       <em>
         <span style="font-family: georgia, palatino; font-size: 12pt;">Your CS Team<br /></span>
@@ -172,13 +131,7 @@ function RenderEmail({ student, setStudent }: any) {
     if (tempEmailBox) {
       try {
         tempEmailBox.innerHTML =
-          headerText +
-          placementsText +
-          suggestionsHeaderText +
-          suggestionsText +
-          centerText +
-          reportsText +
-          signatureText;
+          headerText + centerText + reportsText + signatureText;
         const selection = window.getSelection();
         selection?.removeAllRanges();
         const range = document.createRange();
@@ -216,13 +169,7 @@ function RenderEmail({ student, setStudent }: any) {
           }}
           component="section"
           dangerouslySetInnerHTML={createMarkup(
-            headerText +
-              placementsText +
-              suggestionsHeaderText +
-              suggestionsText +
-              centerText +
-              reportsText +
-              signatureText
+            headerText + centerText + reportsText + signatureText
           )}
         ></Box>
       </>
@@ -241,4 +188,4 @@ function RenderEmail({ student, setStudent }: any) {
   }
 }
 
-export default RenderEmail;
+export default RenderReportsEmail;

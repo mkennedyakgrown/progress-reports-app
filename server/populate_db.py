@@ -7,12 +7,12 @@ import pandas as pd
 if __name__ == "__main__":
     with app.app_context():
 
-        def create_user(first_name, last_name, email, password="CenterStage001", is_admin=False):
-            user = User(first_name=first_name, last_name=last_name, email=email, is_admin=is_admin)
-            user.password_hash = password
+        # def create_user(first_name, last_name, email, password="CenterStage001", is_admin=False):
+        #     user = User(first_name=first_name, last_name=last_name, email=email, is_admin=is_admin)
+        #     user.password_hash = password
 
             
-            return user
+        #     return user
 
         
 
@@ -70,26 +70,89 @@ if __name__ == "__main__":
         # Create Users and Assigning to Courses
         # print("Creating Users and Assigning to Courses...")
 
-        # users_df = pd.read_excel('enrollment_sources/ActiveStaff.xlsx')
+        # users_df = pd.read_excel('EnrollmentDetailRptFall2025.xlsx', usecols=['Instructors'])
+        # # column_data = users_df['Instructors']
         # [rows, columns] = users_df.shape
 
+        # names = []
         # for row in range(rows):
         #     row_list = users_df.loc[row]
-        #     split_name = row_list["Name"].split(" ")
-        #     first_name = split_name[0]
-        #     last_name = split_name[1]
-        #     if len(split_name) > 2:
-        #         last_name += f' {split_name[2]}'
-        #     email = row_list["Email"]
+        #     for name in row_list:
+        #         if "," in name:
+        #             name1 = name.split(",")[0]
+        #             name2 = name.split(",")[1].strip(" ")
+        #             if name1 not in names:
+        #                 names.append(name1)
+        #             if name2 not in names:
+        #                 names.append(name2)
+        #         else:
+        #             if name not in names:
+        #                 names.append(name)
+
+        # split_names = [[name.split(" ")[0], name.split(" ")[1]] for name in names]
+
+        # print(split_names)
+
+        # for name in split_names:
+        #     first_name = name[0]
+        #     last_name = name[1]
+        #     email = f"{first_name}{last_name}@centerstage.email"
+        #     print(first_name, last_name, email)
 
         #     new_user = create_user(first_name, last_name, email)
         #     db.session.add(new_user)
 
         # db.session.commit()
 
+###################### VERY USEFUL: Reads Enrollment Detail Report and reassigns students to courses, creating new students if necessary ################
+
+        # enrollment_df = pd.read_excel('EnrollmentDetailRpt-Spring2026.xlsx', usecols=['Class Name', 'Student First Name', 'Student Last Name', 'Birthdate'])
+        # [rows, columns] = enrollment_df.shape
+
+        # courses_dict = {}
+        # students_dict = {}
+
+        # for row in range(rows):
+        #     row_list = enrollment_df.loc[row]
+        #     course_name = row_list["Class Name"]
+        #     first_name = row_list["Student First Name"].strip(" ")
+        #     last_name = row_list["Student Last Name"].strip(" ")
+        #     birthdate = row_list['Birthdate'].strftime("%m/%d/%Y")
+        #     if course_name != "CSTEP":
+
+        #         if f"{first_name} {last_name}" not in students_dict:
+        #             curr_student = Student.query.filter_by(first_name=first_name, last_name=last_name).first()
+        #             if curr_student is None:
+        #                 print("Creating Student: ", f"{first_name} {last_name}")
+        #                 new_student = Student(first_name=first_name, last_name=last_name, birth_date=birthdate, email=f"{first_name}{last_name}@email.com", gender="N/A")
+        #                 db.session.add(new_student)
+        #                 # db.session.commit()
+        #                 curr_student = Student.query.filter_by(first_name=first_name, last_name=last_name).first()
+        #                 print(f"Successfully Created Student: {first_name} {last_name}")
+        #             students_dict[f"{first_name} {last_name}"] = curr_student
+
+        #         if course_name not in courses_dict:
+        #             curr_course = Course.query.filter_by(name=course_name).first()
+        #             if curr_course is not None:
+        #                 courses_dict[course_name] = curr_course
+        #                 curr_course.students = []
+        #                 curr_student = students_dict[f"{first_name} {last_name}"]
+        #                 curr_course.students.append(curr_student)
+        #             else:
+        #                 print("Error: Could not find course: ", course_name)
+        #         else:
+        #             courses_dict[course_name].students.append(students_dict[f"{first_name} {last_name}"])
+        
+        # for course in courses_dict.items():
+        #     print(f"{course[0]}: {[f"{student.first_name} {student.last_name}" for student in course[1].students]}")
+
+        # db.session.commit()
+                    
+#####################################################################################################
 
 
-        # Create Courses
+
+#         # Create Courses
 #         print("Creating Courses...")
 #         print("Parsing Spreadsheet...")
 
@@ -97,42 +160,52 @@ if __name__ == "__main__":
 #         departments = Department.query.all()
 #         levels = Level.query.all()
 
-#         courses_df = pd.read_excel('enrollment_sources/ClassesListReport.xlsx')
+#         #### PULL DATA FROM EXCEL SHEET #####
+#         courses_df = pd.read_excel('EnrollmentDetailRptFall2025.xlsx', usecols=['Class Name', 'Instructors'])
 #         [rows, columns] = courses_df.shape
         
+#         courses = []
+#         course_names = []
+
 #         for row in range(rows):
 #             row_list = courses_df.loc[row]
-#             name = row_list["Class"]
+#             name = row_list["Class Name"]
+#             instructor_name = row_list["Instructors"]
+#             if name not in course_names:
+#                 course_names.append(name)
+#                 courses.append([name, instructor_name]) if name not in courses else None
+        
+#         courses.sort()
+        
+#         for course in courses:
 
-#             department_name = row_list["Department"]
-#             print(department_name)
-#             department = [dep for dep in departments if dep.name == department_name][0]
+#             name = course[0]
+#             instructors = course[1]
 
-#             level_name = str(row_list["Level"])
-#             if level_name == "nan":
-#                 level_name = "N/A"
-#             level = [l for l in levels if l.name == level_name][0]
+#             # department_name = row_list["Department"]
+#             # print(department_name)
+#             # department = [dep for dep in departments if dep.name == department_name][0]
 
-#             course = Course(name=name, department_id=department.id, level_id=level.id)
+#             # level_name = str(row_list["Level"])
+#             # if level_name == "nan":
+#             #     level_name = "N/A"
+#             # level = [l for l in levels if l.name == level_name][0]
 
-#             raw_instructors = row_list["Instructors"]
-#             instructor_names = []
-#             if ", " in raw_instructors:
-#                 instructor_names = raw_instructors.split(", ")
+#             new_course = Course(name=name, department_id=1, level_id=1)
+
+#             if ", " in instructors:
+#                 instructors = instructors.split(", ")
+#                 new_course.instructors = [user for user in users if f"{user.first_name} {user.last_name}" in instructors]
 #             else:
-#                 instructor_names.append(raw_instructors)
-
-#             for instructor in instructor_names:
-#                 new_instructor = [user for user in users if user.first_name in instructor and user.last_name[0] == instructor[-2]]
-#                 course.instructors.append(new_instructor[0])
+#                 new_course.instructors = [user for user in users if f"{user.first_name} {user.last_name}" == instructors]
 
 #             print(f'''New Course:
-# Name: {course.name}
-# Department_id: {course.department_id}
-# Level_id: {course.level_id}
-# Instructors: {[instructor.first_name + " " + instructor.last_name for instructor in course.instructors]}
+# Name: {new_course.name}
+# Department_id: {new_course.department_id}
+# Level_id: {new_course.level_id}
+# Instructors: {new_course.instructors}
 # ''')
-#             db.session.add(course)
+#             db.session.add(new_course)
 
 #         db.session.commit()
 
@@ -175,7 +248,7 @@ if __name__ == "__main__":
         # # Create and Enroll Students
         # print("Creating Students...")
 
-        # enrollment_df = pd.read_excel('enrollment_sources/EnrollmentDetailRpt.xlsx')
+        # enrollment_df = pd.read_excel('EnrollmentDetailRptFall2025.xlsx', usecols=['Student First Name', 'Student\nLast Name', 'Birthdate', 'Class Name'])
         # [rows, columns] = enrollment_df.shape
 
         # students = {}
@@ -185,7 +258,7 @@ if __name__ == "__main__":
         #     first_name = row_list["Student First Name"]
         #     last_name = row_list["Student\nLast Name"]
         #     name = f'{first_name} {last_name}'
-        #     gender = row_list["Gender"]
+        #     # gender = row_list["Gender"]
         #     birthdate = row_list["Birthdate"]
 
         #     course_name = row_list["Class Name"]
@@ -195,25 +268,24 @@ if __name__ == "__main__":
         #         student = Student(
         #             first_name=first_name,
         #             last_name=last_name,
-        #             email=f'{first_name}{last_name}placeholder@email.com',
-        #             gender=gender,
+        #             email=f'{first_name}{last_name}@email.com',
+        #             gender="N/A",
         #             birth_date=datetime.strptime(birthdate, "%m/%d/%Y")
         #         )
 
         #         db.session.add(student)
 
         #         students[name] = student
-
-        #         print(student.birth_date)
+        #         print(student.first_name, student.last_name, student.email, student.birth_date, student.gender)
 
         # db.session.commit()
         
         # print("Completed Creating Students")
         
-        # Enroll Students
+        # # Enroll Students
         # print("Enrolling Students")
 
-        # enrollment_df = pd.read_excel('enrollment_sources/EnrollmentDetailRpt.xlsx')
+        # enrollment_df = pd.read_excel('EnrollmentDetailRptFall2025.xlsx', usecols=['Student First Name', 'Student\nLast Name', 'Class Name'])
         # [rows, columns] = enrollment_df.shape
 
         # courses = Course.query.all()
@@ -225,12 +297,12 @@ if __name__ == "__main__":
         #     student = [student for student in students if student.first_name == row_list["Student First Name"] and student.last_name == row_list["Student\nLast Name"]][0]
 
         #     student.courses.append(curr_course)
+        #     print(curr_course.name, student.first_name, student.last_name)
 
         # db.session.commit()
 
-
         
-        # Create Course Reports
+        # # Create Course Reports
         # print("Creating Course Reports...")
 
         # courses = Course.query.all()
@@ -248,7 +320,7 @@ if __name__ == "__main__":
         # db.session.commit()
 
 
-        # Create Student Reports
+        # # Create Student Reports
         # print("Creating Student Reports...")
 
         # courses = Course.query.all()
@@ -353,10 +425,14 @@ if __name__ == "__main__":
 
         # db.session.commit()
 
+        # courses = Course.query.all()
+
+        # for course in courses:
+        #     if len(course.student_reports) < len(course.instructors) * len(course.students):
+        #         print("Mismatch numbers of reports for course: ", course.name)
+        #         print(f"R: {len(course.student_reports)} I: {len(course.instructors)} S: {len(course.students)}")
+
         
-            
-            
-
-
 
         # print("Database Successfully Populated")
+        pass

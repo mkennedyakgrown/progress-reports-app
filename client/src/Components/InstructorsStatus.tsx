@@ -6,34 +6,36 @@ import {
   TableRow,
   Paper,
   TableBody,
-  Link,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
-function InstructorsStatus({ instructorsStatus }: any) {
+function InstructorsStatus({
+  instructorsStatus,
+  selectedInstructor,
+  setSelectedInstructor,
+}: any) {
   const statusList =
     instructorsStatus.length > 0
       ? instructorsStatus.map((status: any) => {
           return (
-            <TableRow key={`status-table-row${status.name}`}>
-              <TableCell onClick={() => handleClick(status.id)}>
-                <Link href={`/reports/users/${status.id}`}>{status.name}</Link>
-              </TableCell>
+            <TableRow
+              key={`status-table-row${status.name}`}
+              onClick={() => {
+                console.log(status.id);
+                setSelectedInstructor(status.id);
+              }}
+              selected={selectedInstructor === status.id}
+            >
+              <TableCell>{status.name}</TableCell>
               <TableCell align="right">{status["remaining-reports"]}</TableCell>
             </TableRow>
           );
         })
       : [];
 
-  const navigate = useNavigate();
-  function handleClick(id: number) {
-    navigate(`/reports/users/${id}`);
-  }
-
   return (
     <>
-      <TableContainer component={Paper}>
-        <Table size="small" aria-label="a dense table">
+      <TableContainer component={Paper} sx={{ maxHeight: "65vh" }}>
+        <Table stickyHeader size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
               <TableCell>Instructor Name</TableCell>

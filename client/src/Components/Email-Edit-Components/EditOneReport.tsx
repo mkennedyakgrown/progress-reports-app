@@ -10,7 +10,7 @@ function EditOneReport({ report, student, setStudent }: any) {
 
   function handleSave(report: any) {
     fetch(
-      `http://progress-reports-app.onrender.com/api/student-reports/${report.id}`,
+      `https://progress-reports-app.onrender.com/api/student-reports/${report.id}`,
       {
         method: "PATCH",
         headers: {
@@ -30,7 +30,7 @@ function EditOneReport({ report, student, setStudent }: any) {
             return p;
           }
         });
-        setStudent({ ...student, reports: reports });
+        setStudent({ ...student, student_reports: reports });
       });
   }
 

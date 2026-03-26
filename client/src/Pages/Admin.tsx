@@ -3,23 +3,26 @@ import { Box, Select, MenuItem } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import InstructorsStatus from "../Components/InstructorsStatus";
 import Emails from "../Components/Emails";
+// import ReportEmails from "../Components/ReportEmails";
 import StudentEmailsList from "../Components/StudentEmailsList";
+import ReportsInstructor from "../Components/ReportsInstructor";
 
 function Admin() {
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(-1);
   const [instructorsStatus, setInstructorsStatus] = useState([]);
+  const [selectedInstructor, setSelectedInstructor] = useState(-1);
   const [leftSelectedOption, setLeftSelectedOption] = useState(
-    "Instructor Reports Status"
+    "Instructor Reports Status",
   );
 
   useEffect(() => {
-    fetch(`http://progress-reports-app.onrender.com/api/users/status`)
+    fetch(`https://progress-reports-app.onrender.com/api/users/status`)
       .then((res) => res.json())
       .then((data) => {
         setInstructorsStatus(data);
       });
-    fetch(`http://progress-reports-app.onrender.com/api/students`)
+    fetch(`https://progress-reports-app.onrender.com/api/students`)
       .then((res) => res.json())
       .then((data) => {
         setStudents(data);
@@ -50,7 +53,13 @@ function Admin() {
               })}
             </Select>
             {leftSelectedOption === "Instructor Reports Status" ? (
-              <InstructorsStatus {...{ instructorsStatus }} />
+              <InstructorsStatus
+                {...{
+                  instructorsStatus,
+                  selectedInstructor,
+                  setSelectedInstructor,
+                }}
+              />
             ) : (
               <StudentEmailsList
                 {...{ students, selectedStudent, setSelectedStudent }}
@@ -58,7 +67,13 @@ function Admin() {
             )}
           </Grid>
           <Grid size={9}>
-            {leftSelectedOption === "Instructor Reports Status" ? null : (
+            {leftSelectedOption === "Instructor Reports Status" ? (
+              selectedInstructor > -1 && (
+                <ReportsInstructor
+                  {...{ currentInstructorId: selectedInstructor }}
+                />
+              )
+            ) : (
               <Emails {...{ selectedStudent }} />
             )}
           </Grid>
