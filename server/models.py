@@ -54,6 +54,7 @@ class Course(db.Model, SerializerMixin):
     
     instructors = db.relationship('User', secondary='users_courses', back_populates='courses')
     students = db.relationship('Student', secondary='students_courses', back_populates='courses')
+    assistants = db.relationship('Student', secondary='assistants_courses', back_populates='assistant_courses')
     department = db.relationship('Department', back_populates='courses')
     level = db.relationship('Level', back_populates='courses')
     course_reports = db.relationship('CourseReport', back_populates='course', cascade='all, delete-orphan')
@@ -91,6 +92,7 @@ class Student(db.Model, SerializerMixin):
     email_approved = db.Column(db.Boolean, default=False)
     
     courses = db.relationship('Course', secondary='students_courses', back_populates='students')
+    assistant_courses = db.relationship('Course', secondary='assistants_courses', back_populates='assistants')
     student_reports = db.relationship('StudentReport', back_populates='student', cascade='all, delete-orphan')
     placements = db.relationship('Placement', back_populates='student', cascade='all, delete-orphan')
     suggestions = db.relationship('Suggestion', back_populates='student', cascade='all, delete-orphan')
@@ -160,3 +162,12 @@ class Students_Courses(db.Model, SerializerMixin):
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'), primary_key=True, nullable=False)
 
     __table_args__ = (db.UniqueConstraint('student_id', 'course_id'),)
+
+
+class Assistants_Courses(db.Model, SerializerMixin):
+    __tablename__ = 'assistants_courses'
+
+    assistant_id = db.Column(db.Integer, db.ForeignKey('students.id'), primary_key=True, nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'), primary_key=True, nullable=False)
+
+    __table_args__ = (db.UniqueConstraint('assistant_id', 'course_id'),)

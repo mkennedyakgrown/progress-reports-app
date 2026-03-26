@@ -432,7 +432,20 @@ if __name__ == "__main__":
         #         print("Mismatch numbers of reports for course: ", course.name)
         #         print(f"R: {len(course.student_reports)} I: {len(course.instructors)} S: {len(course.students)}")
 
-        
+        pairs = [
+            [170, 392],
+            [150, 600],
+            [150, 431]
+        ]
+
+        for pair in pairs:
+            course = Course.query.filter_by(id=pair[0]).first()
+            student = Student.query.filter_by(id=pair[1]).first()
+            course.assistants.append(student)
+            print([f"{assistant.first_name} {assistant.last_name}" for assistant in course.assistants])
+
+        # db.session.commit()
+
 
         # print("Database Successfully Populated")
         pass
