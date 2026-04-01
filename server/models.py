@@ -21,6 +21,7 @@ class User(db.Model, SerializerMixin):
     courses = db.relationship('Course', secondary='users_courses', back_populates='instructors')
     student_reports = db.relationship('StudentReport', back_populates='instructor')
     course_reports = db.relationship('CourseReport', back_populates='instructor')
+    assistant_reports = db.relationship('AssistantReport', back_populates='instructor')
 
     @hybrid_property
     def name(self):
@@ -54,11 +55,12 @@ class Course(db.Model, SerializerMixin):
     
     instructors = db.relationship('User', secondary='users_courses', back_populates='courses')
     students = db.relationship('Student', secondary='students_courses', back_populates='courses')
-    assistants = db.relationship('Student', secondary='assistants_courses', back_populates='assistant_courses')
+    assistants = db.relationship('Student', secondary='assistants_courses', back_populates='courses')
     department = db.relationship('Department', back_populates='courses')
     level = db.relationship('Level', back_populates='courses')
     course_reports = db.relationship('CourseReport', back_populates='course', cascade='all, delete-orphan')
     student_reports = db.relationship('StudentReport', back_populates='course')
+    assistant_reports = db.relationship('AssistantReport', back_populates='course')
 
 
 class Department(db.Model, SerializerMixin):
@@ -94,6 +96,7 @@ class Student(db.Model, SerializerMixin):
     courses = db.relationship('Course', secondary='students_courses', back_populates='students')
     assistant_courses = db.relationship('Course', secondary='assistants_courses', back_populates='assistants')
     student_reports = db.relationship('StudentReport', back_populates='student', cascade='all, delete-orphan')
+    assistant_reports = db.relationship('AssistantReport', back_populates='student', cascade='all, delete-orphan')
     placements = db.relationship('Placement', back_populates='student', cascade='all, delete-orphan')
     suggestions = db.relationship('Suggestion', back_populates='student', cascade='all, delete-orphan')
 
@@ -144,6 +147,21 @@ class StudentReport(db.Model, SerializerMixin):
     course = db.relationship('Course', back_populates='student_reports')
     student = db.relationship('Student', back_populates='student_reports')
     instructor = db.relationship('User', back_populates='student_reports')
+
+
+class AssistantReport(db.Model, SerializerMixin):
+    __tablename__ = 'assistant_reports'
+
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'), nullable=False)
+    instructor_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    report_text = db.Column(db.Text, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+
+    course = db.relationship('Course', back_populates='assistant_reports')
+    student = db.relationship('Student', back_populates='assistant_reports')
+    instructor = db.relationship('User', back_populates='assistant_reports')
 
 
 class Users_Courses(db.Model, SerializerMixin):

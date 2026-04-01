@@ -5,7 +5,7 @@ from datetime import datetime
 from marshmallow import fields
 
 from config import app, db, api, ma
-from models import User, Course, User, Student, CourseReport, StudentReport, Department, Level, Placement, Suggestion
+from models import User, Course, User, Student, CourseReport, StudentReport, Department, Level, Placement, Suggestion, AssistantReport
 
 # @app.route("/", defaults={'path': 'index.html'})
 # @app.route("/<path:path>")
@@ -131,6 +131,21 @@ class StudentReportById(Resource):
         else:
             return {'message': 'Student Report did not save'}, 401
         
+class AssistantReportById(Resource):
+
+    def patch(self, report_id):
+        report = AssistantReport.query.filter(AssistantReport.id == report_id).first()
+        json = request.get_json()
+        if json.get('report_text'):
+            report.report_text = json.get('report_text')
+            if report.report_text == "":
+                report.report_text == " "
+            report.date = datetime.now()
+            db.session.commit()
+            return assistant_report_schema.dump(report), 200
+        else:
+            return {'message': 'Student Report did not save'}, 401
+        
 class Students(Resource):
 
     def get(self):
@@ -243,6 +258,7 @@ api.add_resource(UsersStatus, '/api/users/status')
 api.add_resource(CoursesByInstructor, '/api/users/<int:user_id>/courses')
 api.add_resource(CourseReportById, '/api/course-reports/<int:report_id>')
 api.add_resource(StudentReportById, '/api/student-reports/<int:report_id>')
+api.add_resource(AssistantReportById, '/api/assistant-reports/<int:report_id>')
 api.add_resource(Login, '/api/login')
 api.add_resource(Logout, '/api/logout')
 api.add_resource(CheckSession, '/api/check-session')
@@ -370,6 +386,26 @@ class StudentReportSchema(ma.SQLAlchemySchema):
 
 student_report_schema = StudentReportSchema()
 student_reports_schema = StudentReportSchema(many=True)
+
+class AssistantReportSchema(ma.SQLAlchemySchema):
+
+    class Meta:
+        model = AssistantReport
+        load_instance = True
+    
+    id = ma.auto_field()
+    student_id = ma.auto_field()
+    course_id = ma.auto_field()
+    instructor_id = ma.auto_field()
+    report_text = ma.auto_field()
+    date = ma.auto_field()
+
+    course = fields.Nested('CourseSchema', only=['name', 'course_reports'], many=False)
+    student = fields.Nested('StudentSchema', only=['first_name', 'last_name'], many=False)
+    instructor = fields.Nested('UserSchema', only=['first_name', 'last_name', 'signature'], many=False)
+
+assistant_report_schema = AssistantReportSchema()
+assistant_reports_schema = AssistantReportSchema(many=True)
 
 class PlacementSchema(ma.SQLAlchemySchema):
 

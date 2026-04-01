@@ -444,6 +444,19 @@ if __name__ == "__main__":
             course.assistants.append(student)
             print([f"{assistant.first_name} {assistant.last_name}" for assistant in course.assistants])
 
+        for assistant in course.assistants:
+            for instructor in course.instructors:
+                report = StudentReport(
+                    student_id=assistant.id,
+                    course_id=course.id,
+                    instructor_id=instructor.id,
+                    report_text=" ",
+                    date=datetime.now()
+                )
+                db.session.add(report)
+                print(f"{assistant.first_name} {assistant.last_name} {instructor.first_name} {instructor.last_name} {course.name}")
+
+
         # db.session.commit()
 
 
